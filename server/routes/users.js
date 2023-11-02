@@ -2,21 +2,34 @@ import express from 'express';
 import User from "../models/User.js";
 const userRouter = express.Router();
 
-
-//get a user
+//get all users
 userRouter.get("/", async (req, res) => {
-	const userId = req.query.userId;
-	const username = req.query.username;
 	try {
-	  const user = userId
-		? await User.findById(userId)
-		: await User.findOne({ username: username });
-	  const { password, updatedAt, ...other } = user._doc;
-	  res.status(200).json(other);
+	  const users = await User.find();
+	  const sanitizedUsers = users.map((user) => {
+		const { password, updatedAt, ...other } = user._doc;
+		return other;
+	  });
+	  res.status(200).json(sanitizedUsers);
 	} catch (err) {
 	  res.status(500).json(err);
 	}
   });
+
+//get a user
+// userRouter.get("/", async (req, res) => {
+// 	const userId = req.query.userId;
+// 	const username = req.query.username;
+// 	try {
+// 	  const user = userId
+// 		? await User.findById(userId)
+// 		: await User.findOne({ username: username });
+// 	  const { password, updatedAt, ...other } = user._doc;
+// 	  res.status(200).json(other);
+// 	} catch (err) {
+// 	  res.status(500).json(err);
+// 	}
+// });
 
 //delete user
 userRouter.delete("/:id", async (req, res) => {
@@ -30,7 +43,7 @@ userRouter.delete("/:id", async (req, res) => {
 	} else {
 	  return res.status(403).json("You can delete only your account!");
 	}
-  });
+});
 
 //update user
 userRouter.put("/:id", async (req, res) => {
@@ -54,7 +67,7 @@ userRouter.put("/:id", async (req, res) => {
 	} else {
 	  return res.status(403).json("You can update only your account!");
 	}
-  });
+});
 
 //get contacts
 userRouter.get("/contacts/:userId", async (req, res) => {
