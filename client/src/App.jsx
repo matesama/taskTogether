@@ -8,7 +8,7 @@ function App() {
   return (
     <>
     <div>
-      <h1 className='text-x1 font-bold'>Hello taskTogether</h1>
+      {/*<h1 className='text-x1 font-bold'>Hello taskTogether</h1>*/}
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
