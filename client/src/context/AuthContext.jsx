@@ -3,14 +3,15 @@ import AuthReducer from "./AuthReducer";
 
 
 const INITIAL_STATE = {
-  // user:JSON.parse(localStorage.getItem("user")) || null,
-  user: { _id: "654401ef6a02e04b0eea2bc4",
+  user:JSON.parse(localStorage.getItem("user")) || null,
+  /*user: { _id: "654401ef6a02e04b0eea2bc4",
           username: "TestUser1",
           email: "testuser1@mail.com",
           profilePicture: "",
           contacts: [],
           isAdmin: false,
-        },
+        }*/
+        //user: null,
   isFetching: false,
   error: false,
 };
@@ -22,7 +23,7 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
   useEffect(()=>{
-    // localStorage.setItem("user", JSON.stringify(state.user))
+    localStorage.setItem("user", JSON.stringify(state.user))
   },[state.user])
 
   return (
@@ -38,3 +39,5 @@ export const AuthContextProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext
