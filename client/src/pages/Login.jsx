@@ -27,6 +27,7 @@ const Login = () => {
 
             loginCall({ email, password }, dispatch);
             console.log(user);
+            console.log(user.email)
         }catch(error) {
             console.log(error.message);
         }finally {
