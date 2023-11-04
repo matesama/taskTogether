@@ -2,7 +2,7 @@ import express from 'express';
 import User from "../models/User.js";
 const userRouter = express.Router();
 
-//get all users
+// get all users
 // userRouter.get("/", async (req, res) => {
 // 	try {
 // 	  const users = await User.find();
@@ -15,6 +15,7 @@ const userRouter = express.Router();
 // 	  res.status(500).json(err);
 // 	}
 //   });
+
 
 //get a user
 userRouter.get("/", async (req, res) => {
