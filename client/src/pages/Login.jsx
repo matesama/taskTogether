@@ -38,7 +38,7 @@ const Login = () => {
                 <h2 className="font-bold mb-5 ml-5 text-2xl self-start pl-5 pb-5">taskTogether</h2>
             </div>
             <form onSubmit={getData} className="bg-slate-800 w-6/12 m-0 min-h-screen min-w-screen flex justify-center items-center">
-                <div className="flex flex-col  m-0 items-center rounded-md border-slate-300 border-solid border-2 text-slate-300 p-12">
+                <div className="flex flex-col  m-0 items-center rounded-md border-slate-300 border-solid border-2 text-slate-300 p-12 w-18/12 ">
                     <h2 className="font-bold mb-5 text-3xl">Sign In</h2>
                     <div className="flex flex-col">
                         <label htmlFor="email" className="text-sm text-start mb-0">Email</label>
