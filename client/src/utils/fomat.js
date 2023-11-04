@@ -19,6 +19,6 @@ export function format(updatedAt) {
 	} else if (minutes > 0) {
 	  return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
 	} else {
-	  return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+	  return `just now`;
 	}
 }
