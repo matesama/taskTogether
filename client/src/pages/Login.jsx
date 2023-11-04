@@ -42,7 +42,7 @@ const Login = () => {
                     <h2 className="font-bold mb-5 text-3xl">Sign In</h2>
                     <div className="flex flex-col">
                         <label htmlFor="email" className="text-sm text-start mb-0">Email</label>
-                        <input id='email' onChange={(e)=>{setEmail(e.target.value)}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
+                        <input id='email' type="email" onChange={(e)=>{setEmail(e.target.value)}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
                         <label htmlFor='password' className="text-sm text-start mt-3 mb-0">Password</label>
                         <input type="password" id="password" onChange={(e)=>{e.target.value}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 mb-7 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
                         <input type="submit" id="submitLoginButton" value="Sign In" className="bg-slate-500 w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-blue-600 focus:ring-4 focus:ring-purple-blue-100 bg-purple-blue-500"/>
