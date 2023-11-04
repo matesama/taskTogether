@@ -1,12 +1,15 @@
-import {useState} from "react";
+import {useContext, useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import loginCall from "../apiCalls.js"
+import AuthContext from "../context/AuthContext.jsx"
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState({});
-
+    const [errors, setErrors] = useState({});
+    const {user , isFetching, error, dispatch} = useContext(AuthContext);
+    
     
     const getData = async (e) => {
         
@@ -22,7 +25,9 @@ const Login = () => {
             const data = await getResponse.json();
             console.log(data);
 
-
+            loginCall({ email, password }, dispatch);
+            console.log(user);
+            console.log(user.email)
         }catch(error) {
             console.log(error.message);
         }finally {
