@@ -1,5 +1,7 @@
 import './chat.css'
+import Navigation from '../components/Navigation/Navgiation'
 import Conversation from '../components/conversations/Conversation'
+import ChatMenu from '../components/ChatMenu/ChatMenu'
 import Message from '../components/message/Message'
 import { useContext, useEffect, useRef, useState } from 'react'
 import { AuthContext } from '../context/AuthContext';
@@ -43,7 +45,7 @@ const Chat = () => {
 	useEffect(() => {
 		socket.current.emit("addUser", user._id);
 		socket.current.on("getUsers", users => {
-			console.log(users);
+			// console.log(users);
 		})
 	},[user])
 
@@ -120,15 +122,11 @@ const Chat = () => {
   return (
   	<>
 		<div className='chat'>
+			<div className="navigation">
+        	  	<Navigation currentUser={user} />
+        	</div>
 			<div className="chatMenu">
-				<div className="chatMenuWrapper">
-					<input placeholder='Search for People' className='chatMenuInput' />
-					{conversation.map((c) => (
-						<div onClick={() => setCurrentChat(c)}>
-							<Conversation conversation={c} currentUser={user} />
-						</div>
-					))}
-				</div>
+				<ChatMenu conversations={conversation} currentUser={user} setCurrentChat={setCurrentChat} />
 			</div>
 			<div className="chatBox">
 				<div className="chatBoxWrapper">
@@ -136,7 +134,7 @@ const Chat = () => {
     	          <>
     	            <div className="chatBoxTop">
     	              {messages.map((m) => (
-    	                <div ref={scrollRef}>
+    	                <div key={m._id} ref={scrollRef}>
     	                  <Message message={m} own={m.sender === user._id} />
     	                </div>
     	              ))}

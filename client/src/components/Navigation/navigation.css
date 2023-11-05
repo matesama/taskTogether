@@ -1,0 +1,45 @@
+.navigation {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	padding: 20px;
+	background-color: #f0f0f0;
+  }
+
+  .userProfile {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+  }
+
+  .userProfilePicture {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-bottom: 8px;
+  }
+
+  .userName {
+	font-size: 16px;
+	font-weight: bold;
+  }
+
+  .navButtons {
+	display: flex;
+	flex-direction: column;
+  }
+
+  .navButton {
+	margin-top: 8px;
+	padding: 8px;
+	background-color: #132137;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+  }
+
+  .navButton:hover {
+	background-color: #2980b9;
+  }
