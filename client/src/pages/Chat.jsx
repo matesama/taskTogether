@@ -34,7 +34,7 @@ const Chat = () => {
 	}, [])
 
 	useEffect(() => {
-		if (arrivalMessage && currentChat?.members.include(arrivalMessage.sender)) {
+		if (arrivalMessage && currentChat?.members.includes(arrivalMessage.sender)) {
 			setMessages((prevMessages) => [...prevMessages, arrivalMessage]);
 		}
 	}, [arrivalMessage, currentChat])
