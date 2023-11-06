@@ -1,12 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Conversation from '../conversations/Conversation';
+import Conversation from './Conversation';
 
 
-export default function ChatMenu({ conversations, currentUser, setCurrentChat}) {
+export default function ChatMenu({ currentUser, setCurrentChat}) {
 
+	const [conversations, setConversations] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
 	const [filteredConversations, setFilteredConversations] = useState(conversations);
+
+	useEffect(() => {
+		const getConversations = async () => {
+			try {
+				const res = await axios.get("http://localhost:8000/api/conversations/" + currentUser._id);
+				setConversations(res.data);
+			} catch (err){
+				console.log(err);
+			} finally {
+            	//loader
+        	}
+		};
+		getConversations();
+
+	}, [currentUser._id]);
 
 	useEffect(() => {
 		const filterConversations = async () => {
