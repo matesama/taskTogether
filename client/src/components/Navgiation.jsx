@@ -15,7 +15,7 @@ const Navigation = ({ currentUser, onAddButtonClick }) => {
       <div className="userProfile">
         <img
           className="userProfilePicture"
-          src={currentUser.profilePicture || 'default-profile-picture.jpg'}
+          src={currentUser.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
           alt="User Profile"
         />
         <span className="userName">{currentUser.username}</span>

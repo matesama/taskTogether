@@ -33,9 +33,9 @@ const Chat = () => {
 
 		  const newConversation = conversationResponse.data;
 
-		//   const userResponse = await axios.put(`http://localhost:8000/api/users/${user._id}`, {
+		//   const userResponse = await axios.put(`http://localhost:8000/api/users/${user._id}/add-contact`, {
 		// 	userId: user._id,
-		// 	contacts: [...user.contacts, selectedUser._id],
+		// 	contactId: selectedUser._id,
 		//   });
 
 		//   const updatedUser = userResponse.data;

@@ -46,6 +46,31 @@ userRouter.delete("/:id", async (req, res) => {
 	}
 });
 
+// add new contact
+userRouter.put("/:id/add-contact", async (req, res) => {
+	const { userId, contactId } = req.body;
+
+	try {
+	  const user = await User.findById(userId);
+	  const contactUser = await User.findById(contactId);
+
+	  if (user && contactUser) {
+		if (!user.contacts.includes(contactId)) {
+		  await user.updateOne({ $push: { contacts: contactId } });
+		  await contactUser.updateOne({ $push: { contacts: userId } });
+
+		  res.status(200).json("Contact has been added successfully");
+		} else {
+		  res.status(403).json("You already have this user in your contacts");
+		}
+	  } else {
+		res.status(404).json("User or contact not found");
+	  }
+	} catch (err) {
+	  res.status(500).json(err);
+	}
+  });
+
 //update user
 userRouter.put("/:id", async (req, res) => {
 	if (req.body.userId === req.params.id || req.body.isAdmin) {
