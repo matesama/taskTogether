@@ -1,4 +1,4 @@
-.chat{
+.dashboard{
 	height: calc(100vh - 70px);
 	display: flex;
 }
@@ -14,7 +14,7 @@
 	border-bottom: 1px solid grey;
 }
 
-.chatBox{
+.contentContainer{
 	flex: 5.5;
 }
 
@@ -66,4 +66,50 @@
 	font-size: 50px;
 	color: rgb(224, 220, 220);
 	cursor: default;
+  }
+
+  .add-component {
+	padding: 10px; /* Adjust padding as needed */
+  }
+
+  .add-component h2 {
+	font-size: 24px; /* Adjust font size as needed */
+	margin-bottom: 15px; /* Adjust margin as needed */
+  }
+
+  .add-component ul {
+	list-style: none;
+	padding: 0;
+  }
+
+  .add-component li {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px; /* Adjust margin as needed */
+  }
+
+  .userProfilePicture {
+	width: 50px; /* Adjust width as needed */
+	height: 50px; /* Adjust height as needed */
+	border-radius: 50%;
+	margin-right: 10px; /* Adjust margin as needed */
+  }
+
+  .userName {
+	font-size: 18px; /* Adjust font size as needed */
+  }
+
+	.addButton {
+	margin-left: auto;
+	margin-top: 8px;
+	padding: 8px;
+	background-color: #132137;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+  }
+  .addButton:hover {
+	background-color: #2980b9;
   }

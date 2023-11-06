@@ -1,5 +1,5 @@
 import "./message.css"
-import { format } from "../../utils/fomat"
+import { format } from "../utils/fomat"
 import { useEffect, useState } from "react"
 import axios from 'axios';
 

@@ -3,18 +3,18 @@ import User from "../models/User.js";
 const userRouter = express.Router();
 
 // get all users
-// userRouter.get("/", async (req, res) => {
-// 	try {
-// 	  const users = await User.find();
-// 	  const sanitizedUsers = users.map((user) => {
-// 		const { password, updatedAt, ...other } = user._doc;
-// 		return other;
-// 	  });
-// 	  res.status(200).json(sanitizedUsers);
-// 	} catch (err) {
-// 	  res.status(500).json(err);
-// 	}
-//   });
+userRouter.get("/all", async (req, res) => {
+	try {
+	  const users = await User.find();
+	  const sanitizedUsers = users.map((user) => {
+		const { password, updatedAt, ...other } = user._doc;
+		return other;
+	  });
+	  res.status(200).json(sanitizedUsers);
+	} catch (err) {
+	  res.status(500).json(err);
+	}
+  });
 
 
 //get a user
