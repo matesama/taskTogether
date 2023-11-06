@@ -9,11 +9,11 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const {user , isFetching, error, dispatch} = useContext(AuthContext);
-    
-    
+
+
     const getData = async (e) => {
-        
-        try {    
+
+        try {
             e.preventDefault();
 
             const requestData = {
@@ -23,19 +23,15 @@ const Login = () => {
             };
             const getResponse = await fetch('http://localhost:8000/api/auth/login', requestData);
             const data = await getResponse.json();
-            console.log(data);
-
             loginCall({ email, password }, dispatch);
-            console.log(user);
-            console.log(user.email)
         }catch(error) {
             console.log(error.message);
         }finally {
             //loader
         }
-    
-    } 
-      
+
+    }
+
     return(
         <div className="text-slate-300 flex flex-row">
             <div className="w-6/12  min-h-screen bg-slate-950 min-w-screen flex flex-col justify-between" >
@@ -55,7 +51,7 @@ const Login = () => {
                     </div>
                 </div>
             </form>
-        
+
         </div>
     )
 }

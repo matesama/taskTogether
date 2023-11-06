@@ -5,7 +5,7 @@ mongoose.connect(process.env.MONGO_DB, {
     //useUnifiedTopology: true
 })
 .then(() => {
-    console.log("Database connection successful")
+    console.log('\x1b[32m%s\x1b[0m', "\nDatabase connection successful!");
 })
 .catch((e) => console.log(e.message))
 
