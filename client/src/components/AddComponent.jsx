@@ -2,44 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const AddComponent = ({ currentUser, onUserSelect, socket }) => {
-  const [contacts, setContacts] = useState([]);
+const AddComponent = ({ onUserSelect, contacts }) => {
 
-
-  const getContacts = async () => {
-    try {
-      const conversationResponse = await axios.get(`http://localhost:8000/api/conversations/${currentUser._id}`);
-      const conversations = conversationResponse.data;
-
-      const participantIds = conversations.reduce((ids, conversation) => {
-        return [...ids, ...conversation.members];
-      }, []);
-
-      const userResponse = await axios.get('http://localhost:8000/api/users/all');
-      const allUsers = userResponse.data;
-
-      const filteredContacts = allUsers.filter((user) => !participantIds.includes(user._id));
-
-      setContacts(filteredContacts);
-    } catch (error) {
-      console.error('Error fetching contacts:', error);
-    } finally {
-      //loader
-    }
-  };
-
-  useEffect(() => {
-
-    socket.current.on('newConversation', getContacts)
-
-    return () => {
-      socket.current.off('newConversation');
-    };
-  }, [getContacts]);
-
-  useEffect(() => {
-    getContacts();
-  }, [currentUser._id]);
 
   return (
     <div className="add-component">

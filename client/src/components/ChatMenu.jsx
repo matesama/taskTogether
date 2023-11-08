@@ -3,41 +3,10 @@ import axios from 'axios';
 import Conversation from './Conversation';
 
 
-export default function ChatMenu({ currentUser, setCurrentChat, socket}) {
+const ChatMenu = ({ currentUser, setCurrentChat, conversations}) => {
 
-	const [conversations, setConversations] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
 	const [filteredConversations, setFilteredConversations] = useState([]);
-
-
-	const getConversations = async () => {
-		try {
-			const res = await axios.get("http://localhost:8000/api/conversations/" + currentUser._id);
-			setConversations(res.data);
-		} catch (err){
-			console.log(err);
-		} finally {
-		  //loader
-		}
-	};
-/////////////// SOCKET ////////////////////////////////////////////////
-
-	useEffect(() => {
-
-		if (socket.current) {
-    		socket.current.on('newConversation', getConversations);
-		}
-
-    	return () => {
-			if (socket.current) {
-				socket.current.off('newConversation');
-			}
-    };
-  	}, [getConversations]);
-
-  	useEffect(() => {
-    	getConversations();
-  	}, [currentUser._id]);
 
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
@@ -85,3 +54,5 @@ export default function ChatMenu({ currentUser, setCurrentChat, socket}) {
 		</div>
 	  );
 	}
+
+export default ChatMenu;

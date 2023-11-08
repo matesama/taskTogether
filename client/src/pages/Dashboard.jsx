@@ -12,8 +12,13 @@ import {io} from "socket.io-client"
 const Dashboard = () => {
 	const [currentChat, setCurrentChat] = useState(null);
 	const [showAddComponent, setShowAddComponent] = useState(false);
+	const [conversations, setConversations] = useState([]);
+	const [contacts, setContacts] = useState([]);
 	const {user} = useContext(AuthContext);
 	const socket = useRef();
+
+
+/////////////// Socket Connection ////////////////////////////////////////////////
 
   	useEffect(() => {
     	socket.current = io('ws://localhost:8100');
@@ -32,6 +37,76 @@ const Dashboard = () => {
 			})
 		}
 	},[user])
+
+/////////////// ChatMenu ////////////////////////////////////////////////
+
+	const getConversations = async () => {
+		try {
+			const res = await axios.get("http://localhost:8000/api/conversations/" + user._id);
+			setConversations(res.data);
+		} catch (err){
+			console.log(err);
+		} finally {
+		  //loader
+		}
+	};
+
+	useEffect(() => {
+
+		if (socket.current) {
+			socket.current.on('newConversation', getConversations);
+		}
+
+		return () => {
+			if (socket.current) {
+				socket.current.off('newConversation');
+			}
+	};
+	  }, [getConversations]);
+
+  useEffect(() => {
+	getConversations();
+  }, [user._id]);
+
+
+/////////////// AddComponent ////////////////////////////////////////////////
+
+  const getContacts = async () => {
+    try {
+      const conversationResponse = await axios.get(`http://localhost:8000/api/conversations/${user._id}`);
+      const conversations = conversationResponse.data;
+
+      const participantIds = conversations.reduce((ids, conversation) => {
+        return [...ids, ...conversation.members];
+      }, []);
+
+      const userResponse = await axios.get('http://localhost:8000/api/users/all');
+      const allUsers = userResponse.data;
+
+      const filteredContacts = allUsers.filter((user) => !participantIds.includes(user._id));
+
+      setContacts(filteredContacts);
+    } catch (error) {
+      console.error('Error fetching contacts:', error);
+    } finally {
+      //loader
+    }
+  };
+
+  useEffect(() => {
+
+    socket.current.on('newConversation', getContacts)
+
+    return () => {
+      socket.current.off('newConversation');
+    };
+  }, [getContacts]);
+
+  useEffect(() => {
+    getContacts();
+  }, [user._id]);
+
+/////////////// Dashboard (Handler) ////////////////////////////////////////////////
 
 	const handleAddButtonClick = () => {
 		setShowAddComponent(true);
@@ -63,11 +138,11 @@ const Dashboard = () => {
 				<Navigation currentUser={user} onAddButtonClick={handleAddButtonClick} socket={socket} />
         	</div>
 			<div className="chatMenu">
-				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} socket={socket}/>
+				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} conversations={conversations}/>
 			</div>
 			<div className="contentContainer">
           		{showAddComponent ? (
-            		<AddComponent currentUser={user} onUserSelect={handleUserSelect} socket={socket}/>
+            		<AddComponent onUserSelect={handleUserSelect} contacts={contacts}/>
           			) : (
             		<ChatBox currentUser={user} currentChat={currentChat} socket={socket}/>
          		)}
