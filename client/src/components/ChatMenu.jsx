@@ -19,7 +19,7 @@ export default function ChatMenu({ currentUser, setCurrentChat, socket}) {
 		} finally {
 		  //loader
 		}
-	}
+	};
 /////////////// SOCKET ////////////////////////////////////////////////
 
 	useEffect(() => {

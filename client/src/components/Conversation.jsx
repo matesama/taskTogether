@@ -3,7 +3,7 @@ import "./conversation.css"
 import axios from 'axios';
 
 
-export default function Conversation({conversation, currentUser}) {
+const Conversation = ({conversation, currentUser}) => {
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
@@ -36,3 +36,4 @@ export default function Conversation({conversation, currentUser}) {
 	</div>
   )
 }
+export default Conversation;

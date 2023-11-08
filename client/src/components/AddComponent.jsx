@@ -1,19 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 
 const AddComponent = ({ currentUser, onUserSelect, socket }) => {
   const [contacts, setContacts] = useState([]);
 
-  useEffect(() => {
-
-    socket.current.on('newConversation', () => {
-      getContacts();
-    });
-
-    return () => {
-      socket.current.off('newConversation');
-    };
-  }, []);
 
   const getContacts = async () => {
     try {
@@ -36,6 +27,15 @@ const AddComponent = ({ currentUser, onUserSelect, socket }) => {
       //loader
     }
   };
+
+  useEffect(() => {
+
+    socket.current.on('newConversation', getContacts)
+
+    return () => {
+      socket.current.off('newConversation');
+    };
+  }, [getContacts]);
 
   useEffect(() => {
     getContacts();

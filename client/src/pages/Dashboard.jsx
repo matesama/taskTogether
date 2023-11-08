@@ -16,14 +16,19 @@ const Dashboard = () => {
 	const socket = useRef();
 
   	useEffect(() => {
-    socket.current = io("ws://localhost:8100");
+    	socket.current = io('ws://localhost:8100');
+
+    	return () => {
+    	  if (socket.current) {
+    	    socket.current.disconnect();
+    	  }
+    	};
   	}, []);
 
 	useEffect(() => {
 		if(socket.current) {
 			socket.current.emit("addUser", user._id);
 			socket.current.on("getUsers", users => {
-				// console.log(users);
 			})
 		}
 	},[user])
