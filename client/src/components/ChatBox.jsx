@@ -93,8 +93,6 @@ const ChatBox = ({ currentUser, currentChat }) => {
 		}
 	}
 
-
-
   	return (
 			<div className="chatBoxWrapper">
 			{currentChat ? (

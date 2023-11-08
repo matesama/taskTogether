@@ -3,16 +3,21 @@ import Navigation from '../components/Navgiation'
 import ChatMenu from '../components/ChatMenu'
 import ChatBox from '../components/ChatBox'
 import AddComponent from '../components/AddComponent';
-import { useContext, useState } from 'react'
+import { useContext, useState, useRef, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
-
+import {io} from "socket.io-client"
 
 
 const Chat = () => {
 	const [currentChat, setCurrentChat] = useState(null);
 	const [showAddComponent, setShowAddComponent] = useState(false);
 	const {user} = useContext(AuthContext);
+	const socket = useRef();
+
+  	useEffect(() => {
+    socket.current = io("ws://localhost:8100");
+  	}, []);
 
 	const handleAddButtonClick = () => {
 		setShowAddComponent(true);
@@ -31,17 +36,7 @@ const Chat = () => {
 			receiverId: selectedUser._id,
 		  });
 
-		  const newConversation = conversationResponse.data;
-
-		//   const userResponse = await axios.put(`http://localhost:8000/api/users/${user._id}/add-contact`, {
-		// 	userId: user._id,
-		// 	contactId: selectedUser._id,
-		//   });
-
-		//   const updatedUser = userResponse.data;
-
-		//   console.log(`Added ${selectedUser.username} to contacts. Updated user:`, updatedUser);
-		  console.log('New Conversation:', newConversation);
+		  socket.current.emit('newConversation');
 		} catch (error) {
 		  console.error('Error adding contact:', error);
 		}
@@ -63,9 +58,6 @@ const Chat = () => {
             		<ChatBox currentUser={user} currentChat={currentChat} />
          		)}
         </div>
-			{/* <div className="chatBox">
-				<ChatBox currentUser={user} currentChat={currentChat}/>
-			</div> */}
 		</div>
 	</>
   )

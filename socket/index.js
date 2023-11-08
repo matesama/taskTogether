@@ -24,7 +24,6 @@ const getUser = (userId) => {
 }
 
 
-
 io.on('connection', (socket) => {
 
 	// when connect
@@ -35,7 +34,6 @@ io.on('connection', (socket) => {
 		addUser(userId, socket.id);
 		io.emit("getUsers", users);
 	})
-
 
 	// send and get message
 	socket.on('sendMessage', ({senderId, receiverId, text}) => {
@@ -49,8 +47,12 @@ io.on('connection', (socket) => {
 		} else {
 			console.log('User or user.socketId is undefined:', user);
 		}
-
 	})
+
+	// new conversation
+    socket.on('newConversation', () => {
+        io.emit('newConversation');
+    })
 
 	// when disconnect
 	socket.on("disconnect", () => {
