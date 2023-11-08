@@ -72,7 +72,7 @@ export default function ChatMenu({ currentUser, setCurrentChat, socket}) {
 		  <div className="chatMenuWrapper">
 			<input
 			  placeholder="Search for People"
-			  className="chatMenuInput"
+			  className="chatMenuInput rounded-2xl bg-slate-100 placeholder-slate-950 placeholder-opacity-50 placeholder: pl-4 mr-8"
 			  value={searchInput}
 			  onChange={(e) => setSearchInput(e.target.value.toLowerCase())}
 			/>

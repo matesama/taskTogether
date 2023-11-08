@@ -43,7 +43,7 @@ const AddComponent = ({ currentUser, onUserSelect, socket }) => {
 
   return (
     <div className="add-component">
-      <h2>Add Component</h2>
+      <h3 className="text-4xl mb-10">Add A New Contact/Group</h3>
       <ul>
         {contacts.map((contact) => (
           <li key={contact._id}>
@@ -52,8 +52,8 @@ const AddComponent = ({ currentUser, onUserSelect, socket }) => {
               src={contact.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
               alt="User Profile"
             />
-            <span className="userName">{contact.username}</span>
-            <button className="addButton" onClick={() => onUserSelect(contact)}>Add</button>
+            <span className="userName text-slate-950">{contact.username}</span>
+            <button className="addButton rounded-lg bg-slate-950 text-white" onClick={() => onUserSelect(contact)}>Add</button>
           </li>
         ))}
       </ul>

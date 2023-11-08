@@ -1,5 +1,5 @@
 .dashboard{
-	height: calc(100vh - 70px);
+	height: calc(100vh);
 	display: flex;
 }
 
@@ -61,10 +61,8 @@
 }
 
 .noConversationText {
-	position: absolute;
-	top: 10%;
+	
 	font-size: 50px;
-	color: rgb(224, 220, 220);
 	cursor: default;
   }
 
