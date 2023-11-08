@@ -38,8 +38,6 @@ const ChatBox = ({ currentUser, currentChat , socket}) => {
 				  });
 			});
 		}
-
-		// Cleanup function
 		return () => {
 			if (socket.current) {
 			  socket.current.off("getMessage");
@@ -72,7 +70,6 @@ const ChatBox = ({ currentUser, currentChat , socket}) => {
 				text: newMessage,
 			});
 		}
-
 
 		try {
 			const res = await axios.post("http://localhost:8000/api/messages", message);

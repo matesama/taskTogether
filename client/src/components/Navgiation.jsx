@@ -9,7 +9,7 @@ const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
   const handleLogout = () => {
     dispatch(Logout());
     if (socket.current) {
-      socket.current.emit("logout");
+      socket.current.emit("disconnect");
     };
   };
 

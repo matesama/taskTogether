@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 
-export default function Message({message, own}) {
+const Message = ({message, own}) => {
 
 	const [sender, setSender] = useState(null);
 
@@ -38,3 +38,4 @@ export default function Message({message, own}) {
 		</div>
   	)
 }
+export default Message;
