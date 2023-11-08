@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Conversation from './Conversation';
-import {io} from "socket.io-client"
 
 
-export default function ChatMenu({ currentUser, setCurrentChat}) {
+export default function ChatMenu({ currentUser, setCurrentChat, socket}) {
 
 	const [conversations, setConversations] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
 	const [filteredConversations, setFilteredConversations] = useState([]);
-	const socket = useRef();
 
 
 	const getConversations = async () => {
@@ -25,14 +23,17 @@ export default function ChatMenu({ currentUser, setCurrentChat}) {
 /////////////// SOCKET ////////////////////////////////////////////////
 
 	useEffect(() => {
-    	socket.current = io("ws://localhost:8100");
 
-    	socket.current.on('newConversation', getConversations);
+		if (socket.current) {
+    		socket.current.on('newConversation', getConversations);
+		}
 
     	return () => {
-    	  socket.current.off('newConversation');
+			if (socket.current) {
+				socket.current.off('newConversation');
+			}
     };
-  	}, []);
+  	}, [getConversations]);
 
   	useEffect(() => {
     	getConversations();

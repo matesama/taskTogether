@@ -1,42 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Message from './Message';
 import axios from 'axios';
-import {io} from "socket.io-client"
 
 
-const ChatBox = ({ currentUser, currentChat }) => {
+const ChatBox = ({ currentUser, currentChat , socket}) => {
 	const [newMessage, setNewMessage] = useState("");
 	const [messages, setMessages] = useState([]);
 	const [arrivalMessage, setArrivalMessage] = useState(null);
-	const socket = useRef();
   	const scrollRef = useRef();
 
-
-/////////////// SOCKET ////////////////////////////////////////////////
-
-	useEffect(() => {
-		socket.current = io("ws://localhost:8100");
-	}, []);
-
-	useEffect(() => {
-		socket.current.emit("addUser", currentUser._id);
-		socket.current.on("getUsers", users => {
-			// console.log(users);
-		})
-	},[currentUser])
-
-	useEffect(() => {
-		socket.current.on("getMessage", (data) => {
-			setArrivalMessage({
-				sender: data.senderId,
-				text: data.text,
-				createdAt: Date.now(),
-			  });
-		})
-	}, [])
-
-
-/////////////// CHAT ////////////////////////////////////////////////
 
 	useEffect(() => {
 		if (arrivalMessage && currentChat?.members.includes(arrivalMessage.sender)) {
@@ -57,6 +29,23 @@ const ChatBox = ({ currentUser, currentChat }) => {
 		};
 		getMessages();
 
+		if (socket.current) {
+			socket.current.on("getMessage", (data) => {
+				setArrivalMessage({
+					sender: data.senderId,
+					text: data.text,
+					createdAt: Date.now(),
+				  });
+			});
+		}
+
+		// Cleanup function
+		return () => {
+			if (socket.current) {
+			  socket.current.off("getMessage");
+			}
+		  };
+
 	}, [currentChat])
 
 	useEffect(() => {
@@ -76,11 +65,14 @@ const ChatBox = ({ currentUser, currentChat }) => {
 
 		const receiverId = currentChat.members.find(member => member !== currentUser._id);
 
-		socket.current.emit("sendMessage", {
-			senderId: currentUser._id,
-			receiverId,
-			text: newMessage,
-		})
+		if (socket.current) {
+			socket.current.emit("sendMessage", {
+				senderId: currentUser._id,
+				receiverId,
+				text: newMessage,
+			});
+		}
+
 
 		try {
 			const res = await axios.post("http://localhost:8000/api/messages", message);

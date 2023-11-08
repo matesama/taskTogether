@@ -5,7 +5,6 @@ import axios from 'axios';
 
 export default function Conversation({conversation, currentUser}) {
 	const [user, setUser] = useState(null);
-	// const PI = "http://localhost:8000/images/";
 
 	useEffect(() => {
 		const contactId = conversation.members.find((m) => m !== currentUser._id);

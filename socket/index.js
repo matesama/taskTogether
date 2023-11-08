@@ -55,10 +55,11 @@ io.on('connection', (socket) => {
     })
 
 	// when disconnect
-	socket.on("disconnect", () => {
+	socket.on("logout", () => {
 		console.log('a user disconnected');
 		removeUser(socket.id);
 		io.emit("getUsers", users);
-	})
+		socket.disconnect();
+	  });
 });
 

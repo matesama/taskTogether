@@ -2,12 +2,15 @@ import './navigation.css';
 import React, { useContext } from 'react';
 import { AuthContext, Logout } from '../context/AuthContext';
 
-const Navigation = ({ currentUser, onAddButtonClick }) => {
+const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
 
   const { dispatch } = useContext(AuthContext);
 
   const handleLogout = () => {
     dispatch(Logout());
+    if (socket.current) {
+      socket.current.emit("logout");
+    };
   };
 
   return (

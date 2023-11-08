@@ -9,7 +9,7 @@ import axios from 'axios';
 import {io} from "socket.io-client"
 
 
-const Chat = () => {
+const Dashboard = () => {
 	const [currentChat, setCurrentChat] = useState(null);
 	const [showAddComponent, setShowAddComponent] = useState(false);
 	const {user} = useContext(AuthContext);
@@ -18,6 +18,15 @@ const Chat = () => {
   	useEffect(() => {
     socket.current = io("ws://localhost:8100");
   	}, []);
+
+	useEffect(() => {
+		if(socket.current) {
+			socket.current.emit("addUser", user._id);
+			socket.current.on("getUsers", users => {
+				// console.log(users);
+			})
+		}
+	},[user])
 
 	const handleAddButtonClick = () => {
 		setShowAddComponent(true);
@@ -46,16 +55,16 @@ const Chat = () => {
   	<>
 		<div className='dashboard'>
 			<div className="navigation">
-				<Navigation currentUser={user} onAddButtonClick={handleAddButtonClick} />
+				<Navigation currentUser={user} onAddButtonClick={handleAddButtonClick} socket={socket} />
         	</div>
 			<div className="chatMenu">
-				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} />
+				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} socket={socket}/>
 			</div>
 			<div className="contentContainer">
           		{showAddComponent ? (
-            		<AddComponent currentUser={user} onUserSelect={handleUserSelect}/>
+            		<AddComponent currentUser={user} onUserSelect={handleUserSelect} socket={socket}/>
           			) : (
-            		<ChatBox currentUser={user} currentChat={currentChat} />
+            		<ChatBox currentUser={user} currentChat={currentChat} socket={socket}/>
          		)}
         </div>
 		</div>
@@ -63,4 +72,4 @@ const Chat = () => {
   )
 }
 
-export default Chat;
+export default Dashboard;

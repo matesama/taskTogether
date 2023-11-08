@@ -1,13 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { io } from 'socket.io-client';
 
-const AddComponent = ({ currentUser, onUserSelect }) => {
+const AddComponent = ({ currentUser, onUserSelect, socket }) => {
   const [contacts, setContacts] = useState([]);
-  const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8100");
 
     socket.current.on('newConversation', () => {
       getContacts();
