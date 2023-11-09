@@ -53,3 +53,10 @@
 	align-items: center;
 	margin-bottom: 10px;
   }
+  .addButton:disabled {
+	background-color: grey;
+	cursor: not-allowed;
+  }
+  .addButton:disabled:hover {
+	background-color: grey;
+  }
