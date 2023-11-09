@@ -15,9 +15,12 @@ const ChatMenu = ({ currentUser, setCurrentChat, conversations}) => {
 		const filterConversations = async () => {
 		  const filtered = await Promise.all(
 			conversations.map(async (c) => {
-			  const contactId = c.members.find((m) => m !== currentUser._id);
-			  const username = await getUsername(contactId);
-			  return (username && username.toLowerCase().includes(searchInput.toLowerCase()));
+				const contactId = c.members.find((m) => m !== currentUser._id);
+				if (!contactId) {
+				  return false;
+				}
+				const username = await getUsername(contactId);
+				return (username && username.toLowerCase().includes(searchInput.toLowerCase()));
 			})
 		  );
 		  setFilteredConversations(conversations.filter((_, index) => filtered[index]));

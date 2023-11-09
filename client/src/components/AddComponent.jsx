@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
-
-const AddComponent = ({ onUserSelect, contacts }) => {
+const AddComponent = ({ handleAddUser, contacts, handleGroup }) => {
 
 
   return (
     <div className="add-component">
       <h2>Add Component</h2>
+      <button className="addButton" onClick={handleGroup}>Create Group</button>
       <ul>
         {contacts.map((contact) => (
           <li key={contact._id}>
@@ -17,7 +15,7 @@ const AddComponent = ({ onUserSelect, contacts }) => {
               alt="User Profile"
             />
             <span className="userName">{contact.username}</span>
-            <button className="addButton" onClick={() => onUserSelect(contact)}>Add</button>
+            <button className="addButton" onClick={() => handleAddUser(contact)}>Add</button>
           </li>
         ))}
       </ul>

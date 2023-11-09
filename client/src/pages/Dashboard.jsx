@@ -7,12 +7,15 @@ import { useContext, useState, useRef, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 import {io} from "socket.io-client"
+import GroupComponent from '../components/GroupComponent';
 
 
 const Dashboard = () => {
 	const [currentChat, setCurrentChat] = useState(null);
 	const [showAddComponent, setShowAddComponent] = useState(false);
+	const [showGroupComponent, setshowGroupComponent] = useState(false);
 	const [conversations, setConversations] = useState([]);
+	const [allUsers, setAllUsers] = useState([]);
 	const [contacts, setContacts] = useState([]);
 	const {user} = useContext(AuthContext);
 	const socket = useRef();
@@ -71,12 +74,27 @@ const Dashboard = () => {
 
 /////////////// AddComponent ////////////////////////////////////////////////
 
+	useEffect(() => {
+		const fetchUsers = async () => {
+		  try {
+			const userResponse = await axios.get('http://localhost:8000/api/users/all');
+			setAllUsers(userResponse.data);
+		  } catch (error) {
+			console.error('Failed to fetch users:', error);
+		  }
+		};
+
+		fetchUsers();
+	  }, []);
+
+
   const getContacts = async () => {
     try {
       const conversationResponse = await axios.get(`http://localhost:8000/api/conversations/${user._id}`);
       const conversations = conversationResponse.data;
 
-      const participantIds = conversations.reduce((ids, conversation) => {
+	  const filteredConversations = conversations.filter(conversation => !conversation.groupName);
+      const participantIds = filteredConversations.reduce((ids, conversation) => {
         return [...ids, ...conversation.members];
       }, []);
 
@@ -110,21 +128,34 @@ const Dashboard = () => {
 
 	const handleAddButtonClick = () => {
 		setShowAddComponent(true);
+		setshowGroupComponent(false);
 		setCurrentChat(null);
 	  };
 
 	const handleChatClick = (chat) => {
 		setShowAddComponent(false);
+		setshowGroupComponent(false);
 		setCurrentChat(chat);
 	};
 
-	const handleUserSelect = async (selectedUser) => {
+	const handleGroupButtonClick = () => {
+		setshowGroupComponent(true);
+		setCurrentChat(null);
+	};
+
+	const handleGroupCreated = () => {
+		setshowGroupComponent(false);
+		setShowAddComponent(false);
+		setCurrentChat(null);
+	};
+
+	const handleAddUser = async (selectedUser) => {
 		try {
 		  const conversationResponse = await axios.post('http://localhost:8000/api/conversations', {
-			senderId: user._id,
-			receiverId: selectedUser._id,
+			members: [user._id, selectedUser._id],
+      		groupName: '',
+      		groupPicture: '',
 		  });
-
 		  socket.current.emit('newConversation');
 		} catch (error) {
 		  console.error('Error adding contact:', error);
@@ -141,9 +172,11 @@ const Dashboard = () => {
 				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} conversations={conversations}/>
 			</div>
 			<div className="contentContainer">
-          		{showAddComponent ? (
-            		<AddComponent onUserSelect={handleUserSelect} contacts={contacts}/>
-          			) : (
+				{showGroupComponent ? (
+					<GroupComponent allUsers={allUsers} currentUser={user} socket={socket} onGroupCreated={handleGroupCreated} />
+          		) : showAddComponent ? (
+            		<AddComponent handleAddUser={handleAddUser} contacts={contacts} handleGroup={handleGroupButtonClick}/>
+          		) : (
             		<ChatBox currentUser={user} currentChat={currentChat} socket={socket}/>
          		)}
         </div>
