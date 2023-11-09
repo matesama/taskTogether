@@ -44,5 +44,16 @@ conversationRouter.get("/:userId", async (req, res) => {
 	}
 })
 
+// get all conversations
+
+conversationRouter.get("/all", async (req, res) => {
+	try {
+	  const conversations = Conversation.find();
+
+	  res.status(200).json(conversations);
+	} catch (err) {
+	  res.status(500).json(err);
+	}
+  });
 
 export default conversationRouter;

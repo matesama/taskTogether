@@ -14,7 +14,7 @@ const GroupComponent = ({ allUsers, currentUser, socket, onGroupCreated }) => {
 
   	const handleSubmit = async () => {
   	  if (groupName === '') {
-		alert('Both inputs must be filled out');
+		alert('Groupname input must be filled out');
 		return;
 	  }
 	  try {

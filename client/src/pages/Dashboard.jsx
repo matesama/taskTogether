@@ -15,6 +15,7 @@ const Dashboard = () => {
 	const [showAddComponent, setShowAddComponent] = useState(false);
 	const [showGroupComponent, setshowGroupComponent] = useState(false);
 	const [conversations, setConversations] = useState([]);
+	const [allConversations, setAllConversations] = useState([]);
 	const [allUsers, setAllUsers] = useState([]);
 	const [contacts, setContacts] = useState([]);
 	const {user} = useContext(AuthContext);
@@ -67,6 +68,7 @@ const Dashboard = () => {
 	};
 	  }, [getConversations]);
 
+
   useEffect(() => {
 	getConversations();
   }, [user._id]);
@@ -86,6 +88,20 @@ const Dashboard = () => {
 
 		fetchUsers();
 	  }, []);
+
+	// useEffect(() => {
+	// 	const fetchAllConversations = async () => {
+	// 	  try {
+	// 		const userResponse = await axios.get('http://localhost:8000/api/conversations/all');
+	// 		console.log('all Conversations', userResponse.data);
+	// 		setAllConversations(userResponse.data);
+	// 	  } catch (error) {
+	// 		console.error('Failed to fetch  conversations:', error);
+	// 	  }
+	// 	};
+
+	// 	fetchAllConversations();
+	// }, []);
 
 
   const getContacts = async () => {
@@ -175,9 +191,9 @@ const Dashboard = () => {
 				{showGroupComponent ? (
 					<GroupComponent allUsers={allUsers} currentUser={user} socket={socket} onGroupCreated={handleGroupCreated} />
           		) : showAddComponent ? (
-            		<AddComponent handleAddUser={handleAddUser} contacts={contacts} handleGroup={handleGroupButtonClick}/>
+            		<AddComponent handleAddUser={handleAddUser} contacts={contacts} handleGroup={handleGroupButtonClick} currentUser={user}/>
           		) : (
-            		<ChatBox currentUser={user} currentChat={currentChat} socket={socket}/>
+            		<ChatBox currentUser={user} currentChat={currentChat} socket={socket} allUsers={allUsers}/>
          		)}
         </div>
 		</div>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import "./chatBox.css"
 
 
-const ChatBox = ({ currentUser, currentChat , socket}) => {
+const ChatBox = ({ currentUser, currentChat , socket, allUsers}) => {
 	const [newMessage, setNewMessage] = useState("");
 	const [messages, setMessages] = useState([]);
 	const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -106,16 +106,26 @@ const ChatBox = ({ currentUser, currentChat , socket}) => {
 			{currentChat ? (
 			  <>
 			  	<div className="header">
-				  <img
-					className="headerImg"
-					src={
-					currentChat.groupName
-     				 ? (currentChat.groupPicture ? currentChat.groupPicture : "https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png")
-     				 : (receiver?.profilePicture ? receiver.profilePicture : "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg")
-					}
-					alt=""
-					/>
-					<span className="headerName">{currentChat.groupName ? currentChat.groupName : receiver?.username}</span>
+  					<div className="headerTop">
+  					  <img
+  					    className="headerImg"
+  					    src={
+  					      currentChat.groupName
+  					        ? (currentChat.groupPicture ? currentChat.groupPicture : "https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png")
+  					        : (receiver?.profilePicture ? receiver.profilePicture : "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg")
+  					    }
+  					    alt=""
+  					  />
+  					  <span className="headerName">{currentChat.groupName ? currentChat.groupName : receiver?.username}</span>
+  					</div>
+  					{currentChat.groupName &&
+  					  <span className="chatInfo">
+  					    {currentChat.members.map(memberId => {
+  					      const user = allUsers.find(user => user._id === memberId);
+  					      return user ? user.username : '';
+  					    }).join(', ')}
+  					  </span>
+  					}
 				</div>
 				<div className="chatBoxTop">
 				  {messages.map((m) => (
