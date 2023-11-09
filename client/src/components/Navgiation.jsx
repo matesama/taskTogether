@@ -21,7 +21,7 @@ const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
     <div className="navigation bg-slate-800 flex items-center">
       <div className="userProfile flex">
         <img
-          className="userProfilePicture self-center"
+          className="userProfilePicture self-center sm:m-2"
           src={currentUser.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
           alt="User Profile"
         />

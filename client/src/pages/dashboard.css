@@ -1,5 +1,6 @@
 .dashboard{
 	height: calc(100vh);
+	
 	display: flex;
 }
 
@@ -9,13 +10,13 @@
 
 .chatMenuInput{
 	width: 90%;
-	padding: 10px 0;
+	padding:10px 0;
 	border: none;
 	border-bottom: 1px solid grey;
 }
 
 .contentContainer{
-	flex: 5.5;
+	/*flex: 5.5;*/
 }
 
 .chatBoxWrapper{

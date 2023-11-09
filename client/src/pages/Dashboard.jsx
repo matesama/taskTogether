@@ -54,13 +54,13 @@ const Dashboard = () => {
   return (
   	<>
 		<div className='dashboard'>
-			<div className="navigation bg-slate-800">
+			<div className="navigation bg-slate-800 max-sm:invisible sm:w-24 max-sm:w-0">
 				<Navigation currentUser={user} onAddButtonClick={handleAddButtonClick} socket={socket} />
         	</div>
-			<div className="chatMenu bg-slate-500 text-slate-950">
-				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} socket={socket}/>
+			<div className="chatMenu bg-slate-500 text-slate-950 max-sm:w-full">
+				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} socket={socket} onAddButtonClick={handleAddButtonClick}/>
 			</div>
-			<div className="contentContainer bg-slate-300">
+			<div className="contentContainer bg-slate-300 max-sm:w-0 max-sm:invisible sm:flex-5.5">
           		{showAddComponent ? (
             		<AddComponent currentUser={user} onUserSelect={handleUserSelect} socket={socket}/>
           			) : (
