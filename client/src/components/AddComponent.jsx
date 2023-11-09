@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const AddComponent = ({ onUserSelect, contacts }) => {
+const AddComponent = ({ handleAddUser, contacts }) => {
 
 
   return (
@@ -17,7 +17,7 @@ const AddComponent = ({ onUserSelect, contacts }) => {
               alt="User Profile"
             />
             <span className="userName">{contact.username}</span>
-            <button className="addButton" onClick={() => onUserSelect(contact)}>Add</button>
+            <button className="addButton" onClick={() => handleAddUser(contact)}>Add</button>
           </li>
         ))}
       </ul>

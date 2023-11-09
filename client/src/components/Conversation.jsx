@@ -26,13 +26,17 @@ const Conversation = ({conversation, currentUser}) => {
 		<img
 			className="conversationImg"
 			src={
-				user?.profilePicture
-            	? user.profilePicture
-            	: "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg"
+				conversation.groupName
+     			 ? (conversation.groupPicture ? conversation.groupPicture : "https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png")
+     			 : (user?.profilePicture ? user.profilePicture : "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg")
+				// user?.profilePicture
+            	// ? user.profilePicture
+            	// : "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg"
 			}
 			alt=""
 		/>
-		<span className="conversationName">{user?.username}</span>
+		{/* <span className="conversationName">{user?.username}</span> */}
+		<span className="conversationName">{conversation.groupName ? conversation.groupName : user?.username}</span>
 	</div>
   )
 }

@@ -118,7 +118,7 @@ const Dashboard = () => {
 		setCurrentChat(chat);
 	};
 
-	const handleUserSelect = async (selectedUser) => {
+	const handleAddUser = async (selectedUser) => {
 		try {
 		  const conversationResponse = await axios.post('http://localhost:8000/api/conversations', {
 			senderId: user._id,
@@ -142,7 +142,7 @@ const Dashboard = () => {
 			</div>
 			<div className="contentContainer">
           		{showAddComponent ? (
-            		<AddComponent onUserSelect={handleUserSelect} contacts={contacts}/>
+            		<AddComponent handleAddUser={handleAddUser} contacts={contacts}/>
           			) : (
             		<ChatBox currentUser={user} currentChat={currentChat} socket={socket}/>
          		)}
