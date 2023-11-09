@@ -6,15 +6,29 @@ const conversationRouter = express.Router();
 
 conversationRouter.post("/", async (req, res) => {
 	const newConversation = new Conversation({
-		members:[req.body.senderId, req.body.receiverId]
+	  members: req.body.members,
+	  groupName: req.body.groupName,
+	  groupPicture: req.body.groupPicture
 	})
 	try {
-		const savedConversation = await newConversation.save();
-		res.status(200).json(savedConversation);
-	}catch(err){
-		res.status(500).json(err);
+	  const savedConversation = await newConversation.save();
+	  res.status(200).json(savedConversation);
+	} catch(err) {
+	  res.status(500).json(err);
 	}
-})
+});
+
+// conversationRouter.post("/", async (req, res) => {
+// 	const newConversation = new Conversation({
+// 		members:[req.body.senderId, req.body.receiverId]
+// 	})
+// 	try {
+// 		const savedConversation = await newConversation.save();
+// 		res.status(200).json(savedConversation);
+// 	}catch(err){
+// 		res.status(500).json(err);
+// 	}
+// })
 
 //get conv of a user
 

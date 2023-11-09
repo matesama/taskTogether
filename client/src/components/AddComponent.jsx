@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
-
-const AddComponent = ({ handleAddUser, contacts }) => {
+const AddComponent = ({ handleAddUser, contacts, handleGroup }) => {
 
 
   return (
     <div className="add-component">
       <h2>Add Component</h2>
+      <button className="addButton" onClick={handleGroup}>Create Group</button>
       <ul>
         {contacts.map((contact) => (
           <li key={contact._id}>
