@@ -13,6 +13,10 @@ const GroupComponent = ({ allUsers, currentUser, socket, onGroupCreated }) => {
 
 
   	const handleSubmit = async () => {
+	if (selectedUsers.length < 1) {
+		alert('Please select at least 1 user.');
+		return;
+	  }
   	  if (groupName === '') {
 		alert('Groupname input must be filled out');
 		return;
@@ -88,8 +92,7 @@ const GroupComponent = ({ allUsers, currentUser, socket, onGroupCreated }) => {
         	      alt="User Profile"
         	    />
         	    <span className="userName">{user.username}</span>
-				<button className="addButton" onClick={() => handleAddUser(user)}>Add</button>
-
+				<button className="addButton" onClick={() => handleAddUser(user)} disabled={selectedUsers.length > 2}>Add</button>
         	  </li>
         	))}
       	</ul>
