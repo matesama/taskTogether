@@ -1,14 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
 import "./GroupComponent.css";
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
 
-const GroupComponent = ({ allUsers, currentUser, socket, onGroupCreated }) => {
+const GroupComponent = ({ allUsers, socket, onGroupCreated }) => {
 
 	const [groupName, setGroupName] = useState('');
   	const [groupPicture, setGroupPicture] = useState('');
-	const [selectedUsers, setSelectedUsers] = useState([]);
-	const [otherUsers, setOtherUsers] = useState([]);
+	const [selectedUsers, setSelectedUser] = useState([]);
+	const [availableUsers, setAvailableUser] = useState([]);
+	const {user} = useContext(AuthContext);
 
 
 
@@ -22,7 +23,7 @@ const GroupComponent = ({ allUsers, currentUser, socket, onGroupCreated }) => {
 		return;
 	  }
 	  try {
-		const membersIds = [...selectedUsers.map(user => user._id), currentUser._id];
+		const membersIds = [...selectedUsers.map(selectedUser => selectedUser._id), user._id];
 		const conversationResponse = await axios.post('http://localhost:8000/api/conversations', {
 			members: membersIds,
 			groupName: groupName,
@@ -39,18 +40,18 @@ const GroupComponent = ({ allUsers, currentUser, socket, onGroupCreated }) => {
   	  console.log('Group picture:', groupPicture);
   	};
 
-	const handleAddUser = (user) => {
-		setSelectedUsers([...selectedUsers, user]);
+	const handleAddUser = (selectedUser) => {
+		setSelectedUser([...selectedUsers, selectedUser]);
 	};
 
 	const handleRemoveUser = (userToRemove) => {
-		setSelectedUsers(selectedUsers.filter(user => user._id !== userToRemove._id));
+		setSelectedUser(selectedUsers.filter(selecteduser => selecteduser._id !== userToRemove._id));
 	};
 
 
 	useEffect(() => {
-		setOtherUsers(allUsers.filter(user => user._id !== currentUser._id && !selectedUsers.includes(user)));
-	}, [allUsers, currentUser, selectedUsers]);
+		setAvailableUser(allUsers.filter(availableUser => availableUser._id !== user._id && !selectedUsers.includes(availableUser)));
+	}, [allUsers, user, selectedUsers]);
 
 
   	return (
@@ -82,17 +83,17 @@ const GroupComponent = ({ allUsers, currentUser, socket, onGroupCreated }) => {
       		  </ul>
       		</>
     	)}
-    	<h3>Other Users</h3>
+    	<h3>Available Users</h3>
 		<ul>
-        	{otherUsers.map((user) => (
-        	  <li key={user._id}>
+        	{availableUsers.map((availableUser) => (
+        	  <li key={availableUser._id}>
         	    <img
         	      className="userProfilePicture"
-        	      src={user.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
+        	      src={availableUser.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
         	      alt="User Profile"
         	    />
-        	    <span className="userName">{user.username}</span>
-				<button className="addButton" onClick={() => handleAddUser(user)} disabled={selectedUsers.length > 2}>Add</button>
+        	    <span className="userName">{availableUser.username}</span>
+				<button className="addButton" onClick={() => handleAddUser(availableUser)} disabled={selectedUsers.length > 2}>Add</button>
         	  </li>
         	))}
       	</ul>

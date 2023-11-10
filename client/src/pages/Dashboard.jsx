@@ -194,14 +194,17 @@ const Dashboard = () => {
   	<>
 		<div className='dashboard'>
 			<div className="navigation">
-				<Navigation currentUser={user} onAddButtonClick={handleAddButtonClick} socket={socket} />
+				<Navigation onAddButtonClick={handleAddButtonClick} socket={socket} />
         	</div>
 			<div className="chatMenu">
-				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} conversations={conversations}/>
+				<ChatMenu setCurrentChat={handleChatClick} conversations={conversations}/>
 			</div>
 			<div className="contentContainer">
 				{showGroupComponent ? (
-					<GroupComponent allUsers={allUsers} currentUser={user} socket={socket} onGroupCreated={handleGroupCreated} />
+					<GroupComponent
+						allUsers={allUsers}
+						socket={socket}
+						onGroupCreated={handleGroupCreated} />
           		) : showAddComponent ? (
             		<AddComponent
 						handleAddUser={handleAddUser}
@@ -210,7 +213,10 @@ const Dashboard = () => {
 						handleGroup={handleGroupButtonClick}
 						allOpenGroupConversations={allOpenGroupConversations}/>
           		) : (
-            		<ChatBox currentUser={user} currentChat={currentChat} socket={socket} allUsers={allUsers}/>
+            		<ChatBox
+					currentChat={currentChat}
+					socket={socket}
+					allUsers={allUsers}/>
          		)}
         </div>
 		</div>
