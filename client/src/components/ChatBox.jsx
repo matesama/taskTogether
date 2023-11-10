@@ -123,7 +123,9 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
   					</div>
   					{currentChat.groupName &&
   					  <span className="chatInfo">
-  					    {currentChat.members.map(memberId => {
+  					    {currentChat.members
+						  .filter(memberId => memberId !== user._id)
+						  .map(memberId => {
   					      const member = allUsers.find(member => member._id === memberId);
   					      return member ? member.username : '';
   					    }).join(', ')}
