@@ -20,6 +20,7 @@ function App() {
         <Route path="/" element={user ? <Dashboard /> : <Login />} />
         <Route path="/login" element={user ? <Navigate to="/" /> : <Login />} />
         <Route path="/register" element={user ? <Navigate to="/" /> : <Register />} />
+        {/* <Route path="/chat" element={user ? <Chat /> : <Navigate to="/login" />} />  */}
       </Routes>
     </div>
     </>

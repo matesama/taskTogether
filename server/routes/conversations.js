@@ -2,6 +2,39 @@ import express from 'express';
 import Conversation from "../models/Conversation.js";
 const conversationRouter = express.Router();
 
+
+// get all group conversations
+
+conversationRouter.get("/allGroups", async (req, res) => {
+	try {
+	  const conversations = await Conversation.find({ groupName: { $ne: "" } });
+	  const sanitizedConversation = conversations.map((conversation) => {
+		const {...other } = conversation._doc;
+		return other;
+	  });
+	  res.status(200).json(sanitizedConversation);
+	} catch (err) {
+	  console.error(err);
+	  res.status(500).json(err);
+	}
+  });
+
+
+  //get conv of a user
+
+conversationRouter.get("/:userId", async (req, res) => {
+	try {
+		const conversation = await Conversation.find({
+			members: {$in: [req.params.userId]}
+		}
+		);
+		res.status(200).json(conversation);
+	}catch(err){
+		res.status(500).json(err);
+	}
+})
+
+
 //new conv
 
 conversationRouter.post("/", async (req, res) => {
@@ -18,40 +51,29 @@ conversationRouter.post("/", async (req, res) => {
 	}
 });
 
-// conversationRouter.post("/", async (req, res) => {
-// 	const newConversation = new Conversation({
-// 		members:[req.body.senderId, req.body.receiverId]
-// 	})
-// 	try {
-// 		const savedConversation = await newConversation.save();
-// 		res.status(200).json(savedConversation);
-// 	}catch(err){
-// 		res.status(500).json(err);
-// 	}
-// })
 
-//get conv of a user
+// join conversation
 
-conversationRouter.get("/:userId", async (req, res) => {
+conversationRouter.post("/join/:conversationId", async (req, res) => {
+	const { userId } = req.body;
+	const { conversationId } = req.params;
+
 	try {
-		const conversation = await Conversation.find({
-			members: {$in: [req.params.userId]}
-		}
-		);
-		res.status(200).json(conversation);
-	}catch(err){
-		res.status(500).json(err);
-	}
-})
+	  const conversation = await Conversation.findById(conversationId);
+	  if (!conversation) {
+		return res.status(404).json({ message: 'Conversation not found' });
+	  }
 
-// get all conversations
+	  if (conversation.members.includes(userId)) {
+		return res.status(400).json({ message: 'User already in the conversation' });
+	  }
 
-conversationRouter.get("/all", async (req, res) => {
-	try {
-	  const conversations = Conversation.find();
+	  conversation.members.push(userId);
+	  const updatedConversation = await conversation.save();
 
-	  res.status(200).json(conversations);
+	  res.status(200).json(updatedConversation);
 	} catch (err) {
+	  console.error(err);
 	  res.status(500).json(err);
 	}
   });

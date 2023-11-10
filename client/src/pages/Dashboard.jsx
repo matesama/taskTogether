@@ -15,7 +15,7 @@ const Dashboard = () => {
 	const [showAddComponent, setShowAddComponent] = useState(false);
 	const [showGroupComponent, setshowGroupComponent] = useState(false);
 	const [conversations, setConversations] = useState([]);
-	const [allConversations, setAllConversations] = useState([]);
+	const [allOpenGroupConversations, setAllOpenGroupConversations] = useState([]);
 	const [allUsers, setAllUsers] = useState([]);
 	const [contacts, setContacts] = useState([]);
 	const {user} = useContext(AuthContext);
@@ -76,32 +76,34 @@ const Dashboard = () => {
 
 /////////////// AddComponent ////////////////////////////////////////////////
 
+	const getAllUsers = async () => {
+	  try {
+		const userResponse = await axios.get('http://localhost:8000/api/users/all');
+		setAllUsers(userResponse.data);
+	  } catch (error) {
+		console.error('Failed to fetch users:', error);
+	  }
+	};
+
 	useEffect(() => {
-		const fetchUsers = async () => {
+		getAllUsers();
+	}, []);
+
+
+	useEffect(() => {
+		const getAllOpenGroupConversations = async () => {
 		  try {
-			const userResponse = await axios.get('http://localhost:8000/api/users/all');
-			setAllUsers(userResponse.data);
+			const userResponse = await axios.get('http://localhost:8000/api/conversations/allGroups');
+			const filteredData = userResponse.data.filter(conversation => !conversation.members.includes(user._id));
+			// console.log('allGroupConversationsResponse', filteredData);
+			setAllOpenGroupConversations(filteredData);
 		  } catch (error) {
-			console.error('Failed to fetch users:', error);
+			console.error('Failed to fetch  conversations:', error);
 		  }
 		};
 
-		fetchUsers();
-	  }, []);
-
-	// useEffect(() => {
-	// 	const fetchAllConversations = async () => {
-	// 	  try {
-	// 		const userResponse = await axios.get('http://localhost:8000/api/conversations/all');
-	// 		console.log('all Conversations', userResponse.data);
-	// 		setAllConversations(userResponse.data);
-	// 	  } catch (error) {
-	// 		console.error('Failed to fetch  conversations:', error);
-	// 	  }
-	// 	};
-
-	// 	fetchAllConversations();
-	// }, []);
+		getAllOpenGroupConversations();
+	}, []);
 
 
   const getContacts = async () => {
@@ -178,22 +180,43 @@ const Dashboard = () => {
 		}
 	  };
 
+	  const handleJoinGroup = async (groupId) => {
+		try {
+		  const response = await axios.post(`http://localhost:8000/api/conversations/join/${groupId}`, { userId: user._id });
+		  setAllOpenGroupConversations(prevConversations => prevConversations.filter(conversation => conversation._id !== groupId));
+		  getConversations();
+		} catch (error) {
+		  console.error('Failed to join group:', error);
+		}
+	  };
+
   return (
   	<>
 		<div className='dashboard'>
 			<div className="navigation">
-				<Navigation currentUser={user} onAddButtonClick={handleAddButtonClick} socket={socket} />
+				<Navigation onAddButtonClick={handleAddButtonClick} socket={socket} />
         	</div>
 			<div className="chatMenu">
-				<ChatMenu currentUser={user} setCurrentChat={handleChatClick} conversations={conversations}/>
+				<ChatMenu setCurrentChat={handleChatClick} conversations={conversations}/>
 			</div>
 			<div className="contentContainer">
 				{showGroupComponent ? (
-					<GroupComponent allUsers={allUsers} currentUser={user} socket={socket} onGroupCreated={handleGroupCreated} />
+					<GroupComponent
+						allUsers={allUsers}
+						socket={socket}
+						onGroupCreated={handleGroupCreated} />
           		) : showAddComponent ? (
-            		<AddComponent handleAddUser={handleAddUser} contacts={contacts} handleGroup={handleGroupButtonClick} currentUser={user}/>
+            		<AddComponent
+						handleAddUser={handleAddUser}
+						handleJoinGroup={handleJoinGroup}
+						contacts={contacts}
+						handleGroup={handleGroupButtonClick}
+						allOpenGroupConversations={allOpenGroupConversations}/>
           		) : (
-            		<ChatBox currentUser={user} currentChat={currentChat} socket={socket} allUsers={allUsers}/>
+            		<ChatBox
+					currentChat={currentChat}
+					socket={socket}
+					allUsers={allUsers}/>
          		)}
         </div>
 		</div>

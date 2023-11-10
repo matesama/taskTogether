@@ -60,6 +60,14 @@ io.on('connection', (socket) => {
 		console.log('a user disconnected');
 		removeUser(socket.id);
 		io.emit("getUsers", users);
+		// socket.disconnect();
+	  });
+
+	socket.on("logout", () => {
+		console.log('a user logged out');
+		removeUser(socket.id);
+		io.emit("getUsers", users);
+		console.log('still logged in: ', users);
 		socket.disconnect();
 	  });
 });

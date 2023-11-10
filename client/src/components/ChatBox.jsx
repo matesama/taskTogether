@@ -1,15 +1,18 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import Message from './Message';
 import axios from 'axios';
 import "./chatBox.css"
 
 
-const ChatBox = ({ currentUser, currentChat , socket, allUsers}) => {
+const ChatBox = ({ currentChat , socket, allUsers}) => {
 	const [newMessage, setNewMessage] = useState("");
 	const [messages, setMessages] = useState([]);
 	const [arrivalMessage, setArrivalMessage] = useState(null);
 	const [receiver, setReceiver] = useState(null)
   	const scrollRef = useRef();
+	const {user} = useContext(AuthContext);
+
 
 
 	useEffect(() => {
@@ -55,7 +58,7 @@ const ChatBox = ({ currentUser, currentChat , socket, allUsers}) => {
 
 	useEffect(() => {
 		if (currentChat) {
-		  const receiverId = currentChat.members.find(member => member !== currentUser._id);
+		  const receiverId = currentChat.members.find(member => member !== user._id);
 		  const fetchReceiverData = async () => {
 			try {
 			  const res = await axios.get(`http://localhost:8000/api/users?userId=${receiverId}`);
@@ -66,24 +69,24 @@ const ChatBox = ({ currentUser, currentChat , socket, allUsers}) => {
 		  }
 		  fetchReceiverData();
 		}
-	  }, [currentChat, currentUser]);
+	  }, [currentChat, user]);
 
 /////////////// HANDLE_SUBMIT ////////////////////////////////////////////////
 
 	const handleSubmit = async (e) =>{
 		e.preventDefault();
 		const message = {
-			sender: currentUser._id,
+			sender: user._id,
 			text: newMessage,
 			conversationId: currentChat._id,
 		};
 
-		const receiverIds = currentChat.members.filter(member => member !== currentUser._id);
+		const receiverIds = currentChat.members.filter(member => member !== user._id);
 
 		if (socket.current) {
 			receiverIds.forEach(receiverId => {
 				socket.current.emit("sendMessage", {
-					senderId: currentUser._id,
+					senderId: user._id,
 					receiverId,
 					text: newMessage,
 				});
@@ -120,17 +123,19 @@ const ChatBox = ({ currentUser, currentChat , socket, allUsers}) => {
   					</div>
   					{currentChat.groupName &&
   					  <span className="chatInfo">
-  					    {currentChat.members.map(memberId => {
-  					      const user = allUsers.find(user => user._id === memberId);
-  					      return user ? user.username : '';
+  					    {currentChat.members
+						  .filter(memberId => memberId !== user._id)
+						  .map(memberId => {
+  					      const member = allUsers.find(member => member._id === memberId);
+  					      return member ? member.username : '';
   					    }).join(', ')}
   					  </span>
   					}
 				</div>
-				<div className="chatBoxTop">
+				<div className="chatBoxTop" key={user._id}>
 				  {messages.map((m) => (
 					<div key={m._id} ref={scrollRef}>
-					  <Message message={m} own={m.sender === currentUser._id} />
+					  <Message message={m} own={m.sender === user._id} />
 					</div>
 				  ))}
 				</div>

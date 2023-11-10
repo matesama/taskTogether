@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Conversation from './Conversation';
+import React, { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 
-const ChatMenu = ({ currentUser, setCurrentChat, conversations}) => {
+
+const ChatMenu = ({ setCurrentChat, conversations}) => {
 
 	const [searchInput, setSearchInput] = useState("");
 	const [filteredConversations, setFilteredConversations] = useState([]);
+	const {user} = useContext(AuthContext);
 
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
@@ -15,7 +18,7 @@ const ChatMenu = ({ currentUser, setCurrentChat, conversations}) => {
 		const filterConversations = async () => {
 		  const filtered = await Promise.all(
 			conversations.map(async (c) => {
-				const contactId = c.members.find((m) => m !== currentUser._id);
+				const contactId = c.members.find((m) => m !== user._id);
 				if (!contactId) {
 				  return false;
 				}
@@ -27,7 +30,7 @@ const ChatMenu = ({ currentUser, setCurrentChat, conversations}) => {
 		};
 
 		filterConversations();
-	  }, [searchInput, conversations, currentUser]);
+	  }, [searchInput, conversations, user]);
 
 	  const getUsername = async (contactId) => {
 		try {
@@ -50,7 +53,7 @@ const ChatMenu = ({ currentUser, setCurrentChat, conversations}) => {
 			/>
 			{filteredConversations.map((c) => (
 			  <div key={c._id} onClick={() => setCurrentChat(c)}>
-				<Conversation conversation={c} currentUser={currentUser} />
+				<Conversation conversation={c} currentUer={user} />
 			  </div>
 			))}
 		  </div>
