@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -6,8 +7,12 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'hero': `url("./src/components/home/img/hero.png")`
+    },
   },
   plugins: [],
+}
 }
 
