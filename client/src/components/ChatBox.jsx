@@ -127,7 +127,7 @@ const ChatBox = ({ currentUser, currentChat , socket, allUsers}) => {
   					  </span>
   					}
 				</div>
-				<div className="chatBoxTop">
+				<div className="chatBoxTop" key={currentUser._id}>
 				  {messages.map((m) => (
 					<div key={m._id} ref={scrollRef}>
 					  <Message message={m} own={m.sender === currentUser._id} />

@@ -85,17 +85,17 @@ const Dashboard = () => {
 	  }
 	};
 
-
 	useEffect(() => {
 		getAllUsers();
 	}, []);
+
 
 	useEffect(() => {
 		const getAllOpenGroupConversations = async () => {
 		  try {
 			const userResponse = await axios.get('http://localhost:8000/api/conversations/allGroups');
 			const filteredData = userResponse.data.filter(conversation => !conversation.members.includes(user._id));
-			console.log('allGroupConversationsResponse', filteredData);
+			// console.log('allGroupConversationsResponse', filteredData);
 			setAllOpenGroupConversations(filteredData);
 		  } catch (error) {
 			console.error('Failed to fetch  conversations:', error);

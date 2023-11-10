@@ -6,10 +6,11 @@ const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
 
   const { dispatch } = useContext(AuthContext);
 
+
   const handleLogout = () => {
     dispatch(Logout());
     if (socket.current) {
-      socket.current.emit("disconnect");
+      socket.current.emit("logout");
     };
   };
 
