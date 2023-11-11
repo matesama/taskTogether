@@ -25,7 +25,7 @@ const Conversation = ({ conversation }) => {
 
 
   return (
-	<div className="conversation">
+	<div className="conversation max-sm:w-full">
 		<img
 			className="conversationImg"
 			src={

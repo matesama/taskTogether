@@ -141,20 +141,26 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 				</div>
 				<div className="chatBoxBottom">
 					  <textarea
-						className="chatMessageInput"
+						className="chatMessageInput rounded-2xl"
 						placeholder="write something..."
 						onChange={(e) => setNewMessage(e.target.value)}
 						value={newMessage}
 					  ></textarea>
-					<button className="chatSubmitButton" onClick={handleSubmit}>
+					<button className="chatSubmitButton bg-slate-950 text-slate-100 rounded-md mr-4" onClick={handleSubmit}>
 						Send
 					</button>
 				</div>
 			  </>
 				) : (
-					<span className="noConversationText">
-						Open a conversation to start a chat.
-					  </span>
+					<div className="flex flex-col h-full justify-center">
+						<span className="noConversationText text-slate-950 ">
+							Welcome to taskTogether
+					  	</span> 
+						<br/>
+					  	<span className="text-slate-950  text-3xl">
+						  Join a Group/Join a partner and start setting and achieving your goals  
+						</span>
+					</div>
 			)}
 			</div>
   	);

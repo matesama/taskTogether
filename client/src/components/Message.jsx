@@ -30,11 +30,11 @@ const Message = ({message, own}) => {
 					className="messageImg"
 					src={sender?.profilePicture ? sender.profilePicture : "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg"}
 					alt="" />
-				<p className="messageText">
+				<p className="messageText text-slate-950">
 					{message.text}
 				</p>
 			</div>
-			<div className="messageBottom">{format(message.createdAt)}</div>
+			<div className="messageBottom text-slate-900">{format(message.createdAt)}</div>
 		</div>
   	)
 }

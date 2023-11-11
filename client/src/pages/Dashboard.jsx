@@ -193,13 +193,13 @@ const Dashboard = () => {
   return (
   	<>
 		<div className='dashboard'>
-			<div className="navigation">
+			<div className="navigation bg-slate-800 max-sm:invisible sm:w-24 max-sm:w-0">
 				<Navigation onAddButtonClick={handleAddButtonClick} socket={socket} />
         	</div>
-			<div className="chatMenu">
+			<div className="chatMenu bg-slate-500 text-slate-950 max-sm:w-full">
 				<ChatMenu setCurrentChat={handleChatClick} conversations={conversations}/>
 			</div>
-			<div className="contentContainer">
+			<div className="contentContainer bg-slate-300 max-sm:w-0 max-sm:invisible sm:flex-5.5">
 				{showGroupComponent ? (
 					<GroupComponent
 						allUsers={allUsers}

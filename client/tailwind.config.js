@@ -6,7 +6,11 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      flex: {
+        '5.5': '5.5 5.5 0%'
+      }
+    },
   },
   plugins: [],
 }

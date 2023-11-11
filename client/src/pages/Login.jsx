@@ -41,7 +41,7 @@ const Login = () => {
             <form onSubmit={getData} className="bg-slate-800 w-6/12 max-lg:w-screen m-0 min-h-screen min-w-screen flex max-lg:flex-col justify-center items-center">
                 <h2 className=" lg:invisible lg:w-0 font-bold  text-2xl mb-4">taskTogether</h2>
                 <h4 className=" lg:invisible lg:w-0 font-bold text-2xl mb-12 w-8/12">Set Goals, Stay Accountable, Succeed Together</h4>
-                <div className="flex flex-col  m-0 items-center rounded-md border-slate-300 border-solid border-2 text-slate-300 p-10">
+                <div className="flex flex-col max-sm:w-10/12 max-md:w-8/12  m-0 items-center rounded-md border-slate-300 border-solid border-2 text-slate-300 p-10">
                     <h2 className="w-full font-bold mb-5 text-3xl">Sign In</h2>
                     <div className="flex flex-col w-full">
                         <label htmlFor="email" className="w-full text-sm text-start mb-0">Email</label>
