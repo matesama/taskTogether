@@ -52,13 +52,22 @@ io.on('connection', (socket) => {
 	// new conversation
     socket.on('newConversation', () => {
         io.emit('newConversation');
+		console.log('newConversation');
     })
 
 	// when disconnect
-	socket.on("logout", () => {
+	socket.on("disconnect", () => {
 		console.log('a user disconnected');
 		removeUser(socket.id);
 		io.emit("getUsers", users);
+		// socket.disconnect();
+	  });
+
+	socket.on("logout", () => {
+		console.log('a user logged out');
+		removeUser(socket.id);
+		io.emit("getUsers", users);
+		console.log('still logged in: ', users);
 		socket.disconnect();
 	  });
 });

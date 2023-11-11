@@ -8,41 +8,11 @@ import settingsButton from "../assets/settingsButton.svg"
 import logoutButton from "../assets/logoutButton.svg"
 
 
-export default function ChatMenu({ currentUser, setCurrentChat, socket, onAddButtonClick}) {
+const ChatMenu = ({ setCurrentChat, conversations}) => {
 
-	const [conversations, setConversations] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
 	const [filteredConversations, setFilteredConversations] = useState([]);
-
-
-	const getConversations = async () => {
-		try {
-			const res = await axios.get("http://localhost:8000/api/conversations/" + currentUser._id);
-			setConversations(res.data);
-		} catch (err){
-			console.log(err);
-		} finally {
-		  //loader
-		}
-	}
-/////////////// SOCKET ////////////////////////////////////////////////
-
-	useEffect(() => {
-
-		if (socket.current) {
-    		socket.current.on('newConversation', getConversations);
-		}
-
-    	return () => {
-			if (socket.current) {
-				socket.current.off('newConversation');
-			}
-    };
-  	}, [getConversations]);
-
-  	useEffect(() => {
-    	getConversations();
-  	}, [currentUser._id]);
+	const {user} = useContext(AuthContext);
 
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
@@ -51,16 +21,19 @@ export default function ChatMenu({ currentUser, setCurrentChat, socket, onAddBut
 		const filterConversations = async () => {
 		  const filtered = await Promise.all(
 			conversations.map(async (c) => {
-			  const contactId = c.members.find((m) => m !== currentUser._id);
-			  const username = await getUsername(contactId);
-			  return (username && username.toLowerCase().includes(searchInput.toLowerCase()));
+				const contactId = c.members.find((m) => m !== user._id);
+				if (!contactId) {
+				  return false;
+				}
+				const username = await getUsername(contactId);
+				return (username && username.toLowerCase().includes(searchInput.toLowerCase()));
 			})
 		  );
 		  setFilteredConversations(conversations.filter((_, index) => filtered[index]));
 		};
 
 		filterConversations();
-	  }, [searchInput, conversations, currentUser]);
+	  }, [searchInput, conversations, user]);
 
 	  const getUsername = async (contactId) => {
 		try {
@@ -103,7 +76,7 @@ export default function ChatMenu({ currentUser, setCurrentChat, socket, onAddBut
 			/>
 			{filteredConversations.map((c) => (
 			  <div key={c._id} onClick={() => setCurrentChat(c)}>
-				<Conversation conversation={c} currentUser={currentUser} />
+				<Conversation conversation={c} currentUer={user} />
 			  </div>
 			))}
 			
@@ -120,3 +93,5 @@ export default function ChatMenu({ currentUser, setCurrentChat, socket, onAddBut
 		</div>
 	  );
 	}
+
+export default ChatMenu;

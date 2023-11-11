@@ -6,9 +6,12 @@ import goalButton from "../assets/goalButton.svg";
 import settingsButton from "../assets/settingsButton.svg"
 import logoutButton from "../assets/logoutButton.svg"
 
-const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
+const Navigation = ({ onAddButtonClick, socket }) => {
 
   const { dispatch } = useContext(AuthContext);
+	const {user} = useContext(AuthContext);
+
+
 
   const handleLogout = () => {
     dispatch(Logout());
@@ -22,10 +25,10 @@ const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
       <div className="userProfile flex">
         <img
           className="userProfilePicture self-center sm:m-2"
-          src={currentUser.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
+          src={user.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
           alt="User Profile"
         />
-        <span className="userName text-slate-300">{currentUser.username}</span>
+        <span className="userName text-slate-300">{user.username}</span>
       </div>
       <div className="navButtons flex">
         <button className="navButton bg-slate-100 text-slate-950 w-12" onClick={onAddButtonClick}>

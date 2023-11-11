@@ -68,12 +68,12 @@
   }
 
   .add-component {
-	padding: 10px; /* Adjust padding as needed */
+	padding: 10px;
   }
 
   .add-component h2 {
-	font-size: 24px; /* Adjust font size as needed */
-	margin-bottom: 15px; /* Adjust margin as needed */
+	font-size: 24px;
+	margin-bottom: 15px;
   }
 
   .add-component ul {
@@ -84,18 +84,21 @@
   .add-component li {
 	display: flex;
 	align-items: center;
-	margin-bottom: 15px; /* Adjust margin as needed */
+	margin-bottom: 15px;
   }
 
-  .userProfilePicture {
-	width: 50px; /* Adjust width as needed */
-	height: 50px; /* Adjust height as needed */
+  .userProfilePicture,
+  .groupPicture {
+	width: 50px;
+	height: 50px;
 	border-radius: 50%;
-	margin-right: 10px; /* Adjust margin as needed */
+	margin-right: 10px;
+	object-fit: cover;
   }
 
-  .userName {
-	font-size: 18px; /* Adjust font size as needed */
+  .userName,
+  .groupName {
+	font-size: 18px;
   }
 
 	.addButton {
