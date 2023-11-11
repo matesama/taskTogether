@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { AuthContext, Logout } from '../context/AuthContext';
+import { UserContext} from '../context/UserContext';
 import axios from 'axios';
 import Conversation from './Conversation';
 import addButton from "../assets/addButton.svg";
@@ -12,7 +12,7 @@ const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
 
 	const [searchInput, setSearchInput] = useState("");
 	const [filteredConversations, setFilteredConversations] = useState([]);
-	const {user} = useContext(AuthContext);
+	const {user, logout} = useContext(UserContext);
 
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
@@ -35,25 +35,22 @@ const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
 		filterConversations();
 	  }, [searchInput, conversations, user]);
 
-	  const getUsername = async (contactId) => {
+	const getUsername = async (contactId) => {
 		try {
-		  const res = await axios(`http://localhost:8000/api/users?userId=${contactId}`);
-		  return res.data.username;
+		  	const res = await axios(`http://localhost:8000/api/users?userId=${contactId}`);
+		  	return res.data.username;
 		} catch (err) {
-		  console.log(err);
-		  return null;
+		  	console.log(err);
+		return null;
 		}
-	  };
+	};
 
-
-	  const { dispatch } = useContext(AuthContext);
-
-  		const handleLogout = () => {
-    		dispatch(Logout());
-    		if (socket.current) {
-      		socket.current.emit("logout");
-    		};
-  		};
+  	const handleLogout = () => {
+    	logout();
+    	if (socket.current) {
+      	socket.current.emit("logout");
+    	};
+  	};  	
 
 	  return (
 		<div className="chatMenu overscroll-none">
@@ -76,7 +73,7 @@ const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
 			/>
 			{filteredConversations.map((c) => (
 			  <div key={c._id} onClick={() => setCurrentChat(c)}>
-				<Conversation conversation={c} currentUer={user} />
+				<Conversation conversation={c} currentUser={user} />
 			  </div>
 			))}
 
@@ -93,5 +90,4 @@ const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
 		</div>
 	  );
 	}
-
 export default ChatMenu;

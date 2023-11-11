@@ -4,21 +4,23 @@ import ChatMenu from '../components/ChatMenu'
 import ChatBox from '../components/ChatBox'
 import AddComponent from '../components/AddComponent';
 import { useContext, useState, useRef, useEffect } from 'react'
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import axios from 'axios';
 import {io} from "socket.io-client"
 import GroupComponent from '../components/GroupComponent';
+import Loader from '../components/Loader';
 
 
 const Dashboard = () => {
 	const [currentChat, setCurrentChat] = useState(null);
 	const [showAddComponent, setShowAddComponent] = useState(false);
-	const [showGroupComponent, setshowGroupComponent] = useState(false);
+	const [showGroupComponent, setShowGroupComponent] = useState(false);
 	const [conversations, setConversations] = useState([]);
 	const [allOpenGroupConversations, setAllOpenGroupConversations] = useState([]);
 	const [allUsers, setAllUsers] = useState([]);
 	const [contacts, setContacts] = useState([]);
-	const {user} = useContext(AuthContext);
+	const [loader, setLoader] = useState(false);
+	const {user, token} = useContext(UserContext);
 	const socket = useRef();
 
 
@@ -46,12 +48,13 @@ const Dashboard = () => {
 
 	const getConversations = async () => {
 		try {
+			setLoader(!loader);
 			const res = await axios.get("http://localhost:8000/api/conversations/" + user._id);
 			setConversations(res.data);
 		} catch (err){
 			console.log(err);
 		} finally {
-		  //loader
+		  setLoader(false);
 		}
 	};
 
@@ -108,6 +111,7 @@ const Dashboard = () => {
 
   const getContacts = async () => {
     try {
+		setLoader(!loader)
       const conversationResponse = await axios.get(`http://localhost:8000/api/conversations/${user._id}`);
       const conversations = conversationResponse.data;
 
@@ -125,7 +129,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Error fetching contacts:', error);
     } finally {
-      //loader
+      setLoader(false);
     }
   };
 
@@ -146,23 +150,23 @@ const Dashboard = () => {
 
 	const handleAddButtonClick = () => {
 		setShowAddComponent(true);
-		setshowGroupComponent(false);
+		setShowGroupComponent(false);
 		setCurrentChat(null);
 	  };
 
 	const handleChatClick = (chat) => {
 		setShowAddComponent(false);
-		setshowGroupComponent(false);
+		setShowGroupComponent(false);
 		setCurrentChat(chat);
 	};
 
 	const handleGroupButtonClick = () => {
-		setshowGroupComponent(true);
+		setShowGroupComponent(true);
 		setCurrentChat(null);
 	};
 
 	const handleGroupCreated = () => {
-		setshowGroupComponent(false);
+		setShowGroupComponent(false);
 		setShowAddComponent(false);
 		setCurrentChat(null);
 	};
@@ -197,8 +201,8 @@ const Dashboard = () => {
 				<Navigation onAddButtonClick={handleAddButtonClick} socket={socket} />
         	</div>
 			<div className="chatMenu bg-slate-500 text-slate-950 max-sm:w-full">
-				<ChatMenu setCurrentChat={handleChatClick} conversations={conversations}/>
-			</div>
+                <ChatMenu setCurrentChat={handleChatClick} conversations={conversations} onAddButtonClick={handleAddButtonClick}/>
+            </div>
 			<div className="contentContainer bg-slate-300 max-sm:w-0 max-sm:invisible sm:flex-5.5">
 				{showGroupComponent ? (
 					<GroupComponent
