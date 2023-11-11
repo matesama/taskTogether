@@ -1,4 +1,3 @@
-
 const AddComponent = ({ handleAddUser, handleJoinGroup, contacts, handleGroup, allOpenGroupConversations }) => {
 
   return (
@@ -44,10 +43,9 @@ const AddComponent = ({ handleAddUser, handleJoinGroup, contacts, handleGroup, a
           </ul>
         </div>
       ) : (
-        <p>Unfortunatly no users left!</p>
+        <p>Unfortunately no users left!</p>
       )}
     </div>
   );
 };
-
 export default AddComponent;

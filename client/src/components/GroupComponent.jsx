@@ -1,7 +1,7 @@
 import "./GroupComponent.css";
 import { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import { UserContext } from "../context/UserContext";
 
 const GroupComponent = ({ allUsers, socket, onGroupCreated }) => {
 
@@ -9,9 +9,7 @@ const GroupComponent = ({ allUsers, socket, onGroupCreated }) => {
   	const [groupPicture, setGroupPicture] = useState('');
 	const [selectedUsers, setSelectedUser] = useState([]);
 	const [availableUsers, setAvailableUser] = useState([]);
-	const {user} = useContext(AuthContext);
-
-
+	const {user} = useContext(UserContext);
 
   	const handleSubmit = async () => {
 	if (selectedUsers.length < 1) {

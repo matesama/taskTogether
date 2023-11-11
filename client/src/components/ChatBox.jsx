@@ -1,18 +1,19 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 import Message from './Message';
 import axios from 'axios';
 import "./chatBox.css"
+import { UserContext } from '../context/UserContext';
+import Loader from './Loader';
 
 
 const ChatBox = ({ currentChat , socket, allUsers}) => {
 	const [newMessage, setNewMessage] = useState("");
 	const [messages, setMessages] = useState([]);
 	const [arrivalMessage, setArrivalMessage] = useState(null);
-	const [receiver, setReceiver] = useState(null)
+	const [receiver, setReceiver] = useState(null);
+	const [loader, setLoader] = useState(false);
   	const scrollRef = useRef();
-	const {user} = useContext(AuthContext);
-
+	const {user} = useContext(UserContext);
 
 
 	useEffect(() => {
@@ -24,13 +25,14 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 	useEffect(() => {
 		const getMessages = async () => {
 		  	try {
+				setLoader(!loader);
 				const res = await axios.get("http://localhost:8000/api/messages/" + currentChat?._id);
 				setMessages(res.data);
 				// console.log(currentChat);
 		  	} catch (err) {
 				console.log(err);
 		  	} finally {
-				//loader
+				setLoader(false);
 			}
 		};
 		getMessages();
@@ -94,13 +96,14 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 		}
 
 		try {
+			setLoader(!loader);
 			const res = await axios.post("http://localhost:8000/api/messages", message);
 			setMessages([...messages, res.data]);
 			setNewMessage("");
 		} catch (err) {
 			console.log(err);
 		} finally {
-			//loader
+			setLoader(false);
 		}
 	}
 
@@ -165,5 +168,4 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 			</div>
   	);
 };
-
 export default ChatBox;
