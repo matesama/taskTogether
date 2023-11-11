@@ -1,5 +1,6 @@
 import Nav from "../components/home/Nav";
 import HeroSection from "../components/home/HeroSection";
+import Description from "../components/home/Description";
 
 const Home = () => {
 
@@ -7,6 +8,7 @@ const Home = () => {
         <div>
             <Nav />
             <HeroSection />
+            <Description />
         </div>
     )
 }
