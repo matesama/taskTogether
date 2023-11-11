@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/User.js"
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const authRouter = express.Router();
 
@@ -15,11 +16,23 @@ authRouter.get("/", async (req, res) => {
     }
 });
 
+
+const secret = process.env.SECRET;
+const generateToken = (data) => {
+    return jwt.sign(data, secret, {expiresIn: '1800s'} )
+}
+
 authRouter.post('/register', async (req, res) => {
     try{
         const {username, email, password} = req.body;
 
-        const response = await User.create({username, email, password})
+        const uniqueEmailCheck = await User.findOne( {email} );
+        if(uniqueEmailCheck) {
+            return res.json( {error: 'This email is already signed up'} )
+        }
+        
+        const hashPassword = await bcrypt.hash(password, 10);
+        const response = await User.create({username, email, password: hashPassword})
         res.json(response);
         
 
@@ -37,12 +50,20 @@ authRouter.post('/login', async (req, res) => {
             return res.status(400).send({error: 'User not found'});
         }
 
-        /*const passwordValid = await bcrypt.compare(password, user.password);
+        const passwordValid = await bcrypt.compare(password, user.password);
         if(!passwordValid){
             return res.status(400).send({error:"Password invalid"});
-        }*/
+        }
 
-        res.json( user );
+        const token = generateToken( {email: user.email} )
+        if(!token) {
+            return res.status(400).send({error: 'Invalid Token'});
+        }
+
+        res.set('token', token);
+        res.set('Access-Control-Expose-Headers', 'token');
+
+        res.json( {token, user} );
 
     }catch(err){
         res.status(500).send(err.message);
@@ -50,50 +71,3 @@ authRouter.post('/login', async (req, res) => {
 })
 
 export default authRouter;
-
-// import express from 'express';
-// import bcrypt from 'bcrypt';
-// import User from "../models/User.js";
-// const authRouter = express.Router();
-
-
-// authRouter.post("/register", async (req, res) => {
-//   try {
-//     //generate new password
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-
-//     //create new user
-//     const newUser = new User({
-//       username: req.body.username,
-//       email: req.body.email,
-//       password: hashedPassword,
-//     });
-
-//     //save user and respond
-//     const user = await newUser.save();
-//     res.status(200).json(user);
-//   } catch (err) {
-//     res.status(500).json(err)
-//   }
-// });
-
-// authRouter.post("/login", async (req, res) => {
-//   try {
-//     const user = await User.findOne({ email: req.body.email });
-// 	if (!user){
-//     	res.status(404).json("user not found");
-// 	}
-
-//     const validPassword = await bcrypt.compare(req.body.password, user.password)
-//     if (!validPassword){
-// 		res.status(400).json("wrong password");
-// 	}
-
-//     res.status(200).json(user)
-//   } catch (err) {
-//     res.status(500).json(err)
-//   }
-// });
-
-// export default authRouter;
