@@ -3,6 +3,24 @@ import Conversation from "../models/Conversation.js";
 const conversationRouter = express.Router();
 
 
+// get one conversation
+
+conversationRouter.get('/find/:id', async (req, res) => {
+	if (!req.params.id) {
+		return res.status(400).json({ message: 'Invalid id' });
+	}
+    try {
+        const conversation = await Conversation.findById(req.params.id);
+        if (!conversation) {
+            return res.status(404).json({ message: 'Conversation not found' });
+        }
+        res.json(conversation);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 // get all group conversations
 
 conversationRouter.get("/allGroups", async (req, res) => {

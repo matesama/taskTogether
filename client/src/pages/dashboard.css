@@ -1,8 +1,10 @@
 .dashboard{
 	height: calc(100vh);
-	
+
 	display: flex;
+	overflow: hidden;
 }
+
 
 .chatMenu{
 	flex: 3.5;
@@ -62,7 +64,7 @@
 }
 
 .noConversationText {
-	
+
 	font-size: 50px;
 	cursor: default;
   }

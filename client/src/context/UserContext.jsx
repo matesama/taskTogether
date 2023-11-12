@@ -7,11 +7,11 @@ export const UserContext = createContext();
 const UserProvider = ( {children} ) => {
     const navigate = useNavigate();
     //Init user state
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null)
     //Init state for token from sessionStorage
     const [token, setToken] = useState(sessionStorage.getItem('token') || null);
 
-    
+
 
     const login = async (email, password, setLoader, loader, setErrors) => {
         const clearErrors = () => {
@@ -27,7 +27,7 @@ const UserProvider = ( {children} ) => {
                 };
                 const getResponse = await fetch('http://localhost:8000/api/auth/login', requestData);
                 const data = await getResponse.json();
-           
+
                 //Check token: If valid redirect to navigate
                 const token = data.token;
                 if(!token) {

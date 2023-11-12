@@ -1,7 +1,6 @@
 import './dashboard.css'
 import Navigation from '../components/Navgiation'
 import ChatMenu from '../components/ChatMenu'
-import ChatBox from '../components/ChatBox'
 import AddComponent from '../components/AddComponent';
 import { useContext, useState, useRef, useEffect } from 'react'
 import { UserContext } from '../context/UserContext';
@@ -9,6 +8,7 @@ import axios from 'axios';
 import {io} from "socket.io-client"
 import GroupComponent from '../components/GroupComponent';
 import Loader from '../components/Loader';
+import { useNavigate } from 'react-router-dom';
 
 
 const Dashboard = () => {
@@ -22,6 +22,7 @@ const Dashboard = () => {
 	const [loader, setLoader] = useState(false);
 	const {user, token} = useContext(UserContext);
 	const socket = useRef();
+	const navigate = useNavigate();
 
 
 /////////////// Socket Connection ////////////////////////////////////////////////
@@ -154,10 +155,14 @@ const Dashboard = () => {
 		setCurrentChat(null);
 	  };
 
+	// const handleChatClick = (chat) => {
+	// 	setShowAddComponent(false);
+	// 	setShowGroupComponent(false);
+	// 	setCurrentChat(chat);
+	// };
+
 	const handleChatClick = (chat) => {
-		setShowAddComponent(false);
-		setShowGroupComponent(false);
-		setCurrentChat(chat);
+		navigate(`/chat/${chat._id}`);
 	};
 
 	const handleGroupButtonClick = () => {
@@ -209,18 +214,19 @@ const Dashboard = () => {
 						allUsers={allUsers}
 						socket={socket}
 						onGroupCreated={handleGroupCreated} />
-          		) : showAddComponent ? (
+          		// ) : showAddComponent ? (
+				) : (
             		<AddComponent
 						handleAddUser={handleAddUser}
 						handleJoinGroup={handleJoinGroup}
 						contacts={contacts}
 						handleGroup={handleGroupButtonClick}
 						allOpenGroupConversations={allOpenGroupConversations}/>
-          		) : (
-            		<ChatBox
-					currentChat={currentChat}
-					socket={socket}
-					allUsers={allUsers}/>
+          		// ) : (
+            	// 	<ChatBox
+				// 	currentChat={currentChat}
+				// 	socket={socket}
+				// 	allUsers={allUsers}/>
          		)}
         </div>
 		</div>
