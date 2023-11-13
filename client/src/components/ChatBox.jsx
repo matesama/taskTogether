@@ -1,18 +1,19 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
 import Message from './Message';
 import axios from 'axios';
 import "./chatBox.css"
+import { UserContext } from '../context/UserContext';
+import Loader from './Loader';
 
 
 const ChatBox = ({ currentChat , socket, allUsers}) => {
 	const [newMessage, setNewMessage] = useState("");
 	const [messages, setMessages] = useState([]);
 	const [arrivalMessage, setArrivalMessage] = useState(null);
-	const [receiver, setReceiver] = useState(null)
+	const [receiver, setReceiver] = useState(null);
+	const [loader, setLoader] = useState(false);
   	const scrollRef = useRef();
-	const {user} = useContext(AuthContext);
-
+	const {user} = useContext(UserContext);
 
 
 	useEffect(() => {
@@ -24,13 +25,14 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 	useEffect(() => {
 		const getMessages = async () => {
 		  	try {
+				setLoader(!loader);
 				const res = await axios.get("http://localhost:8000/api/messages/" + currentChat?._id);
 				setMessages(res.data);
 				// console.log(currentChat);
 		  	} catch (err) {
 				console.log(err);
 		  	} finally {
-				//loader
+				setLoader(false);
 			}
 		};
 		getMessages();
@@ -94,13 +96,14 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 		}
 
 		try {
+			setLoader(!loader);
 			const res = await axios.post("http://localhost:8000/api/messages", message);
 			setMessages([...messages, res.data]);
 			setNewMessage("");
 		} catch (err) {
 			console.log(err);
 		} finally {
-			//loader
+			setLoader(false);
 		}
 	}
 
@@ -141,23 +144,28 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 				</div>
 				<div className="chatBoxBottom">
 					  <textarea
-						className="chatMessageInput"
+						className="chatMessageInput rounded-2xl"
 						placeholder="write something..."
 						onChange={(e) => setNewMessage(e.target.value)}
 						value={newMessage}
 					  ></textarea>
-					<button className="chatSubmitButton" onClick={handleSubmit}>
+					<button className="chatSubmitButton bg-slate-950 text-slate-100 rounded-md mr-4" onClick={handleSubmit}>
 						Send
 					</button>
 				</div>
 			  </>
 				) : (
-					<span className="noConversationText">
-						Open a conversation to start a chat.
-					  </span>
+					<div className="flex flex-col h-full justify-center">
+						<span className="noConversationText text-slate-950 ">
+							Welcome to taskTogether
+					  	</span> 
+						<br/>
+					  	<span className="text-slate-950  text-3xl">
+						  Join a Group/Join a partner and start setting and achieving your goals  
+						</span>
+					</div>
 			)}
 			</div>
   	);
 };
-
 export default ChatBox;

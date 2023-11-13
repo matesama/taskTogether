@@ -5,14 +5,14 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import {Routes, Route, Navigate} from "react-router-dom";
 import { useContext } from "react";
-import AuthContext from "./context/AuthContext";
+import { UserContext } from "./context/UserContext";
 
 
 
 
 function App() {
 
-  const { user } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
 
   return (
     <>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import { UserContext } from '../context/UserContext';
 import "./conversation.css"
 import axios from 'axios';
 
 
 const Conversation = ({ conversation }) => {
 
-	const {user} = useContext(AuthContext);
+	const {user} = useContext(UserContext);
 	const [contact, setContact] = useState(null);
 
 	useEffect(() => {
@@ -25,7 +25,7 @@ const Conversation = ({ conversation }) => {
 
 
   return (
-	<div className="conversation">
+	<div className="conversation max-sm:w-full">
 		<img
 			className="conversationImg"
 			src={
