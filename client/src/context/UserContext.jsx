@@ -1,17 +1,34 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { io } from 'socket.io-client';
 
 export const UserContext = createContext();
 
 
 const UserProvider = ( {children} ) => {
-    const navigate = useNavigate();
-    //Init user state
     const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null)
-    //Init state for token from sessionStorage
     const [token, setToken] = useState(sessionStorage.getItem('token') || null);
+    const [isConnected, setIsConnected] = useState(false);
+    const navigate = useNavigate();
+    const socket = useRef();
 
 
+
+    const connectSocket = () => {
+        if (user) {
+          socket.current = io('ws://localhost:8100');
+          socket.current.on('connect', () => setIsConnected(true));
+        }
+      }
+
+      useEffect(() => {
+        connectSocket();
+        return () => {
+          if (socket.current) {
+            socket.current.disconnect();
+          }
+        };
+      }, [user]);
 
     const login = async (email, password, setLoader, loader, setErrors) => {
         const clearErrors = () => {
@@ -38,6 +55,7 @@ const UserProvider = ( {children} ) => {
                 setUser(data.user);
                 setToken(token);
                 if(token){
+                    connectSocket(user);
                     navigate('/');
                 }
             }catch(error) {
@@ -51,12 +69,13 @@ const UserProvider = ( {children} ) => {
         sessionStorage.removeItem('token');
         setUser(null);
         setToken(null);
+        socket.current.emit("logout");
         navigate('/login');
     }
 
 
     return(
-        <UserContext.Provider value={{user, token, login, logout}}>
+        <UserContext.Provider value={{ user, token, login, logout, socket }}>
             {children}
         </UserContext.Provider>
     )

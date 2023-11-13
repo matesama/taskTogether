@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { UserContext} from '../context/UserContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../context/UserContext';
+import { ChatMenuContext } from '../context/ChatMenuContext';
+import { NavigationContext } from '../context/NavigationContext';
 import axios from 'axios';
 import Conversation from './Conversation';
 import addButton from "../assets/addButton.svg";
@@ -7,26 +9,33 @@ import goalButton from "../assets/goalButton.svg";
 import settingsButton from "../assets/settingsButton.svg"
 import logoutButton from "../assets/logoutButton.svg"
 
+const ChatMenu = ({ }) => {
+  const [searchInput, setSearchInput] = useState("");
+  const [filteredConversations, setFilteredConversations] = useState([]);
 
-const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
-
-	const [searchInput, setSearchInput] = useState("");
-	const [filteredConversations, setFilteredConversations] = useState([]);
-	const {user, logout} = useContext(UserContext);
-
+  const { user } = useContext(UserContext);
+  const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
+  const { handleAdd, handleLogout } = useContext(NavigationContext);
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
+	useEffect(() => {
+    getConversations();
+  }, [user._id]);
 
 	useEffect(() => {
 		const filterConversations = async () => {
 		  const filtered = await Promise.all(
 			conversations.map(async (c) => {
+				if (c.groupName) {
+					return c.groupName.toLowerCase().includes(searchInput.toLowerCase());
+				} else {
 				const contactId = c.members.find((m) => m !== user._id);
 				if (!contactId) {
 				  return false;
 				}
 				const username = await getUsername(contactId);
 				return (username && username.toLowerCase().includes(searchInput.toLowerCase()));
+				}
 			})
 		  );
 		  setFilteredConversations(conversations.filter((_, index) => filtered[index]));
@@ -44,13 +53,6 @@ const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
 		return null;
 		}
 	};
-
-  	const handleLogout = () => {
-    	logout();
-    	if (socket.current) {
-      	socket.current.emit("logout");
-    	};
-  	};  	
 
 	  return (
 		<div className="chatMenu overscroll-none">
@@ -72,13 +74,14 @@ const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
 			  onChange={(e) => setSearchInput(e.target.value.toLowerCase())}
 			/>
 			{filteredConversations.map((c) => (
-			  <div key={c._id} onClick={() => setCurrentChat(c)}>
+				 <div key={c._id} onClick={() => handleChatClick(c)}>
+			   {/* <div key={c._id} onClick={() => setCurrentChat(c)}> */}
 				<Conversation conversation={c} currentUser={user} />
 			  </div>
 			))}
 
 			<div className="navButtons flex flex-row sm:invisible sm:w-0 sm:h-0  w-full justify-around items-center bg-slate-900 max-sm: h-16 self-end absolute bottom-0">
-        <button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={onAddButtonClick}>
+        <button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleAdd}>
           <img src={addButton} alt="add Button" className="w-8 h-8"/>
         </button>
         <button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full"> <img src={goalButton} alt="task Button" className="w-8 h-8"/></button>
@@ -90,4 +93,5 @@ const ChatMenu = ({ setCurrentChat, conversations, onAddButtonClick}) => {
 		</div>
 	  );
 	}
+
 export default ChatMenu;

@@ -5,7 +5,7 @@ import Loader from "../components/Loader.jsx";
 
 
 
-const Login = () => {
+const LoginPage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -44,4 +44,4 @@ const Login = () => {
         </div>
     )
 }
-export default Login;
+export default LoginPage;

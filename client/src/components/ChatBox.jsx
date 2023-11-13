@@ -1,20 +1,49 @@
-import React, { useRef, useState, useEffect, useContext } from 'react';
+import React, { useContext, useRef, useEffect } from 'react';
 import Message from './Message';
-import axios from 'axios';
 import "./chatBox.css"
+import { ChatBoxContext } from '../context/ChatBoxContext';
 import { UserContext } from '../context/UserContext';
-import Loader from './Loader';
+import { ChatMenuContext } from '../context/ChatMenuContext';
+import { io } from 'socket.io-client';
 
 
-const ChatBox = ({ currentChat , socket, allUsers}) => {
-	const [newMessage, setNewMessage] = useState("");
-	const [messages, setMessages] = useState([]);
-	const [arrivalMessage, setArrivalMessage] = useState(null);
-	const [receiver, setReceiver] = useState(null);
-	const [loader, setLoader] = useState(false);
-  	const scrollRef = useRef();
-	const {user} = useContext(UserContext);
+const ChatBox = ({}) => {
+  const { user, socket } = useContext(UserContext);
+  const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
+  const { allUsers, getAllUsers, newMessage, setNewMessage, messages, setMessages, arrivalMessage, setArrivalMessage, receiver,  handleSubmit,  getReceiverData, getMessages } = useContext(ChatBoxContext);
+  const scrollRef = useRef();
+//   const socket = useRef();
 
+
+	useEffect(() => {
+		getMessages();
+		// if (socket) {
+		// 	socket.on("getMessage", (data) => {
+		// 		setArrivalMessage({
+		// 			sender: data.senderId,
+		// 			text: data.text,
+		// 			createdAt: Date.now(),
+		// 		  });
+		// 	});
+		// }
+		// return () => {
+		// 	if (socket) {
+		// 	  socket.off("getMessage");
+		// 	}
+		//   };
+	}, [currentChat]);
+
+	useEffect(() => {
+		getAllUsers();
+	}, [])
+
+ 	useEffect(() => {
+		getReceiverData();
+	}, [currentChat, user]);
+
+    useEffect(() => {
+        scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
 	useEffect(() => {
 		if (arrivalMessage && currentChat?.members.includes(arrivalMessage.sender)) {
@@ -22,96 +51,39 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
 		}
 	}, [arrivalMessage, currentChat])
 
-	useEffect(() => {
-		const getMessages = async () => {
-		  	try {
-				setLoader(!loader);
-				const res = await axios.get("http://localhost:8000/api/messages/" + currentChat?._id);
-				setMessages(res.data);
-				// console.log(currentChat);
-		  	} catch (err) {
-				console.log(err);
-		  	} finally {
-				setLoader(false);
-			}
-		};
-		getMessages();
 
-		if (socket.current) {
-			socket.current.on("getMessage", (data) => {
-				setArrivalMessage({
-					sender: data.senderId,
-					text: data.text,
-					createdAt: Date.now(),
-				  });
-			});
-		}
-		return () => {
-			if (socket.current) {
-			  socket.current.off("getMessage");
-			}
-		  };
 
-	}, [currentChat])
+//   const getConversations = async (user) => {
+// 	if (user) {
+// 		try {
+// 			console.log(user);
+// 			  const res = await axios.get("http://localhost:8000/api/conversations/" + user._id);
+// 			  setConversations(res.data);
+// 		  } catch (err){
+// 			  console.log(err);
+// 		  } finally {
+// 			//loader
+// 		  }
+// 	}
+//   };
 
-	useEffect(() => {
-		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-	}, [messages]);
+//   useEffect(() => {
 
-	useEffect(() => {
-		if (currentChat) {
-		  const receiverId = currentChat.members.find(member => member !== user._id);
-		  const fetchReceiverData = async () => {
-			try {
-			  const res = await axios.get(`http://localhost:8000/api/users?userId=${receiverId}`);
-			  setReceiver(res.data);
-			} catch (err) {
-			  console.log(err);
-			}
-		  }
-		  fetchReceiverData();
-		}
-	  }, [currentChat, user]);
+// 		if (socket) {
+// 			socket.on('newConversation', getConversations);
+// 		}
 
-/////////////// HANDLE_SUBMIT ////////////////////////////////////////////////
+// 		return () => {
+// 			if (socket) {
+// 				socket.off('newConversation');
+// 			}
+// 	};
+// 	  }, [getConversations]);
 
-	const handleSubmit = async (e) =>{
-		e.preventDefault();
-		const message = {
-			sender: user._id,
-			text: newMessage,
-			conversationId: currentChat._id,
-		};
 
-		const receiverIds = currentChat.members.filter(member => member !== user._id);
-
-		if (socket.current) {
-			receiverIds.forEach(receiverId => {
-				socket.current.emit("sendMessage", {
-					senderId: user._id,
-					receiverId,
-					text: newMessage,
-				});
-			});
-		}
-
-		try {
-			setLoader(!loader);
-			const res = await axios.post("http://localhost:8000/api/messages", message);
-			setMessages([...messages, res.data]);
-			setNewMessage("");
-		} catch (err) {
-			console.log(err);
-		} finally {
-			setLoader(false);
-		}
-	}
-
-  	return (
-			<div className="chatBoxWrapper">
-			{currentChat ? (
-			  <>
-			  	<div className="header">
+	return (
+        <div className="chatBoxWrapper">
+          <div className="header">
   					<div className="headerTop">
   					  <img
   					    className="headerImg"
@@ -126,7 +98,7 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
   					</div>
   					{currentChat.groupName &&
   					  <span className="chatInfo">
-  					    {currentChat.members
+  					    { currentChat.members
 						  .filter(memberId => memberId !== user._id)
 						  .map(memberId => {
   					      const member = allUsers.find(member => member._id === memberId);
@@ -136,36 +108,25 @@ const ChatBox = ({ currentChat , socket, allUsers}) => {
   					}
 				</div>
 				<div className="chatBoxTop" key={user._id}>
-				  {messages.map((m) => (
+				  {messages && messages.map((m) => (
 					<div key={m._id} ref={scrollRef}>
 					  <Message message={m} own={m.sender === user._id} />
 					</div>
 				  ))}
 				</div>
-				<div className="chatBoxBottom">
-					  <textarea
-						className="chatMessageInput rounded-2xl"
-						placeholder="write something..."
-						onChange={(e) => setNewMessage(e.target.value)}
-						value={newMessage}
-					  ></textarea>
-					<button className="chatSubmitButton bg-slate-950 text-slate-100 rounded-md mr-4" onClick={handleSubmit}>
-						Send
-					</button>
-				</div>
-			  </>
-				) : (
-					<div className="flex flex-col h-full justify-center">
-						<span className="noConversationText text-slate-950 ">
-							Welcome to taskTogether
-					  	</span> 
-						<br/>
-					  	<span className="text-slate-950  text-3xl">
-						  Join a Group/Join a partner and start setting and achieving your goals  
-						</span>
-					</div>
-			)}
-			</div>
-  	);
+        <div className="chatBoxBottom">
+            <textarea
+                className="chatMessageInput rounded-2xl"
+                placeholder="write something..."
+                onChange={(e) => setNewMessage(e.target.value)}
+                value={newMessage}
+            ></textarea>
+            <button className="chatSubmitButton bg-slate-950 text-slate-100 rounded-md mr-4" onClick={handleSubmit}>
+                Send
+            </button>
+        </div>
+        </div>
+    );
 };
+
 export default ChatBox;
