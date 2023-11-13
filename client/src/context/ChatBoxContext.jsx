@@ -21,7 +21,7 @@ export const ChatBoxContext = createContext({
 });
 
 const ChatBoxProvider = ({ children }) => {
-  const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
+  const {currentChat, loader, setLoader } = useContext(ChatMenuContext);
   const {user} = useContext(UserContext);
 
   const [allUsers, setAllUsers] = useState([]);

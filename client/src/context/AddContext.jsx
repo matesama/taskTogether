@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect, useRef } from 'react';
 import { UserContext } from './UserContext.jsx';
-import { ChatBoxContext } from './ChatBoxContext.jsx';
+import { useNavigate } from 'react-router-dom';
 // import { SocketContext } from './SocketContext.jsx';
 import axios from 'axios';
 import { io } from "socket.io-client";
@@ -14,6 +14,7 @@ const AddProvider = ({ children }) => {
   const [showGroupComponent, setShowGroupComponent] = useState(false);
   const [allOpenGroupConversations, setAllOpenGroupConversations] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const navigate = useNavigate();
   // const socket = useRef();
 
 
@@ -40,7 +41,11 @@ const AddProvider = ({ children }) => {
   };
 
   const handleGroupButtonClick = () => {
-      setShowGroupComponent(true);
+      navigate('/group');
+  };
+
+  const handleBackButton = () => {
+    navigate('/');
   };
 
   const getContacts = async () => {
@@ -61,10 +66,6 @@ const AddProvider = ({ children }) => {
   };
 
   // useEffect(() => {
-  //   getContacts();
-  // }, [user._id]);
-
-  // useEffect(() => {
   //   if (socket) {
   //     socket.on('newConversation', getContacts)
   //   }
@@ -74,12 +75,6 @@ const AddProvider = ({ children }) => {
   //     }
   //   };
   // }, [getContacts]);
-
-  // useEffect(() => {
-  //   if (user) {
-  //     getContacts();
-  //   }
-  // }, [user._id]);
 
   const getAllUsers = async () => {
     try {
@@ -104,7 +99,7 @@ const AddProvider = ({ children }) => {
 
 
   return (
-    <AddContext.Provider value={{ handleAddUser, handleJoinGroup, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getAllUsers, showGroupComponent, getContacts, }}>
+    <AddContext.Provider value={{ handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getAllUsers, showGroupComponent, getContacts, }}>
       {children}
     </AddContext.Provider>
   );

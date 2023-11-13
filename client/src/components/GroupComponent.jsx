@@ -2,12 +2,11 @@ import "./GroupComponent.css";
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from "../context/UserContext";
 import { GroupContext } from "../context/GroupContext";
-import { AddContext } from "../context/AddContext";
 
 const GroupComponent = ({ }) => {
     const [availableUsers, setAvailableUser] = useState([]);
     const {user} = useContext(UserContext);
-    const { handleAddUser, handleRemoveUser, handleSubmit, setGroupName, setGroupPicture, selectedUsers, allUsers, getAllUsers } = useContext(GroupContext);
+    const { handleAddUser, handleRemoveUser, handleSubmit, handleBackButton, setGroupName, setGroupPicture, selectedUsers, allUsers, getAllUsers } = useContext(GroupContext);
 
     useEffect(() => {
       getAllUsers();
@@ -20,6 +19,9 @@ const GroupComponent = ({ }) => {
       return (
         <div className="group-component">
           <h2>Group Component</h2>
+          <div>
+            <button className="addButton" onClick={handleBackButton}>Back</button>
+          </div>
           <label>
             Group Name:
             <input type="text" onChange={(e) => setGroupName(e.target.value)} />

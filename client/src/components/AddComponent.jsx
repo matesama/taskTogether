@@ -1,12 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { AddContext } from '../context/AddContext';
-// import { ChatBoxContext } from '../context/ChatBoxContext';
 import { UserContext } from '../context/UserContext';
 
 const AddComponent = () => {
   const { user } = useContext(UserContext);
-  const { getAllUsers, handleAddUser, handleJoinGroup, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
-  // const { getAllUsers} = useContext(ChatBoxContext);
+  const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
 
   useEffect(() => {
     getAllUsers();
@@ -20,11 +18,13 @@ const AddComponent = () => {
     getAllOpenGroupConversations();
   }, []);
 
-  // console.log('contacts', contacts);
-  // console.log('groups', allOpenGroupConversations);
+
   return (
     <div className="add-component">
       <h2>Add Component</h2>
+      <div>
+        <button className="addButton" onClick={handleBackButton}>Back</button>
+      </div>
       <button className="addButton" onClick={handleGroupButtonClick}>Create Group</button>
       {allOpenGroupConversations.length > 0 ? (
         <div>

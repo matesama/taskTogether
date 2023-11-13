@@ -52,21 +52,6 @@ const ChatBox = ({}) => {
 	}, [arrivalMessage, currentChat])
 
 
-
-//   const getConversations = async (user) => {
-// 	if (user) {
-// 		try {
-// 			console.log(user);
-// 			  const res = await axios.get("http://localhost:8000/api/conversations/" + user._id);
-// 			  setConversations(res.data);
-// 		  } catch (err){
-// 			  console.log(err);
-// 		  } finally {
-// 			//loader
-// 		  }
-// 	}
-//   };
-
 //   useEffect(() => {
 
 // 		if (socket) {

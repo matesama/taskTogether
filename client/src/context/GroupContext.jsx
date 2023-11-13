@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useRef } from 'react';
 import { UserContext } from './UserContext.jsx';
-// import { SocketContext } from './SocketContext.jsx';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const GroupContext = createContext({
@@ -16,7 +16,7 @@ const GroupProvider = ({ children }) => {
   const [groupName, setGroupName] = useState('');
   const [groupPicture, setGroupPicture] = useState('');
   const [allUsers, setAllUsers] = useState([]);
-
+  const navigate = useNavigate();
   // const socket = useRef();
 
   const getAllUsers = async () => {
@@ -34,6 +34,10 @@ const GroupProvider = ({ children }) => {
 
   const handleRemoveUser = (userToRemove) => {
     setSelectedUsers(selectedUsers.filter(user => user._id !== userToRemove._id));
+  };
+
+  const handleBackButton = () => {
+    navigate('/add');
   };
 
   const handleSubmit = async () => {
@@ -60,7 +64,7 @@ const GroupProvider = ({ children }) => {
   };
 
   return (
-    <GroupContext.Provider value={{ handleAddUser, handleRemoveUser, handleSubmit, setGroupName, setGroupPicture, selectedUsers, allUsers, getAllUsers }}>
+    <GroupContext.Provider value={{ handleAddUser, handleRemoveUser, handleSubmit, handleBackButton, setGroupName, setGroupPicture, selectedUsers, allUsers, getAllUsers }}>
       {children}
     </GroupContext.Provider>
   );
