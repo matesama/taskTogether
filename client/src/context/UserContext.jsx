@@ -7,7 +7,7 @@ export const UserContext = createContext();
 const UserProvider = ( {children} ) => {
     const navigate = useNavigate();
     //Init user state
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(sessionStorage.getItem('user') ||null);
     //Init state for token from sessionStorage
     const [token, setToken] = useState(sessionStorage.getItem('token') || null);
 
@@ -30,13 +30,17 @@ const UserProvider = ( {children} ) => {
            
                 //Check token: If valid redirect to navigate
                 const token = data.token;
+                const user = data.user;
                 if(!token) {
                     setErrors(data);
                     setTimeout(clearErrors, 2000);
                 }
                 sessionStorage.setItem('token', token);
-                setUser(data.user);
+                sessionStorage.setItem('user', JSON.stringify(user));
+                setUser(user);
                 setToken(token);
+                console.log(token);
+                console.log(user);
                 if(token){
                     navigate('/');
                 }

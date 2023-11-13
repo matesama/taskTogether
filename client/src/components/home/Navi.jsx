@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 
-const Nav = () => {
+const Navi = () => {
     const navigate = useNavigate();
 
 
@@ -9,7 +9,7 @@ const Nav = () => {
         <nav className="bg-slate-800 border-gray-200 h-12">
             <div className=" w-auto flex">
                 <div className="flex">
-                            <button onClick={()=> navigate("/home")}>
+                            <button onClick={()=> navigate("/homepage")}>
                                 <span className="text-2xl font-semibold p-5 text-slate-200">taskTogether</span>
                             </button>
                     </div>
@@ -25,4 +25,4 @@ const Nav = () => {
         </nav>
     )
 }
-export default Nav;
+export default Navi;
