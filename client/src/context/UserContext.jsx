@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 export const UserContext = createContext();
 
@@ -12,6 +13,30 @@ const UserProvider = ( {children} ) => {
     const [token, setToken] = useState(sessionStorage.getItem('token') || null);
 
     
+   useEffect(() => {
+        const loadUserData = async () => {
+            try {
+                //check token in sessionStorage
+                const storedToken = sessionStorage.getItem('token');
+                if(storedToken) {
+                    const response = await axios.get('http://localhost:8000/api/auth/user', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    //set User Data on successful response
+                    setUser(response.data);
+                    console.log(response);
+                } 
+                } catch(error) {
+                    console.error('Failed to fetch user data', error);
+                    logout();
+            }
+        };
+        loadUserData();
+    }, [token])
+
 
     const login = async (email, password, setLoader, loader, setErrors) => {
         const clearErrors = () => {
