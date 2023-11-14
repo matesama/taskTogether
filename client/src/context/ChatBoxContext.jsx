@@ -22,7 +22,7 @@ export const ChatBoxContext = createContext({
 
 const ChatBoxProvider = ({ children }) => {
   const {currentChat, loader, setLoader } = useContext(ChatMenuContext);
-  const {user} = useContext(UserContext);
+  const {user, socket} = useContext(UserContext);
 
   const [allUsers, setAllUsers] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -77,17 +77,17 @@ const ChatBoxProvider = ({ children }) => {
 			conversationId: currentChat._id,
 		};
 
-		// const receiverIds = currentChat.members.filter(member => member !== user._id);
+		const receiverIds = currentChat.members.filter(member => member !== user._id);
 
-		// if (socket) {
-		// 	receiverIds.forEach(receiverId => {
-		// 		socket.emit("sendMessage", {
-		// 			senderId: user._id,
-		// 			receiverId,
-		// 			text: newMessage,
-		// 		});
-		// 	});
-		// }
+		if (socket) {
+			receiverIds.forEach(receiverId => {
+				socket.emit("sendMessage", {
+					senderId: user._id,
+					receiverId,
+					text: newMessage,
+				});
+			});
+		}
 
 		try {
 			setLoader(!loader);

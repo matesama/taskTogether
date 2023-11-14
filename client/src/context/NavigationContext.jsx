@@ -10,13 +10,14 @@ export const NavigationContext = createContext({
 
 const NavigationProvider = ({ children }) => {
   const navigate = useNavigate();
-  const { logout } = useContext(UserContext);
+  const { logout, socket } = useContext(UserContext);
 
   const handleAdd = () => {
     navigate('/add');
   };
 
   const handleLogout = () => {
+    // socket.emit("logout");
     logout();
   };
 

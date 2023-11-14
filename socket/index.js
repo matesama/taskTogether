@@ -28,6 +28,8 @@ io.on('connection', (socket) => {
 
 	// when connect
 	console.log('a user connected');
+	console.log('still logged in: ', users);
+
 
 	// take userId and socketId from user
 	socket.on("addUser", (userId) => {

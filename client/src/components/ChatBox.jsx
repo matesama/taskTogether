@@ -4,7 +4,6 @@ import "./chatBox.css"
 import { ChatBoxContext } from '../context/ChatBoxContext';
 import { UserContext } from '../context/UserContext';
 import { ChatMenuContext } from '../context/ChatMenuContext';
-import { io } from 'socket.io-client';
 
 
 const ChatBox = ({}) => {
@@ -12,25 +11,24 @@ const ChatBox = ({}) => {
   const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
   const { allUsers, getAllUsers, newMessage, setNewMessage, messages, setMessages, arrivalMessage, setArrivalMessage, receiver,  handleSubmit,  getReceiverData, getMessages } = useContext(ChatBoxContext);
   const scrollRef = useRef();
-//   const socket = useRef();
 
 
 	useEffect(() => {
 		getMessages();
-		// if (socket) {
-		// 	socket.on("getMessage", (data) => {
-		// 		setArrivalMessage({
-		// 			sender: data.senderId,
-		// 			text: data.text,
-		// 			createdAt: Date.now(),
-		// 		  });
-		// 	});
-		// }
-		// return () => {
-		// 	if (socket) {
-		// 	  socket.off("getMessage");
-		// 	}
-		//   };
+		if (socket) {
+			socket.on("getMessage", (data) => {
+				setArrivalMessage({
+					sender: data.senderId,
+					text: data.text,
+					createdAt: Date.now(),
+				  });
+			});
+		}
+		return () => {
+			if (socket) {
+			  socket.off("getMessage");
+			}
+		  };
 	}, [currentChat]);
 
 	useEffect(() => {
@@ -52,18 +50,18 @@ const ChatBox = ({}) => {
 	}, [arrivalMessage, currentChat])
 
 
-//   useEffect(() => {
+  useEffect(() => {
 
-// 		if (socket) {
-// 			socket.on('newConversation', getConversations);
-// 		}
+		if (socket) {
+			socket.on('newConversation', getConversations);
+		}
 
-// 		return () => {
-// 			if (socket) {
-// 				socket.off('newConversation');
-// 			}
-// 	};
-// 	  }, [getConversations]);
+		return () => {
+			if (socket) {
+				socket.off('newConversation');
+			}
+	};
+	  }, [getConversations]);
 
 
 	return (

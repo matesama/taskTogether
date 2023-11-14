@@ -19,31 +19,24 @@ function App() {
   const { user } = useContext(UserContext);
 
   return (
-    <>
     <div>
       <Routes>
         <Route path="/" element={<PrivateRoute />}>
           <Route index element={<DashboardPage />} />
+          <Route path="chat/:id" element={<ChatPage />} />
+          <Route path="add" element={<AddPage />} />
+          <Route path="group" element={<GroupPage />} />
           <Route path="*" element={<Navigate to={'/'} />} />
         </Route>
         <Route path="/*" element={<PublicRoute />} >
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
           {/* <Route path="homepage" element={<Homepage />} /> */}
-          <Route path="*" element={<Navigate to={'/homepage'} />} />
+          <Route path="*" element={<Navigate to={'/login'} />} />
+          {/* <Route path="*" element={<Navigate to={'/homepage'} />} /> */}
         </Route>
       </Routes>
-
-    {/* <Routes>
-      <Route path="/" element={user ? <DashboardPage /> : <LoginPage />} />
-      <Route path="/login" element={user ? <Navigate to="/" /> : <LoginPage />} />
-      <Route path="/register" element={user ? <Navigate to="/" /> : <RegisterPage />} />
-      <Route path="/chat/:id" element={user ? <ChatPage /> : <Navigate to="/login" />} />
-      <Route path="/add" element={user ? <AddPage /> : <Navigate to="/login" />} />
-      <Route path="/group" element={user ? <GroupPage /> : <Navigate to="/login" />} />
-    </Routes> */}
     </div>
-    </>
   )
 }
 
