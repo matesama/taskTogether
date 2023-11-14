@@ -78,6 +78,7 @@ const UserProvider = ( {children} ) => {
 
     const logout = () => {
         sessionStorage.removeItem('token');
+        sessionStorage.removeItem('user');
         setUser(null);
         setToken(null);
         navigate('/login');
