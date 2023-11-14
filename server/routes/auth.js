@@ -10,7 +10,7 @@ authRouter.get("/", async (req, res) => {
     try {
       const response = await User.find();
       res.json(response)
-    } 
+    }
     catch(err){
         res.status(500).json(err)
     }
@@ -30,11 +30,11 @@ authRouter.post('/register', async (req, res) => {
         if(uniqueEmailCheck) {
             return res.json( {error: 'This email is already signed up'} )
         }
-        
+
         const hashPassword = await bcrypt.hash(password, 10);
         const response = await User.create({username, email, password: hashPassword})
         res.json(response);
-        
+
 
     }catch(err){
         res.status(500).json({error: err.message});
@@ -69,5 +69,32 @@ authRouter.post('/login', async (req, res) => {
         res.status(500).send(err.message);
     }
 })
+
+const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization.replace('Bearer ', '');
+
+    if(!token) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    jwt.verify(token, process.env.SECRET, (err, user) => {
+        if(err) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        req.user = user;
+        next();
+    });
+};
+
+authRouter.get("/user", verifyToken, async (req, res) => {
+    try {
+      const response = await User.findOne({ email: req.user.email });
+      res.json(response)
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+});
 
 export default authRouter;
