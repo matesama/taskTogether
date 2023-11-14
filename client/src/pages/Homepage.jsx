@@ -1,13 +1,13 @@
-import Nav from "../components/home/Nav";
+import Navi from "../components/home/Navi";
 import HeroSection from "../components/home/HeroSection";
 import Description from "../components/home/Description";
 import Footer from "../components/home/Footer"
 
-const Home = () => {
+const Homepage = () => {
 
     return (
         <div>
-            <Nav />
+            <Navi />
             <HeroSection />
             <Description />
             <Footer />
@@ -15,4 +15,4 @@ const Home = () => {
     )
 }
 
-export default Home;
+export default Homepage;

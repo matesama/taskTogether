@@ -70,4 +70,34 @@ authRouter.post('/login', async (req, res) => {
     }
 })
 
+const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization.replace('Bearer ', '');
+
+    if(!token) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    jwt.verify(token, process.env.SECRET, (err, user) => {
+        if(err) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+
+        req.user = user;
+        next();
+    });
+};
+
+
+
+authRouter.get("/user", verifyToken, async (req, res) => {
+    try {
+      const response = await User.findOne({ email: req.user.email });
+      res.json(response)
+    } 
+    catch(err){
+        res.status(500).json(err)
+    }
+});
+
+
 export default authRouter;
