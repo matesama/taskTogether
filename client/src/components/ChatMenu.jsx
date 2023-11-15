@@ -73,6 +73,7 @@ const ChatMenu = ({ }) => {
 			  value={searchInput}
 			  onChange={(e) => setSearchInput(e.target.value.toLowerCase())}
 			/>
+
 			{filteredConversations.map((c) => (
 				 <div key={c._id} onClick={() => handleChatClick(c)}>
 			   {/* <div key={c._id} onClick={() => setCurrentChat(c)}> */}

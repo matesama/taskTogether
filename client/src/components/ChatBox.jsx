@@ -8,10 +8,9 @@ import { ChatMenuContext } from '../context/ChatMenuContext';
 
 const ChatBox = ({}) => {
   const { user, socket } = useContext(UserContext);
-  const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
+  const { currentChat, getConversations, loader, setLoader } = useContext(ChatMenuContext);
   const { allUsers, getAllUsers, newMessage, setNewMessage, messages, setMessages, arrivalMessage, setArrivalMessage, receiver,  handleSubmit,  getReceiverData, getMessages } = useContext(ChatBoxContext);
   const scrollRef = useRef();
-
 
 	useEffect(() => {
 		getMessages();
@@ -50,7 +49,7 @@ const ChatBox = ({}) => {
 	}, [arrivalMessage, currentChat])
 
 
-  useEffect(() => {
+   	useEffect(() => {
 
 		if (socket) {
 			socket.on('newConversation', getConversations);
@@ -60,8 +59,8 @@ const ChatBox = ({}) => {
 			if (socket) {
 				socket.off('newConversation');
 			}
-	};
-	  }, [getConversations]);
+		};
+	}, [getConversations]);
 
 
 	return (

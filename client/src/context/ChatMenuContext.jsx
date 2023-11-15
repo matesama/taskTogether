@@ -15,7 +15,8 @@ export const ChatMenuContext = createContext({
 });
 
 const ChatMenuProvider = ({ children }) => {
-  const [currentChat, setCurrentChat] = useState(null);
+  // const [currentChat, setCurrentChat] = useState(null);
+  const [currentChat, setCurrentChat] = useState(JSON.parse(localStorage.getItem('currentChat')) || null);
   const [conversations, setConversations] = useState([]);
   const [loader, setLoader] = useState(false);
   const {user} = useContext(UserContext);
@@ -38,6 +39,10 @@ const ChatMenuProvider = ({ children }) => {
     setCurrentChat(chat);
 		navigate(`/chat/${chat._id}`);
 	};
+
+  useEffect(() => {
+    localStorage.setItem('currentChat', JSON.stringify(currentChat));
+  }, [currentChat]);
 
   return (
     <ChatMenuContext.Provider value={{ handleChatClick, currentChat, conversations, getConversations, loader, setLoader }}>

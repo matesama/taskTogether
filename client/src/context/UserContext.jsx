@@ -16,30 +16,26 @@ const UserProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState(null);
 
-  const connectSocket = () => {
-    if (user) {
+
+  useEffect(() => {
+    if (user && !socket) {
       const newSocket = io('ws://localhost:8100');
       newSocket.on('connect', () => setIsConnected(true));
       setSocket(newSocket);
     }
-  }
-
-  useEffect(() => {
-    console.log('user', user);
-    console.log('socket', socket);
-    if (socket && user) {
-      socket.emit("addUser", user._id);
-    }
-  }, [socket, user]);
-
-  useEffect(() => {
-    connectSocket();
     return () => {
       if (socket) {
         socket.disconnect();
       }
     };
   }, [user]);
+
+
+  useEffect(() => {
+    if (socket && user) {
+      socket.emit("addUser", user._id);
+    }
+  }, [socket, user]);
 
 
   useEffect(() => {
@@ -56,7 +52,6 @@ const UserProvider = ({ children }) => {
           });
           // set User Data on successful response
           setUser(response.data);
-          // console.log(response);
         }
       } catch (error) {
         console.error('Failed to fetch user data', error);
@@ -84,14 +79,20 @@ const UserProvider = ({ children }) => {
       setToken(token);
       console.log('token', token);
       console.log('user', user);
-      if (token) {
-        if (user) {
-          connectSocket(user);
-        }
-        navigate('/');
-      }
+      // if (token) {
+      //   if (socket && user) {
+      //     socket.emit("addUser", user._id);
+      //     } else {
+      //       console.error('Socket is not initialized');
+      //     }
+      //   navigate('/');
+      // }
     } catch (error) {
-      setErrors(error.response.data.error);
+      if (error.response) {
+        setErrors(error.response.data.error);
+      } else {
+        console.log('An error occurred:', error);
+      }
       console.log(error);
     } finally {
       setLoader(false);
@@ -101,6 +102,7 @@ const UserProvider = ({ children }) => {
   const logout = () => {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('currentChat');
     setUser(null);
     setToken(null);
     if (socket) {
