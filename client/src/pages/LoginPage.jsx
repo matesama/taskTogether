@@ -9,15 +9,20 @@ const LoginPage = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState("");
     const [loader, setLoader] = useState(false);
     const {login} = useContext(UserContext)
 
+    const clearErrors = () => {
+        setErrors({});
+    }
     const getData = async (e) => {
         e.preventDefault();
-        login(email, password, setLoader, loader, setErrors)
+       
+        login(email, password, setLoader, setErrors, clearErrors)
+        
     }
-
+    console.log(errors)
     return(
         <div className="text-slate-300 flex  lg:flex-row">
             <div className="max-lg:invisible w-6/12 max-lg:w-0  min-h-screen bg-slate-950 min-w-screen flex flex-col justify-between" >
@@ -40,7 +45,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </form> }
-            <div>{Object.keys(errors).length > 0 ? <p>{errors.error}</p> : null }</div>
+            <div className="text-white text-2xl">{errors.length > 0 ? <p>{errors}</p> : null }</div>
         </div>
     )
 }

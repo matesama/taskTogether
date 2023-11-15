@@ -7,7 +7,7 @@ const RegisterPage = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState("");
     const [loader, setLoader] = useState(false);
 
     const getData = async (e) => {
@@ -35,11 +35,11 @@ const RegisterPage = () => {
             console.log(getResponse);
             const data = await getResponse.json();
             console.log(data);
-            setErrors(data);
+            setErrors(data.error);
 
             if(!data) throw new Error({error: `Fetching Data failed, due to:${data.status}`})
         console.log(errors);
-          if(errors){
+          if(!errors){
                 navigate('/login');
             }
         } catch(error) {
@@ -73,7 +73,7 @@ const RegisterPage = () => {
                     </div>
                 </div>
             </form> }
-            <div>{Object.keys(errors).length > 0 ? <p>{errors.error}</p> : null }</div>
+            <div className="text-white text-2xl">{Object.keys(errors).length > 0 ? <p>{errors}</p> : null }</div>
         </div>
         </>
     )
