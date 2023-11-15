@@ -26,7 +26,7 @@ const ChatPage = () => {
           <ChatMenu />
         </div>
         <div className={visibleMobile ? chatSizeClass :"contentContainer bg-slate-300 max-sm:w-0 max-sm:invisible sm:flex-5.5"}>
-          <div className="flex flex-col h-full justify-center">
+          <div className="flex flex-col h-full justify-center w-full">
             <ChatBox />
           </div>
         </div>

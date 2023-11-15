@@ -106,7 +106,7 @@ const ChatBox = ({}) => {
                 onChange={(e) => setNewMessage(e.target.value)}
                 value={newMessage}
             ></textarea>
-            <button className="chatSubmitButton bg-slate-950 text-slate-100 rounded-md mr-4" onClick={handleSubmit}>
+            <button className="chatSubmitButton bg-slate-950 text-slate-100 rounded-md mx-4" onClick={handleSubmit}>
                 Send
             </button>
         </div>

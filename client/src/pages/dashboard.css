@@ -7,7 +7,7 @@
 
 
 .chatMenu{
-	flex: 3.5;
+	flex: 2.5;
 }
 
 .chatMenuInput{
@@ -19,6 +19,7 @@
 
 .contentContainer{
 	/*flex: 5.5;*/
+	width: 45%;
 }
 
 .chatBoxWrapper{
