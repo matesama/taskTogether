@@ -4,11 +4,12 @@ import "./chatBox.css"
 import { ChatBoxContext } from '../context/ChatBoxContext';
 import { UserContext } from '../context/UserContext';
 import { ChatMenuContext } from '../context/ChatMenuContext';
+import backButtons from '/src/assets/backButtons.png';
 
 
 const ChatBox = ({}) => {
   const { user, socket } = useContext(UserContext);
-  const { currentChat, getConversations, loader, setLoader } = useContext(ChatMenuContext);
+  const { currentChat, getConversations, loader, setLoader, setVisibleMobile, visibleMobile} = useContext(ChatMenuContext);
   const { allUsers, getAllUsers, newMessage, setNewMessage, messages, setMessages, arrivalMessage, setArrivalMessage, receiver,  handleSubmit,  getReceiverData, getMessages } = useContext(ChatBoxContext);
   const scrollRef = useRef();
 
@@ -66,6 +67,7 @@ const ChatBox = ({}) => {
 	return (
         <div className="chatBoxWrapper">
           <div className="header">
+		  <button type='button' onClick={()=>{setVisibleMobile(false)}}><img src={backButtons} alt="back icon" className='w-5 h-5 mr-4 sm:w-0 sm:h-0 sm:mr-0'/></button>
   					<div className="headerTop">
   					  <img
   					    className="headerImg"
@@ -77,6 +79,7 @@ const ChatBox = ({}) => {
   					    alt=""
   					  />
   					  <span className="headerName">{currentChat.groupName ? currentChat.groupName : receiver?.username}</span>
+					  
   					</div>
   					{currentChat.groupName &&
   					  <span className="chatInfo">

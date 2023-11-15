@@ -2,6 +2,7 @@ import "./GroupComponent.css";
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from "../context/UserContext";
 import { GroupContext } from "../context/GroupContext";
+import backButtons from "../assets/backButtons.png"
 
 const GroupComponent = ({ }) => {
     const [availableUsers, setAvailableUser] = useState([]);
@@ -18,10 +19,11 @@ const GroupComponent = ({ }) => {
 
       return (
         <div className="group-component">
-          <h2>Group Component</h2>
-          <div>
-            <button className="addButton" onClick={handleBackButton}>Back</button>
-          </div>
+			<div className='flex  w-full justify-between'>
+				<button onClick={handleBackButton}><img src={backButtons} alt="back icon" className='w-6 h-6 ml-3 mb-3 '/></button>
+				<h2 className='text-2xl'>Group Component</h2>
+				<div></div>
+			</div>
           <label>
             Group Name:
             <input type="text" onChange={(e) => setGroupName(e.target.value)} />
@@ -62,7 +64,7 @@ const GroupComponent = ({ }) => {
               </li>
             ))}
           </ul>
-          <button onClick={handleSubmit}>Create Group</button>
+          <button className="bg-slate-950 text-white text-md px-8 py-4 rounded-xl" onClick={handleSubmit}>Create Group</button>
         </div>
       );
 }

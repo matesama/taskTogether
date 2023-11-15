@@ -1,4 +1,4 @@
-import { createContext, useRef, useContext } from 'react';
+import { createContext, useRef, useContext, useState } from 'react';
 import { UserContext } from './UserContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,8 +12,12 @@ const NavigationProvider = ({ children }) => {
   const navigate = useNavigate();
   const { logout, socket } = useContext(UserContext);
 
+  const [visibleMobile, setVisibleMobile] = useState(false)
+
   const handleAdd = () => {
+    setVisibleMobile(true);
     navigate('/add');
+    
   };
 
   const handleLogout = () => {
@@ -22,7 +26,7 @@ const NavigationProvider = ({ children }) => {
   };
 
   return (
-    <NavigationContext.Provider value={{ handleAdd, handleLogout }}>
+    <NavigationContext.Provider value={{ handleAdd, handleLogout, visibleMobile, setVisibleMobile }}>
       {children}
     </NavigationContext.Provider>
   );

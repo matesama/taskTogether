@@ -21,7 +21,7 @@
 	border: 1px solid #ccc;
   }
 
-  .group-component button {
+  .group-component .addButton {
 	display: block;
 	margin-top: 20px;
 	padding: 10px 20px;

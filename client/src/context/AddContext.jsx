@@ -14,6 +14,7 @@ const AddProvider = ({ children }) => {
   const [showGroupComponent, setShowGroupComponent] = useState(false);
   const [allOpenGroupConversations, setAllOpenGroupConversations] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [visibleMobile, setVisibleMobile] = useState(false)
   const navigate = useNavigate();
   // const socket = useRef();
 
@@ -41,6 +42,7 @@ const AddProvider = ({ children }) => {
   };
 
   const handleGroupButtonClick = () => {
+      setVisibleMobile(true);
       navigate('/group');
   };
 
@@ -99,7 +101,7 @@ const AddProvider = ({ children }) => {
 
 
   return (
-    <AddContext.Provider value={{ handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getAllUsers, showGroupComponent, getContacts, }}>
+    <AddContext.Provider value={{ handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getAllUsers, showGroupComponent, getContacts, visibleMobile, setVisibleMobile }}>
       {children}
     </AddContext.Provider>
   );

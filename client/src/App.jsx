@@ -5,7 +5,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ChatPage from "./pages/ChatPage";
 import AddPage from "./pages/AddPage";
 import GroupPage from "./pages/GroupPage";
-// import Homepage from "./pages/Homepage";
+import Homepage from "./pages/Homepage";
 import {Routes, Route, Navigate} from "react-router-dom";
 import PrivateRoute from "./routes/PrivateRoute";
 import PublicRoute from "./routes/PublicRoute";
@@ -31,8 +31,8 @@ function App() {
         <Route path="/*" element={<PublicRoute />} >
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
-          {/* <Route path="homepage" element={<Homepage />} /> */}
-          <Route path="*" element={<Navigate to={'/login'} />} />
+           <Route path="homepage" element={<Homepage />} />
+          <Route path="*" element={<Navigate to={'/homepage'} />} />
           {/* <Route path="*" element={<Navigate to={'/homepage'} />} /> */}
         </Route>
       </Routes>

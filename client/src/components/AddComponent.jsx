@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import { AddContext } from '../context/AddContext';
 import { UserContext } from '../context/UserContext';
+import { NavigationContext } from '../context/NavigationContext';
+import backButtons from '../assets/backButtons.png'
 
 const AddComponent = () => {
   const { user } = useContext(UserContext);
   const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
-
+  const {setVisibleMobile} = useContext(NavigationContext);
   useEffect(() => {
     getAllUsers();
   }, []);
@@ -21,10 +23,12 @@ const AddComponent = () => {
 
   return (
     <div className="add-component">
+      <div className='flex  w-full justify-between'>
+      <button onClick={handleBackButton}><img src={backButtons} alt="back icon" className='w-6 h-6 ml-3 mb-3 sm:w-0 sm:h-0 sm:mr-0 sm:mb-0'/></button>
       <h2>Add Component</h2>
-      <div>
-        <button className="addButton" onClick={handleBackButton}>Back</button>
+      <div></div>
       </div>
+
       <button className="addButton" onClick={handleGroupButtonClick}>Create Group</button>
       {allOpenGroupConversations.length > 0 ? (
         <div>

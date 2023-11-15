@@ -18,9 +18,9 @@ const LoginPage = () => {
     }
     const getData = async (e) => {
         e.preventDefault();
-       
-        login(email, password, setLoader, setErrors, clearErrors)
-        
+        console.log("pre")
+        login(email, password, setLoader, setErrors, clearErrors) 
+        console.log("post")
     }
     console.log(errors)
     return(
@@ -45,7 +45,7 @@ const LoginPage = () => {
                     </div>
                 </div>
             </form> }
-            <div className="text-white text-2xl">{errors.length > 0 ? <p>{errors}</p> : null }</div>
+            <div className="text-white text-2xl">{errors > 0 ? <p>{errors}</p> : null }</div>
         </div>
     )
 }

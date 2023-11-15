@@ -16,6 +16,7 @@ const ChatMenu = ({ }) => {
   const { user } = useContext(UserContext);
   const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
   const { handleAdd, handleLogout } = useContext(NavigationContext);
+ 
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
 	useEffect(() => {
@@ -54,6 +55,13 @@ const ChatMenu = ({ }) => {
 		}
 	};
 
+	//Mobile View
+	const chatMenuSizeClass = 'max-sm:w-0 max-sm:h-0 chatMenu overscroll-none';
+	const handleMobileChatView = () => {
+		
+		
+	}
+
 	  return (
 		<div className="chatMenu overscroll-none">
 		  <div className=" max-sm:flex max-sm:flex-col max-sm:items-start  max-sm:overscroll-none pt-2 static">
@@ -73,23 +81,25 @@ const ChatMenu = ({ }) => {
 			  value={searchInput}
 			  onChange={(e) => setSearchInput(e.target.value.toLowerCase())}
 			/>
-
+			<div>
 			{filteredConversations.map((c) => (
-				 <div key={c._id} onClick={() => handleChatClick(c)}>
+				 <div key={c._id} onClick={() => {handleChatClick(c);}}>
 			   {/* <div key={c._id} onClick={() => setCurrentChat(c)}> */}
 				<Conversation conversation={c} currentUser={user} />
 			  </div>
 			))}
-
+			</div>
 			<div className="navButtons flex flex-row sm:invisible sm:w-0 sm:h-0  w-full justify-around items-center bg-slate-900 max-sm: h-16 self-end absolute bottom-0">
-        <button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleAdd}>
-          <img src={addButton} alt="add Button" className="w-8 h-8"/>
-        </button>
-        <button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full"> <img src={goalButton} alt="task Button" className="w-8 h-8"/></button>
-        <button className="navButton bg-slate-200 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleLogout}>
-        <img src={logoutButton} alt="add Button" className="w-8 h-8"/>
-        </button>
-      </div>
+				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleAdd}>
+					<img src={addButton} alt="add Button" className="w-8 h-8"/>
+				</button>
+				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full"> 
+					<img src={goalButton} alt="task Button" className="w-8 h-8"/>
+				</button>
+				<button className="navButton bg-slate-200 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleLogout}>
+					<img src={logoutButton} alt="add Button" className="w-8 h-8"/>
+				</button>
+			</div>
 		  </div>
 		</div>
 	  );

@@ -4,7 +4,7 @@ import Navigation from '../components/Navigation.jsx';
 
 
 const DashboardPage = () => {
-
+	
 	 return (
 		<>
 		  <div key="container" className='dashboard'>

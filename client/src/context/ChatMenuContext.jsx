@@ -21,6 +21,7 @@ const ChatMenuProvider = ({ children }) => {
   const [loader, setLoader] = useState(false);
   const {user} = useContext(UserContext);
   const navigate = useNavigate();
+  const [visibleMobile, setVisibleMobile] = useState(false)
 
 
   const getConversations = async () => {
@@ -37,15 +38,17 @@ const ChatMenuProvider = ({ children }) => {
 
   const handleChatClick = (chat) => {
     setCurrentChat(chat);
+    setVisibleMobile(true);
 		navigate(`/chat/${chat._id}`);
 	};
+  console.log(visibleMobile);
 
   useEffect(() => {
     localStorage.setItem('currentChat', JSON.stringify(currentChat));
   }, [currentChat]);
 
   return (
-    <ChatMenuContext.Provider value={{ handleChatClick, currentChat, conversations, getConversations, loader, setLoader }}>
+    <ChatMenuContext.Provider value={{ handleChatClick, currentChat, conversations, getConversations, loader, setLoader, visibleMobile, setVisibleMobile }}>
       {children}
     </ChatMenuContext.Provider>
   );
