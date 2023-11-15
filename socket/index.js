@@ -29,16 +29,18 @@ io.on('connection', (socket) => {
 	// when connect
 	console.log('a user connected');
 
+
 	// take userId and socketId from user
 	socket.on("addUser", (userId) => {
 		addUser(userId, socket.id);
 		io.emit("getUsers", users);
+		console.log('added, Users: ', users);
+
 	})
 
 	// send and get message
 	socket.on('sendMessage', ({senderId, receiverId, text}) => {
 		const user = getUser(receiverId);
-		console.log(user);
 		if (user && user.socketId) {
 			io.to(user.socketId).emit("getMessage", {
 				senderId,
@@ -55,20 +57,11 @@ io.on('connection', (socket) => {
 		console.log('newConversation');
     })
 
-	// when disconnect
-	socket.on("disconnect", () => {
-		console.log('a user disconnected');
-		removeUser(socket.id);
-		io.emit("getUsers", users);
-		// socket.disconnect();
-	  });
-
+	// when logout
 	socket.on("logout", () => {
-		console.log('a user logged out');
 		removeUser(socket.id);
 		io.emit("getUsers", users);
-		console.log('still logged in: ', users);
-		socket.disconnect();
+		console.log('a user logged out, still logged in users: ', users);
 	  });
 });
 

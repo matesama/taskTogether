@@ -1,9 +1,31 @@
-const AddComponent = ({ handleAddUser, handleJoinGroup, contacts, handleGroup, allOpenGroupConversations }) => {
+import React, { useContext, useEffect } from 'react';
+import { AddContext } from '../context/AddContext';
+import { UserContext } from '../context/UserContext';
+
+const AddComponent = () => {
+  const { user } = useContext(UserContext);
+  const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
+  useEffect(() => {
+    getContacts();
+  }, [user._id]);
+
+  useEffect(() => {
+    getAllOpenGroupConversations();
+  }, []);
+
 
   return (
     <div className="add-component">
       <h2>Add Component</h2>
-      <button className="addButton" onClick={handleGroup}>Create Group</button>
+      <div>
+        <button className="addButton" onClick={handleBackButton}>Back</button>
+      </div>
+      <button className="addButton" onClick={handleGroupButtonClick}>Create Group</button>
       {allOpenGroupConversations.length > 0 ? (
         <div>
           <h3>Groups</h3>
@@ -48,4 +70,5 @@ const AddComponent = ({ handleAddUser, handleJoinGroup, contacts, handleGroup, a
     </div>
   );
 };
+
 export default AddComponent;

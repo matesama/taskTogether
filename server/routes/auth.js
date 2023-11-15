@@ -10,7 +10,7 @@ authRouter.get("/", async (req, res) => {
     try {
       const response = await User.find();
       res.json(response)
-    } 
+    }
     catch(err){
         res.status(500).json(err)
     }
@@ -30,11 +30,11 @@ authRouter.post('/register', async (req, res) => {
         if(uniqueEmailCheck) {
             return res.json( {error: 'This email is already signed up'} )
         }
-        
+
         const hashPassword = await bcrypt.hash(password, 10);
         const response = await User.create({username, email, password: hashPassword})
         res.json(response);
-        
+
 
     }catch(err){
         res.status(500).json({error: err.message});
@@ -87,17 +87,14 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-
-
 authRouter.get("/user", verifyToken, async (req, res) => {
     try {
       const response = await User.findOne({ email: req.user.email });
       res.json(response)
-    } 
+    }
     catch(err){
         res.status(500).json(err)
     }
 });
-
 
 export default authRouter;

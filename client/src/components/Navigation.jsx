@@ -1,25 +1,18 @@
 import './navigation.css';
 import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavigationContext } from '../context/NavigationContext';
 import { UserContext } from '../context/UserContext';
 import addButton from "../assets/addButton.svg";
 import goalButton from "../assets/goalButton.svg";
 import settingsButton from "../assets/settingsButton.svg"
 import logoutButton from "../assets/logoutButton.svg"
 
-const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
-  const navigate = useNavigate();
-  const {user, logout} = useContext(UserContext); 
-
-  const handleLogout = () => {
-    logout()
-    if (socket.current) {
-      socket.current.emit("logout");
-    };
-  };
+const Navigation = () => {
+  const { handleAdd, handleLogout } = useContext(NavigationContext);
+  const { user } = useContext(UserContext);
 
   return (
-    <div className="navigation bg-slate-800 flex items-center"> 
+    <div className="navigation bg-slate-800 flex items-center">
       <div className="userProfile flex">
         <img
           className="userProfilePicture self-center"
@@ -29,7 +22,7 @@ const Navigation = ({ currentUser, onAddButtonClick, socket }) => {
         <span className="userName text-slate-300">{user.username}</span>
       </div>
       <div className="navButtons flex">
-        <button className="navButton bg-slate-100 text-slate-950 w-12" onClick={onAddButtonClick}>
+        <button className="navButton bg-slate-100 text-slate-950 w-12" onClick={handleAdd}>
           <img src={addButton} alt="add Button" className="w-8 h-8"/>
         </button>
         <button className="navButton bg-slate-100 text-slate-950 w-12"> <img src={goalButton} alt="task Button" className="w-8 h-8"/></button>

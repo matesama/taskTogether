@@ -6,9 +6,6 @@ const conversationRouter = express.Router();
 // get one conversation
 
 conversationRouter.get('/find/:id', async (req, res) => {
-	if (!req.params.id) {
-		return res.status(400).json({ message: 'Invalid id' });
-	}
     try {
         const conversation = await Conversation.findById(req.params.id);
         if (!conversation) {
@@ -38,7 +35,7 @@ conversationRouter.get("/allGroups", async (req, res) => {
   });
 
 
-  //get conv of a user
+  //get convs of a user
 
 conversationRouter.get("/:userId", async (req, res) => {
 	try {
