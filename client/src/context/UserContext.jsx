@@ -18,8 +18,29 @@ const UserProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState(null);
 
+  useEffect(() => {
+    if (user && !socket) {
+      const socket = io('ws://localhost:8100');
+      // socket.on('connect', () => setIsConnected(true));
+      socket.on('connect', () => {
+        setIsConnected(true);
+        socket.emit("addUser", user._id);
+      });
+      setSocket(socket);
+    }
+    return () => {
+      if (socket) {
+        logout();
+        // socket.emit("logout");
+        // socket.disconnect();
+        // setSocket(null);
+      }
+    };
+  }, [user]);
+
 
   const login = async (email, password, setLoader, setErrors, clearErrors) => {
+
     try {
       setLoader(true);
       const getResponse = await axios.post('http://localhost:8000/api/auth/login', { email, password }, { headers: { 'Content-Type': 'application/json' } });
@@ -38,7 +59,7 @@ const UserProvider = ({ children }) => {
       console.log('token', token);
       console.log('user', user);
       console.log('socket', socket);
-      if (token) {
+      if (token && user && socket) {
         if (socket) {
           socket.emit("addUser", user._id);
         }
@@ -56,20 +77,6 @@ const UserProvider = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    if (user && !socket) {
-      const socket = io('ws://localhost:8100');
-      socket.on('connect', () => setIsConnected(true));
-      setSocket(socket);
-    }
-    return () => {
-      if (socket) {
-        socket.emit("logout");
-        socket.disconnect();
-        setSocket(null);
-      }
-    };
-  }, [user]);
 
   useEffect(() => {
     console.log('socket-log', socket);

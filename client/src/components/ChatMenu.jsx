@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { UserContext } from '../context/UserContext';
 import { ChatMenuContext } from '../context/ChatMenuContext';
 import { NavigationContext } from '../context/NavigationContext';
@@ -16,12 +16,18 @@ const ChatMenu = ({ }) => {
   const { user } = useContext(UserContext);
   const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
   const { handleAdd, handleLogout } = useContext(NavigationContext);
+  const scrollRef = useRef();
 
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
+
 	useEffect(() => {
-    getConversations();
-  }, [user._id]);
+		scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+	}, [conversations]);
+
+	useEffect(() => {
+   	 	getConversations();
+  	}, [user._id]);
 
 	useEffect(() => {
 		const filterConversations = async () => {
@@ -81,9 +87,10 @@ const ChatMenu = ({ }) => {
 			  value={searchInput}
 			  onChange={(e) => setSearchInput(e.target.value.toLowerCase())}
 			/>
-			<div>
+			<div className="conversationsList">
 			{filteredConversations.map((c) => (
-				 <div key={c._id} onClick={() => {handleChatClick(c);}}>
+				//  <div key={c._id} onClick={() => {handleChatClick(c);}}>
+				 <div key={c._id} ref={scrollRef} onClick={() => {handleChatClick(c);}}>
 			   {/* <div key={c._id} onClick={() => setCurrentChat(c)}> */}
 				<Conversation conversation={c} currentUser={user} />
 			  </div>

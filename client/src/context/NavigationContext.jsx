@@ -21,7 +21,7 @@ const NavigationProvider = ({ children }) => {
   };
 
   const handleLogout = () => {
-    socket.emit("logout");
+    // socket.emit("logout");
     logout();
   };
 
