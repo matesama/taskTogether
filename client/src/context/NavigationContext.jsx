@@ -17,11 +17,11 @@ const NavigationProvider = ({ children }) => {
   const handleAdd = () => {
     setVisibleMobile(true);
     navigate('/add');
-    
+
   };
 
   const handleLogout = () => {
-    // socket.emit("logout");
+    socket.emit("logout");
     logout();
   };
 

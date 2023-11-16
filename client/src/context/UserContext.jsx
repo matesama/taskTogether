@@ -1,7 +1,8 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { io } from 'socket.io-client';
+import { ChatMenuContext } from "./ChatMenuContext";
 
 
 export const UserContext = createContext();
@@ -13,29 +14,72 @@ const UserProvider = ({ children }) => {
   // Init state for token from sessionStorage
   const [token, setToken] = useState(sessionStorage.getItem('token') || null);
 
+  const { setCurrentChat } = useContext(ChatMenuContext)
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState(null);
 
 
+  const login = async (email, password, setLoader, setErrors, clearErrors) => {
+    try {
+      setLoader(true);
+      const getResponse = await axios.post('http://localhost:8000/api/auth/login', { email, password }, { headers: { 'Content-Type': 'application/json' } });
+      const data = getResponse.data;
+
+      const token = data.token;
+      const user = data.user;
+      if (!token) {
+        setErrors(data);
+        setTimeout(clearErrors, 2000);
+      }
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+      setToken(token);
+      console.log('token', token);
+      console.log('user', user);
+      console.log('socket', socket);
+      if (token) {
+        if (socket) {
+          socket.emit("addUser", user._id);
+        }
+      }
+        navigate('/');
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data.error);
+      } else {
+        console.log('An error occurred:', error);
+      }
+      console.log(error);
+    } finally {
+      setLoader(false);
+    }
+  }
+
   useEffect(() => {
     if (user && !socket) {
-      const newSocket = io('ws://localhost:8100');
-      newSocket.on('connect', () => setIsConnected(true));
-      setSocket(newSocket);
+      const socket = io('ws://localhost:8100');
+      socket.on('connect', () => setIsConnected(true));
+      setSocket(socket);
     }
     return () => {
       if (socket) {
+        socket.emit("logout");
         socket.disconnect();
+        setSocket(null);
       }
     };
   }, [user]);
 
-
   useEffect(() => {
-    if (socket && user) {
-      socket.emit("addUser", user._id);
-    }
-  }, [socket, user]);
+    console.log('socket-log', socket);
+  }, [socket]);
+
+  // useEffect(() => {
+  //   if (socket && user) {
+  //     socket.emit("addUser", user._id);
+  //   }
+  // }, [socket, user]);
 
 
   useEffect(() => {
@@ -61,43 +105,7 @@ const UserProvider = ({ children }) => {
     loadUserData();
   }, [token]);
 
-  const login = async (email, password, setLoader, setErrors, clearErrors) => {
-    try {
-      setLoader(true);
-      const getResponse = await axios.post('http://localhost:8000/api/auth/login', { email, password }, { headers: { 'Content-Type': 'application/json' } });
-      const data = getResponse.data;
 
-      const token = data.token;
-      const user = data.user;
-      if (!token) {
-        setErrors(data);
-        setTimeout(clearErrors, 2000);
-      }
-      sessionStorage.setItem('token', token);
-      sessionStorage.setItem('user', JSON.stringify(user));
-      setUser(user);
-      setToken(token);
-      console.log('token', token);
-      console.log('user', user);
-      // if (token) {
-      //   if (socket && user) {
-      //     socket.emit("addUser", user._id);
-      //     } else {
-      //       console.error('Socket is not initialized');
-      //     }
-      //   navigate('/');
-      // }
-    } catch (error) {
-      if (error.response) {
-        setErrors(error.response.data.error);
-      } else {
-        console.log('An error occurred:', error);
-      }
-      console.log(error);
-    } finally {
-      setLoader(false);
-    }
-  }
 
   const logout = () => {
     sessionStorage.removeItem('token');
@@ -105,8 +113,11 @@ const UserProvider = ({ children }) => {
     sessionStorage.removeItem('currentChat');
     setUser(null);
     setToken(null);
+    setCurrentChat(null);
     if (socket) {
         socket.emit("logout");
+        socket.disconnect();
+        setSocket(null);
     }
     navigate('/login');
   }

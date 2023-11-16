@@ -16,7 +16,7 @@ const ChatMenu = ({ }) => {
   const { user } = useContext(UserContext);
   const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
   const { handleAdd, handleLogout } = useContext(NavigationContext);
- 
+
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
 	useEffect(() => {
@@ -58,8 +58,8 @@ const ChatMenu = ({ }) => {
 	//Mobile View
 	const chatMenuSizeClass = 'max-sm:w-0 max-sm:h-0 chatMenu overscroll-none';
 	const handleMobileChatView = () => {
-		
-		
+
+
 	}
 
 	  return (
@@ -93,7 +93,7 @@ const ChatMenu = ({ }) => {
 				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleAdd}>
 					<img src={addButton} alt="add Button" className="w-8 h-8"/>
 				</button>
-				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full"> 
+				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full">
 					<img src={goalButton} alt="task Button" className="w-8 h-8"/>
 				</button>
 				<button className="navButton bg-slate-200 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleLogout}>

@@ -18,11 +18,11 @@ const LoginPage = () => {
     }
     const getData = async (e) => {
         e.preventDefault();
-        console.log("pre")
-        login(email, password, setLoader, setErrors, clearErrors) 
-        console.log("post")
+        // console.log("pre")
+        login(email, password, setLoader, setErrors, clearErrors)
+        // console.log("post")
     }
-    console.log(errors)
+    // console.log(errors)
     return(
         <div className="text-slate-300 flex  lg:flex-row">
             <div className="max-lg:invisible w-6/12 max-lg:w-0  min-h-screen bg-slate-950 min-w-screen flex flex-col justify-between" >

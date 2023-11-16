@@ -8,17 +8,27 @@ const AddComponent = () => {
   const { user } = useContext(UserContext);
   const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
   const {setVisibleMobile} = useContext(NavigationContext);
-  useEffect(() => {
-    getAllUsers();
-  }, []);
 
   useEffect(() => {
+    getAllUsers();
     getContacts();
-  }, [user._id]);
+  }, [contacts]);
 
   useEffect(() => {
     getAllOpenGroupConversations();
-  }, []);
+  }, [allOpenGroupConversations]);
+
+  // useEffect(() => {
+  //   getAllUsers();
+  // }, []);
+
+  // useEffect(() => {
+  //   getContacts();
+  // }, [user._id]);
+
+  // useEffect(() => {
+  //   getAllOpenGroupConversations();
+  // }, []);
 
 
   return (
