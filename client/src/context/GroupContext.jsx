@@ -10,8 +10,7 @@ export const GroupContext = createContext({
 });
 
 const GroupProvider = ({ children }) => {
-  const { user } = useContext(UserContext);
-  // const { socket } = useContext(SocketContext);
+  const { user, socket } = useContext(UserContext);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [groupPicture, setGroupPicture] = useState('');
@@ -52,17 +51,20 @@ const GroupProvider = ({ children }) => {
       alert('Groupname input must be filled out');
       return;
     }
- 
+
     try {
       const formData = new FormData();
       formData.append('groupPicture', groupPicture);
 
       const membersIds = [...selectedUsers.map(selectedUser => selectedUser._id), user._id];
-      
+
       // Append additional form fields
-      formData.append('members', JSON.stringify(membersIds));
+      membersIds.forEach((memberId, index) => {
+        formData.set(`members[${index}]`, memberId);
+      });
+
       formData.append('groupName', groupName);
-      
+
       const conversationResponse = await axios.post('http://localhost:8000/api/conversations', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -71,11 +73,15 @@ const GroupProvider = ({ children }) => {
       });
 
       // socket.emit('newConversation');
-      console.log('Group created:', conversationResponse.data);
+      // console.log('Group created:', conversationResponse.data);
       socket.emit('newConversation');
       navigate('/');
     } catch (error) {
-      console.error(error.response.data);
+      if (error.response) {
+        console.error(error.response.data);
+      } else {
+        console.error(error);
+      }
     }
   };
 
