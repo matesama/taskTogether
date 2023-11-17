@@ -8,19 +8,21 @@ import settingsButton from "../assets/settingsButton.svg"
 import logoutButton from "../assets/logoutButton.svg"
 
 const Navigation = () => {
-  const { handleAdd, handleLogout } = useContext(NavigationContext);
+  const { handleAdd, handleLogout, handleHome } = useContext(NavigationContext);
   const { user } = useContext(UserContext);
 
   return (
     <div className="navigation bg-slate-800 flex items-center">
-      <div className="userProfile flex">
-        <img
-          className="userProfilePicture self-center"
-          src={user.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
-          alt="User Profile"
-        />
-        <span className="userName text-slate-300">{user.username}</span>
-      </div>
+      <button onClick={handleHome}>
+        <div className="userProfile flex">
+          <img
+            className="userProfilePicture self-center"
+            src={user.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
+            alt="User Profile"
+          />
+          <span className="userName text-slate-300">{user.username}</span>
+        </div>
+      </button>
       <div className="navButtons flex">
         <button className="navButton bg-slate-100 text-slate-950 w-12" onClick={handleAdd}>
           <img src={addButton} alt="add Button" className="w-8 h-8"/>

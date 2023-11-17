@@ -9,9 +9,7 @@ export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const navigate = useNavigate();
-  // Init user state
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null);
-  // Init state for token from sessionStorage
   const [token, setToken] = useState(sessionStorage.getItem('token') || null);
 
   const { setCurrentChat } = useContext(ChatMenuContext)
@@ -21,7 +19,6 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     if (user && !socket) {
       const socket = io('ws://localhost:8100');
-      // socket.on('connect', () => setIsConnected(true));
       socket.on('connect', () => {
         setIsConnected(true);
         socket.emit("addUser", user._id);
@@ -31,9 +28,6 @@ const UserProvider = ({ children }) => {
     return () => {
       if (socket) {
         logout();
-        // socket.emit("logout");
-        // socket.disconnect();
-        // setSocket(null);
       }
     };
   }, [user]);
@@ -56,13 +50,8 @@ const UserProvider = ({ children }) => {
       sessionStorage.setItem('user', JSON.stringify(user));
       setUser(user);
       setToken(token);
-      console.log('token', token);
-      console.log('user', user);
-      console.log('socket', socket);
       if (token && user && socket) {
-        if (socket) {
           socket.emit("addUser", user._id);
-        }
       }
         navigate('/');
     } catch (error) {
@@ -78,21 +67,10 @@ const UserProvider = ({ children }) => {
   }
 
 
-  useEffect(() => {
-    console.log('socket-log', socket);
-  }, [socket]);
-
-  // useEffect(() => {
-  //   if (socket && user) {
-  //     socket.emit("addUser", user._id);
-  //   }
-  // }, [socket, user]);
-
 
   useEffect(() => {
     const loadUserData = async () => {
       try {
-        // check token in sessionStorage
         const storedToken = sessionStorage.getItem('token');
         if (storedToken) {
           const response = await axios.get('http://localhost:8000/api/auth/user', {
@@ -101,7 +79,6 @@ const UserProvider = ({ children }) => {
               'Content-Type': 'application/json'
             }
           });
-          // set User Data on successful response
           setUser(response.data);
         }
       } catch (error) {
