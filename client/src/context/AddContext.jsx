@@ -17,6 +17,26 @@ const AddProvider = ({ children }) => {
   const navigate = useNavigate();
 
 
+  useEffect(() => {
+    if (user) {
+      getContacts();
+      getAllOpenGroupConversations();
+    }
+
+    const listener = () => {
+      getContacts();
+      getAllOpenGroupConversations();
+    };
+
+    if (socket) {
+      socket.on('newConversation', listener);
+
+      return () => {
+        socket.off('newConversation', listener);
+      };
+    }
+  }, [user, socket]);
+
   const handleAddUser = async (selectedUser) => {
     try {
       const conversationResponse = await axios.post('http://localhost:8000/api/conversations', {
@@ -50,20 +70,20 @@ const AddProvider = ({ children }) => {
   };
 
   const getContacts = async () => {
-    try {
-      const conversationResponse = await axios.get(`http://localhost:8000/api/conversations/${user._id}`);
-      const conversations = conversationResponse.data;
-      const filteredConversations = conversations.filter(conversation => !conversation.groupName);
-      const participantIds = filteredConversations.reduce((ids, conversation) => {
-        return [...ids, ...conversation.members];
-      }, []);
-      const userResponse = await axios.get('http://localhost:8000/api/users/all');
-      const allUsers = userResponse.data;
-      const filteredContacts = allUsers.filter((user) => !participantIds.includes(user._id));
-      setContacts(filteredContacts);
-    } catch (error) {
-      console.error('Error fetching contacts:', error);
-    }
+      try {
+        const conversationResponse = await axios.get(`http://localhost:8000/api/conversations/${user._id}`);
+        const conversations = conversationResponse.data;
+        const filteredConversations = conversations.filter(conversation => !conversation.groupName);
+        const participantIds = filteredConversations.reduce((ids, conversation) => {
+          return [...ids, ...conversation.members];
+        }, []);
+        const userResponse = await axios.get('http://localhost:8000/api/users/all');
+        const allUsers = userResponse.data;
+        const filteredContacts = allUsers.filter((userItem) => !participantIds.includes(userItem._id) && userItem._id !== user._id);
+        setContacts(filteredContacts);
+      } catch (error) {
+        console.error('Error fetching contacts:', error);
+      }
   };
 
   const getAllUsers = async () => {
