@@ -57,8 +57,7 @@ conversationRouter.get("/:userId", async (req, res) => {
 })
 
 
-//new conv
-//group Img
+//new conversation & group Images
 
 const storage = multer.memoryStorage();
 const upload = multer({
