@@ -14,7 +14,7 @@ const LoginPage = () => {
     const {login} = useContext(UserContext)
 
     const clearErrors = () => {
-        setErrors({});
+        setErrors("");
     }
     const getData = async (e) => {
         e.preventDefault();
@@ -22,7 +22,9 @@ const LoginPage = () => {
         login(email, password, setLoader, setErrors, clearErrors)
         // console.log("post")
     }
-    // console.log(errors)
+   
+    const errorClass = "p-3 text-xl text-slate-100 rounded-md bg-red-500 mb-4";
+
     return(
         <div className="text-slate-300 flex  lg:flex-row">
             <div className="max-lg:invisible w-6/12 max-lg:w-0  min-h-screen bg-slate-950 min-w-screen flex flex-col justify-between" >
@@ -40,12 +42,12 @@ const LoginPage = () => {
                         <input id='email' type="email" onChange={(e)=>{setEmail(e.target.value)}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
                         <label htmlFor='password' className="text-sm text-start mt-3 mb-0">Password</label>
                         <input type="password" id="password" onChange={(e)=>{ setPassword(e.target.value) }} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 mb-7 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
+                        <div className={errors.length > 0 ? errorClass : "m-0 h-0 invisible"}>{errors.length > 0 ? <p>{errors}</p> : null }</div>
                         <input type="submit" id="submitLoginButton" value="Sign In" className="bg-slate-500 w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-blue-600 focus:ring-4 focus:ring-purple-blue-100 bg-purple-blue-500 cursor-pointer"/>
                         <input type="button" id="linkToRegister" value='Not registered yet? Create an Account' onClick={()=> navigate("/register")} className="w-full underline underline-offset-1 cursor-pointer"/>
                     </div>
                 </div>
             </form> }
-            <div className="text-white text-2xl">{errors > 0 ? <p>{errors}</p> : null }</div>
         </div>
     )
 }

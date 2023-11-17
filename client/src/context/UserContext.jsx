@@ -57,10 +57,10 @@ const UserProvider = ({ children }) => {
     } catch (error) {
       if (error.response) {
         setErrors(error.response.data.error);
+        setTimeout(clearErrors, 2000);
       } else {
         console.log('An error occurred:', error);
       }
-      console.log(error);
     } finally {
       setLoader(false);
     }

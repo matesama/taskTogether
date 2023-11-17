@@ -1,14 +1,19 @@
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 import Loader from "../components/Loader";
 
 const RegisterPage = () => {
     const navigate = useNavigate();
-    const [name, setName] = useState("");
+    const [username, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState("");
     const [loader, setLoader] = useState(false);
+
+    const clearErrors = () => {
+        setErrors("");
+    }
 
     const getData = async (e) => {
         e.preventDefault();
@@ -18,7 +23,7 @@ const RegisterPage = () => {
             const requestData = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username: name, email: email, password: password })
+                body: JSON.stringify({ username: username, email: email, password: password })
             }
 
             //custom email regex -> validate email
@@ -26,28 +31,39 @@ const RegisterPage = () => {
             if (!regex.test(email)) {
               console.log(regex.test(email))
               setErrors({error: 'Please insert a valid email format'});
+              setTimeout(clearErrors, 2000);
               console.log(errors);
-              /*setTimeout(clearErrors, 2000);*/
               return;
             }
             //connect to server
-            const getResponse = await fetch('http://localhost:8000/api/auth/register', requestData);
+            const getResponse = await axios.post('http://localhost:8000/api/auth/register', { username, email, password }, { headers: { 'Content-Type': 'application/json' } });
             console.log(getResponse);
-            const data = await getResponse.json();
-            console.log(data);
-            setErrors(data.error);
-
+            const data = getResponse.data;
+            if (data.error) {
+                setErrors(data.error);
+                setTimeout(clearErrors, 2000);
+                console.log(data.error)
+              }
             if(!data) throw new Error({error: `Fetching Data failed, due to:${data.status}`})
-        console.log(errors);
-          if(!errors){
+        
+          if(!data.error){
                 navigate('/login');
             }
         } catch(error) {
-            console.log({error: error.message});
+            if (error.response) {
+                console.log(error.response)
+                setErrors(error.response.data.error);
+                setTimeout(clearErrors, 2000);
+              } else {
+                console.log('An error occurred:', error);
+              }
         } finally {
             setLoader(false);
         }
     }
+
+    const errorClass = "p-3 text-xl text-slate-100 rounded-md bg-red-500 mb-4";
+
     return(
         <>
         <div className="text-slate-300 flex lg:flex-row">
@@ -63,17 +79,17 @@ const RegisterPage = () => {
                     <h2 className="font-bold mb-5 text-3xl w-full">Create Account</h2>
                     <div className="flex flex-col w-full">
                         <label htmlFor="name" className="w-full text-sm text-start mb-0">Name</label>
-                        <input id="name" onChange={(e)=>{setName(e.target.value)}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
+                        <input id="name" onChange={(e)=>{setUserName(e.target.value)}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
                         <label htmlFor="email" className="text-sm text-start mt-3 mb-0">Email</label>
                         <input id="email" type="email" onChange={(e)=>{setEmail(e.target.value)}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
                         <label htmlFor="password" className="text-sm text-start mt-3 mb-0">Password</label>
                         <input type="password" id="password" onChange={(e)=>{setPassword(e.target.value)}} required className="flex items-center w-full px-3 py-2 mr-2 text-sm font-medium outline-none text-slate-800 focus:bg-grey-400 mb-7 placeholder:text-grey-700 bg-grey-200 text-dark-grey-900 rounded-2xl"/>
+                        <div className={errors.length > 0 ? errorClass : "m-0 h-0 invisible"}>{errors.length > 0 ? <p>{errors}</p> : null }</div>
                         <input type="submit" id="registerSubmitButton" value="Create Account" className="bg-slate-500 w-full px-6 py-5 mb-5 text-sm font-bold leading-none text-white transition duration-300 md:w-96 rounded-2xl hover:bg-purple-blue-600 focus:ring-4 focus:ring-purple-blue-100 bg-purple-blue-500 cursor-pointer" />
                         <input type="button" id="linkToLogin" value='Already registered? Sign In' onClick={()=> navigate("/login")} className="w-full underline underline-offset-1 cursor-pointer"/>
                     </div>
                 </div>
             </form> }
-            <div className="text-white text-2xl">{Object.keys(errors).length > 0 ? <p>{errors}</p> : null }</div>
         </div>
         </>
     )

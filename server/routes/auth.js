@@ -28,7 +28,7 @@ authRouter.post('/register', async (req, res) => {
 
         const uniqueEmailCheck = await User.findOne( {email} );
         if(uniqueEmailCheck) {
-            return res.json( {error: 'This email is already signed up'} )
+            return res.json( {error: 'This email already signed up'} )
         }
 
         const hashPassword = await bcrypt.hash(password, 10);
