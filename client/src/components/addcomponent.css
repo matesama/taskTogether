@@ -1,0 +1,72 @@
+.noConversationText {
+
+	font-size: 50px;
+	cursor: default;
+  }
+
+  .add-component {
+	padding: 10px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+  	scrollbar-width: thin;
+  	scrollbar-color: #E0E1E7 transparent;
+  }
+
+  .add-component::-webkit-scrollbar {
+	width: 8px;
+}
+
+.add-component::-webkit-scrollbar-thumb {
+	background-color: #E0E1E7;
+	border-radius: 20px;
+	border: transparent;
+}
+
+.add-component::-webkit-scrollbar-thumb:hover {
+    background-color: #27344B;
+}
+
+  .add-component h2 {
+	font-size: 24px;
+	margin-bottom: 15px;
+  }
+
+  .add-component ul {
+	list-style: none;
+	padding: 0;
+  }
+
+  .add-component li {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+  }
+
+  .userProfilePicture,
+  .groupPicture {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-right: 10px;
+	object-fit: cover;
+  }
+
+  .userName,
+  .groupName {
+	font-size: 18px;
+  }
+
+	.addButton {
+	margin-left: auto;
+	margin-top: 8px;
+	padding: 8px;
+	background-color: #132137;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+  }
+  .addButton:hover {
+	background-color: #2980b9;
+  }

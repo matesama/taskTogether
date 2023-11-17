@@ -91,7 +91,7 @@ conversationRouter.post("/", upload.single('groupPicture'), async (req, res) => 
 
 // join conversation
 
-  
+
 
 conversationRouter.post("/join/:conversationId", async (req, res) => {
 	const { userId } = req.body;
@@ -117,6 +117,6 @@ conversationRouter.post("/join/:conversationId", async (req, res) => {
 	}
   });
 
-  
+
 
 export default conversationRouter;

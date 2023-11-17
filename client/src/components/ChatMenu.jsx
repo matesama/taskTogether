@@ -4,10 +4,7 @@ import { ChatMenuContext } from '../context/ChatMenuContext';
 import { NavigationContext } from '../context/NavigationContext';
 import axios from 'axios';
 import Conversation from './Conversation';
-import addButton from "../assets/addButton.svg";
-import goalButton from "../assets/goalButton.svg";
-import settingsButton from "../assets/settingsButton.svg"
-import logoutButton from "../assets/logoutButton.svg"
+import './chatmenu.css';
 
 const ChatMenu = ({ }) => {
   const [searchInput, setSearchInput] = useState("");
@@ -16,14 +13,10 @@ const ChatMenu = ({ }) => {
   const { user } = useContext(UserContext);
   const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
   const { handleAdd, handleLogout } = useContext(NavigationContext);
-//   const scrollRef = useRef();
 
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
 
-	// useEffect(() => {
-	// 	scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-	// }, [conversations]);
 
 	useEffect(() => {
    	 	getConversations();
@@ -69,7 +62,8 @@ const ChatMenu = ({ }) => {
 	}
 
 	  return (
-		<div className="chatMenu overscroll-none">
+		// <div className="chatMenu overscroll-none">
+		<div className="chatMenu">
 		  <div className=" max-sm:flex max-sm:flex-col max-sm:items-start  max-sm:overscroll-none pt-2 static">
 
 		  <div className="userProfile max-sm:flex max-sm:flex-col max-sm:items-center max-sm:w-full sm:w-0 sm:invisible sm:h-0">
@@ -80,7 +74,6 @@ const ChatMenu = ({ }) => {
         	/>
         	<span className="userName text-slate-950">{user.username}</span>
       	  </div>
-
 			<input
 			  placeholder="Search for People"
 			  className="chatMenuInput rounded-2xl bg-slate-100 max-sm:pl-5 ml-2 placeholder-slate-950 placeholder-opacity-50 placeholder: pl-4 mr-8"
@@ -89,9 +82,7 @@ const ChatMenu = ({ }) => {
 			/>
 			<div className="conversationsList">
 			{filteredConversations.map((c) => (
-				 <div key={c._id} onClick={() => {handleChatClick(c);}}>
-				  {/* <div key={c._id} ref={scrollRef} onClick={() => {handleChatClick(c);}}> */}
-			   {/* <div key={c._id} onClick={() => setCurrentChat(c)}> */}
+				<div key={c._id} onClick={() => {handleChatClick(c);}}>
 				<Conversation conversation={c} currentUser={user} />
 			  </div>
 			))}

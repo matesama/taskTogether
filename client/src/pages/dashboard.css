@@ -1,26 +1,30 @@
 .dashboard{
 	height: calc(100vh);
 	overflow: hidden;
-	/* height: 100vh;
-	overflow-y: auto; */
 	display: flex;
 }
 
-/* .conversationsList {
-	height: 100vh;
+
+ .chatBoxWrapper {
 	overflow-y: auto;
-  } */
+	scrollbar-width: thin;
+	scrollbar-color: #E0E1E7 transparent;
+  }
 
-.chatMenu{
-	flex: 2.5;
-}
+  .chatBoxWrapper::-webkit-scrollbar {
+	width: 8px;
+  }
 
-.chatMenuInput{
-	width: 90%;
-	padding:10px 0;
-	border: none;
-	border-bottom: 1px solid grey;
-}
+  .chatBoxWrapper::-webkit-scrollbar-thumb {
+	background-color: #E0E1E7;
+	border-radius: 20px;
+	transition: background-color 0.3s ease-in-out;
+  }
+
+  .chatBoxWrapper::-webkit-scrollbar-thumb:hover {
+	background-color: #27344B;
+  }
+
 
 .contentContainer{
 	/*flex: 5.5;*/
