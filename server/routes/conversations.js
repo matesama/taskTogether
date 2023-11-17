@@ -1,6 +1,10 @@
 import express from 'express';
 import Conversation from "../models/Conversation.js";
+import multer from 'multer';
+import path from 'path';
+
 const conversationRouter = express.Router();
+
 
 
 // get one conversation
@@ -54,16 +58,31 @@ conversationRouter.get("/:userId", async (req, res) => {
 
 
 //new conv
+//group Img
 
-conversationRouter.post("/", async (req, res) => {
-	const newConversation = new Conversation({
-	  members: req.body.members,
-	  groupName: req.body.groupName,
-	  groupPicture: req.body.groupPicture
-	})
+const storage = multer.memoryStorage();
+const upload = multer({
+	storage: storage,
+})
+
+conversationRouter.post("/", upload.single('groupPicture'), async (req, res) => {
 	try {
-	  const savedConversation = await newConversation.save();
-	  res.status(200).json(savedConversation);
+
+		const { members, groupName} = req.body;
+		let imgBase64 = '';
+
+		if(req.file) {
+			imgBase64 = req.file.buffer.toString('base64');
+		}
+
+		const newConversation = new Conversation({
+			members,
+			groupName,
+			groupPicture: imgBase64
+		});
+		const response = await newConversation.save();
+
+	  res.status(200).json(response);
 	} catch(err) {
 	  res.status(500).json(err);
 	}
@@ -71,6 +90,8 @@ conversationRouter.post("/", async (req, res) => {
 
 
 // join conversation
+
+  
 
 conversationRouter.post("/join/:conversationId", async (req, res) => {
 	const { userId } = req.body;
@@ -95,5 +116,7 @@ conversationRouter.post("/join/:conversationId", async (req, res) => {
 	  res.status(500).json(err);
 	}
   });
+
+  
 
 export default conversationRouter;
