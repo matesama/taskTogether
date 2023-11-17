@@ -34,6 +34,7 @@ const AddProvider = ({ children }) => {
     try {
       const response = await axios.post(`http://localhost:8000/api/conversations/join/${groupId}`, { userId: user._id });
       setAllOpenGroupConversations(prevConversations => prevConversations.filter(conversation => conversation._id !== groupId));
+      socket.emit('newConversation');
     } catch (error) {
       console.error('Failed to join group:', error);
     }
