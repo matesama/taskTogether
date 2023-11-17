@@ -3,20 +3,23 @@ import { AddContext } from '../context/AddContext';
 import { UserContext } from '../context/UserContext';
 import { NavigationContext } from '../context/NavigationContext';
 import backButtons from '../assets/backButtons.png'
+import { ChatBoxContext } from '../context/ChatBoxContext';
 
 const AddComponent = () => {
   const { user } = useContext(UserContext);
+  const { allUsers } = useContext(ChatBoxContext);
   const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
   const {setVisibleMobile} = useContext(NavigationContext);
+
 
   useEffect(() => {
     getAllUsers();
     getContacts();
-  }, [contacts]);
+  }, [contacts, allUsers]);
 
   useEffect(() => {
     getAllOpenGroupConversations();
-  }, [allOpenGroupConversations]);
+  }, []);
 
   // useEffect(() => {
   //   getAllUsers();

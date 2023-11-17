@@ -43,18 +43,30 @@ const ChatMenuProvider = ({ children }) => {
 		navigate(`/chat/${chat._id}`);
 	};
 
-  useEffect(() => {
-    if (socket) {
-      socket.on('new conversation', getConversations);
-      return () => socket.off('new conversation');
-    }
-  }, [socket, getConversations]);
-
   // console.log(visibleMobile);
 
   useEffect(() => {
     sessionStorage.setItem('currentChat', JSON.stringify(currentChat));
   }, [currentChat]);
+
+  // useEffect(() => {
+  //   if (socket) {
+  //     socket.on('new conversation', getConversations);
+  //     return () => socket.off('new conversation');
+  //   }
+  // }, [socket, getConversations]);
+
+    useEffect(() => {
+    if (socket) {
+      socket.on('newConversation', getConversations);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('newConversation', getConversations);
+      }
+    };
+  }, [socket, getConversations]);
 
   return (
     <ChatMenuContext.Provider value={{ handleChatClick, currentChat, conversations, getConversations, loader, setLoader, visibleMobile, setVisibleMobile }}>
