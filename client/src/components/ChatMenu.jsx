@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { UserContext } from '../context/UserContext';
 import { ChatMenuContext } from '../context/ChatMenuContext';
 import { NavigationContext } from '../context/NavigationContext';
@@ -16,12 +16,18 @@ const ChatMenu = ({ }) => {
   const { user } = useContext(UserContext);
   const { handleChatClick, currentChat, conversations, getConversations, loader, setLoader } = useContext(ChatMenuContext);
   const { handleAdd, handleLogout } = useContext(NavigationContext);
- 
+//   const scrollRef = useRef();
+
 
 /////////////// CONVERSATIONS ////////////////////////////////////////////////
+
+	// useEffect(() => {
+	// 	scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+	// }, [conversations]);
+
 	useEffect(() => {
-    getConversations();
-  }, [user._id]);
+   	 	getConversations();
+  	}, [user._id]);
 
 	useEffect(() => {
 		const filterConversations = async () => {
@@ -58,8 +64,8 @@ const ChatMenu = ({ }) => {
 	//Mobile View
 	const chatMenuSizeClass = 'max-sm:w-0 max-sm:h-0 chatMenu overscroll-none';
 	const handleMobileChatView = () => {
-		
-		
+
+
 	}
 
 	  return (
@@ -81,24 +87,14 @@ const ChatMenu = ({ }) => {
 			  value={searchInput}
 			  onChange={(e) => setSearchInput(e.target.value.toLowerCase())}
 			/>
-			<div>
+			<div className="conversationsList">
 			{filteredConversations.map((c) => (
 				 <div key={c._id} onClick={() => {handleChatClick(c);}}>
+				  {/* <div key={c._id} ref={scrollRef} onClick={() => {handleChatClick(c);}}> */}
 			   {/* <div key={c._id} onClick={() => setCurrentChat(c)}> */}
 				<Conversation conversation={c} currentUser={user} />
 			  </div>
 			))}
-			</div>
-			<div className="navButtons flex flex-row sm:invisible sm:w-0 sm:h-0  w-full justify-around items-center bg-slate-900 max-sm: h-16 self-end absolute bottom-0">
-				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleAdd}>
-					<img src={addButton} alt="add Button" className="w-8 h-8"/>
-				</button>
-				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full"> 
-					<img src={goalButton} alt="task Button" className="w-8 h-8"/>
-				</button>
-				<button className="navButton bg-slate-200 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleLogout}>
-					<img src={logoutButton} alt="add Button" className="w-8 h-8"/>
-				</button>
 			</div>
 		  </div>
 		</div>

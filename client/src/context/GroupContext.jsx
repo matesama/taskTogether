@@ -10,8 +10,7 @@ export const GroupContext = createContext({
 });
 
 const GroupProvider = ({ children }) => {
-  const { user } = useContext(UserContext);
-  // const { socket } = useContext(SocketContext);
+  const { user, socket } = useContext(UserContext);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [groupName, setGroupName] = useState('');
   const [groupPicture, setGroupPicture] = useState('');
@@ -56,8 +55,8 @@ const GroupProvider = ({ children }) => {
         groupName: groupName,
         groupPicture: groupPicture,
       });
-      // socket.emit('newConversation');
-      console.log('Group created:', conversationResponse.data);
+      socket.emit('newConversation');
+      navigate('/');
     } catch (error) {
       console.error(error);
     }

@@ -8,15 +8,13 @@ import { io } from "socket.io-client";
 export const AddContext = createContext();
 
 const AddProvider = ({ children }) => {
-  const { user } = useContext(UserContext);
-  // const { socket } = useContext(SocketContext);
+  const { user, socket } = useContext(UserContext);
   const [contacts, setContacts] = useState([]);
   const [showGroupComponent, setShowGroupComponent] = useState(false);
   const [allOpenGroupConversations, setAllOpenGroupConversations] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const [visibleMobile, setVisibleMobile] = useState(false)
   const navigate = useNavigate();
-  // const socket = useRef();
 
 
   const handleAddUser = async (selectedUser) => {
@@ -26,7 +24,7 @@ const AddProvider = ({ children }) => {
         groupName: '',
         groupPicture: '',
       });
-      // socket.emit('newConversation');
+      socket.emit('newConversation');
     } catch (error) {
       console.error('Error adding contact:', error);
     }
@@ -36,6 +34,7 @@ const AddProvider = ({ children }) => {
     try {
       const response = await axios.post(`http://localhost:8000/api/conversations/join/${groupId}`, { userId: user._id });
       setAllOpenGroupConversations(prevConversations => prevConversations.filter(conversation => conversation._id !== groupId));
+      socket.emit('newConversation');
     } catch (error) {
       console.error('Failed to join group:', error);
     }
@@ -66,17 +65,6 @@ const AddProvider = ({ children }) => {
       console.error('Error fetching contacts:', error);
     }
   };
-
-  // useEffect(() => {
-  //   if (socket) {
-  //     socket.on('newConversation', getContacts)
-  //   }
-  //   return () => {
-  //     if (socket) {
-  //       socket.off('newConversation');
-  //     }
-  //   };
-  // }, [getContacts]);
 
   const getAllUsers = async () => {
     try {

@@ -8,12 +8,12 @@ import { ChatMenuContext } from '../context/ChatMenuContext';
 
 const ChatPage = () => {
   const navigate = useNavigate();
-  
+
 	//Mobile View
   const {visibleMobile} = useContext(ChatMenuContext);
 	const chatMenuSizeClass = 'max-sm:w-0 max-sm:h-0 max-sm:invisible chatMenu bg-slate-500 text-slate-950';
   const chatSizeClass = 'max-sm:w-full max-sm:h-full contentContainer bg-slate-300'
-	console.log(visibleMobile);
+	// console.log(visibleMobile);
 
 
   return (

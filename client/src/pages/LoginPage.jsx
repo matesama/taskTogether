@@ -18,11 +18,11 @@ const LoginPage = () => {
     }
     const getData = async (e) => {
         e.preventDefault();
-        console.log("pre")
-        login(email, password, setLoader, setErrors, clearErrors) 
-        console.log("post")
+        // console.log("pre")
+        login(email, password, setLoader, setErrors, clearErrors)
+        // console.log("post")
     }
-    
+   
     const errorClass = "p-3 text-xl text-slate-100 rounded-md bg-red-500 mb-4";
 
     return(
