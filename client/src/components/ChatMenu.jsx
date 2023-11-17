@@ -5,6 +5,9 @@ import { NavigationContext } from '../context/NavigationContext';
 import axios from 'axios';
 import Conversation from './Conversation';
 import './chatmenu.css';
+import addButton from '../assets/addButton.svg'
+import goalButton from '../assets/goalButton.svg'
+import logoutButton from '../assets/logoutButton.svg'; 
 
 const ChatMenu = ({ }) => {
   const [searchInput, setSearchInput] = useState("");
@@ -58,12 +61,30 @@ const ChatMenu = ({ }) => {
 	const chatMenuSizeClass = 'max-sm:w-0 max-sm:h-0 chatMenu overscroll-none';
 	const handleMobileChatView = () => {
 
-
 	}
+
+
+	const [windowWidth, setWindowWith] = useState(window.innerWidth);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWith(window.innerWidth);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+
+	}, [])
+
+
+
 
 	  return (
 		// <div className="chatMenu overscroll-none">
-		<div className="chatMenu">
+		<div className="chatMenu sm:overflow-y-scroll">
 		  <div className=" max-sm:flex max-sm:flex-col max-sm:items-start  max-sm:overscroll-none pt-2 static">
 
 		  <div className="userProfile max-sm:flex max-sm:flex-col max-sm:items-center max-sm:w-full sm:w-0 sm:invisible sm:h-0">
@@ -87,6 +108,19 @@ const ChatMenu = ({ }) => {
 			  </div>
 			))}
 			</div>
+			{windowWidth <= 640 ?
+			<div className="navButtons flex flex-row sm:invisible sm:w-0 sm:h-0  w-full justify-around items-center bg-slate-900 max-sm: h-16 self-end absolute bottom-0">
+				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleAdd}>
+					<img src={addButton} alt="add Button" className="w-8 h-8"/>
+				</button>
+				<button className="navButton bg-slate-100 text-slate-950 w-12 max-sm:m-0 rounded-full">
+					<img src={goalButton} alt="task Button" className="w-8 h-8"/>
+				</button>
+				<button className="navButton bg-slate-200 text-slate-950 w-12 max-sm:m-0 rounded-full" onClick={handleLogout}>
+					<img src={logoutButton} alt="add Button" className="w-8 h-8"/>
+				</button> 
+			</div>
+			: null}
 		  </div>
 		</div>
 	  );
