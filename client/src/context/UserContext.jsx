@@ -1,67 +1,40 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { io } from 'socket.io-client';
+import { ChatMenuContext } from "./ChatMenuContext";
 
 
 export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const navigate = useNavigate();
-  // Init user state
   const [user, setUser] = useState(JSON.parse(sessionStorage.getItem('user')) || null);
-  // Init state for token from sessionStorage
   const [token, setToken] = useState(sessionStorage.getItem('token') || null);
 
+  const { setCurrentChat } = useContext(ChatMenuContext)
   const [isConnected, setIsConnected] = useState(false);
   const [socket, setSocket] = useState(null);
 
-
   useEffect(() => {
     if (user && !socket) {
-      const newSocket = io('ws://localhost:8100');
-      newSocket.on('connect', () => setIsConnected(true));
-      setSocket(newSocket);
+      const socket = io('ws://localhost:8100');
+      socket.on('connect', () => {
+        setIsConnected(true);
+        socket.emit("addUser", user._id);
+      });
+      setSocket(socket);
     }
     return () => {
       if (socket) {
-        socket.disconnect();
+        logout();
       }
     };
   }, [user]);
 
 
-  useEffect(() => {
-    if (socket && user) {
-      socket.emit("addUser", user._id);
-    }
-  }, [socket, user]);
-
-
-  useEffect(() => {
-    const loadUserData = async () => {
-      try {
-        // check token in sessionStorage
-        const storedToken = sessionStorage.getItem('token');
-        if (storedToken) {
-          const response = await axios.get('http://localhost:8000/api/auth/user', {
-            headers: {
-              'Authorization': `Bearer ${storedToken}`,
-              'Content-Type': 'application/json'
-            }
-          });
-          // set User Data on successful response
-          setUser(response.data);
-        }
-      } catch (error) {
-        console.error('Failed to fetch user data', error);
-        logout();
-      }
-    };
-    loadUserData();
-  }, [token]);
-
   const login = async (email, password, setLoader, setErrors, clearErrors) => {
+
     try {
       setLoader(true);
       const getResponse = await axios.post('http://localhost:8000/api/auth/login', { email, password }, { headers: { 'Content-Type': 'application/json' } });
@@ -77,16 +50,10 @@ const UserProvider = ({ children }) => {
       sessionStorage.setItem('user', JSON.stringify(user));
       setUser(user);
       setToken(token);
-      console.log('token', token);
-      console.log('user', user);
-      // if (token) {
-      //   if (socket && user) {
-      //     socket.emit("addUser", user._id);
-      //     } else {
-      //       console.error('Socket is not initialized');
-      //     }
-      //   navigate('/');
-      // }
+      if (token && user && socket) {
+          socket.emit("addUser", user._id);
+      }
+        navigate('/');
     } catch (error) {
       if (error.response) {
         setErrors(error.response.data.error);
@@ -99,14 +66,42 @@ const UserProvider = ({ children }) => {
     }
   }
 
+
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const storedToken = sessionStorage.getItem('token');
+        if (storedToken) {
+          const response = await axios.get('http://localhost:8000/api/auth/user', {
+            headers: {
+              'Authorization': `Bearer ${storedToken}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          setUser(response.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data', error);
+        logout();
+      }
+    };
+    loadUserData();
+  }, [token]);
+
+
+
   const logout = () => {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('currentChat');
     setUser(null);
     setToken(null);
+    setCurrentChat(null);
     if (socket) {
         socket.emit("logout");
+        socket.disconnect();
+        setSocket(null);
     }
     navigate('/login');
   }

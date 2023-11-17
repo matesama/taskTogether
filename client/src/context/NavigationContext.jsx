@@ -17,16 +17,18 @@ const NavigationProvider = ({ children }) => {
   const handleAdd = () => {
     setVisibleMobile(true);
     navigate('/add');
-    
   };
 
   const handleLogout = () => {
-    // socket.emit("logout");
     logout();
   };
 
+  const handleHome = () => {
+    navigate('/');
+  };
+
   return (
-    <NavigationContext.Provider value={{ handleAdd, handleLogout, visibleMobile, setVisibleMobile }}>
+    <NavigationContext.Provider value={{ handleAdd, handleLogout, handleHome, visibleMobile, setVisibleMobile }}>
       {children}
     </NavigationContext.Provider>
   );

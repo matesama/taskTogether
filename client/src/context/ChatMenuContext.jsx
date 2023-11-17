@@ -16,10 +16,11 @@ export const ChatMenuContext = createContext({
 
 const ChatMenuProvider = ({ children }) => {
   // const [currentChat, setCurrentChat] = useState(null);
-  const [currentChat, setCurrentChat] = useState(JSON.parse(localStorage.getItem('currentChat')) || null);
+  const {user} = useContext(UserContext);
+  const {socket} = useContext(UserContext);
+  const [currentChat, setCurrentChat] = useState(JSON.parse(sessionStorage.getItem('currentChat')) || null);
   const [conversations, setConversations] = useState([]);
   const [loader, setLoader] = useState(false);
-  const {user} = useContext(UserContext);
   const navigate = useNavigate();
   const [visibleMobile, setVisibleMobile] = useState(false)
 
@@ -41,11 +42,31 @@ const ChatMenuProvider = ({ children }) => {
     setVisibleMobile(true);
 		navigate(`/chat/${chat._id}`);
 	};
-  console.log(visibleMobile);
+
+  // console.log(visibleMobile);
 
   useEffect(() => {
-    localStorage.setItem('currentChat', JSON.stringify(currentChat));
+    sessionStorage.setItem('currentChat', JSON.stringify(currentChat));
   }, [currentChat]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('new conversation', getConversations);
+      return () => socket.off('new conversation');
+    }
+  }, [socket, getConversations]);
+
+    useEffect(() => {
+    if (socket) {
+      socket.on('newConversation', getConversations);
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('newConversation', getConversations);
+      }
+    };
+  }, [socket, getConversations]);
 
   return (
     <ChatMenuContext.Provider value={{ handleChatClick, currentChat, conversations, getConversations, loader, setLoader, visibleMobile, setVisibleMobile }}>
