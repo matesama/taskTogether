@@ -10,7 +10,7 @@ const AddPage = () => {
 	const {visibleMobile} = useContext(AddContext);
 	const chatMenuSizeClass = 'max-sm:w-0 max-sm:h-0 max-sm:invisible chatMenu bg-slate-500 text-slate-950';
 	const groupSizeClass = 'max-sm:w-full max-sm:h-full contentContainer bg-slate-300'
-	console.log(visibleMobile);
+	// console.log(visibleMobile);
 
 
 	 return (

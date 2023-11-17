@@ -1,8 +1,10 @@
 .header {
 	display: flex;
 	align-items: center;
-	background-color: lightgrey;
+	background-color: #F8F8F8;
 	padding: 10px;
+	border-radius: 10px;
+	/* box-shadow: black 0px 20px 0px; */
 	/* padding-top: 5px; */
   }
 
@@ -30,3 +32,42 @@
 	margin-top: 40px;
 	margin-left: -3rem;
   }
+
+  .chatBoxTop{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #E0E1E7 transparent;
+	scroll-behavior: smooth;
+}
+
+.chatBoxTop::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chatBoxTop::-webkit-scrollbar-thumb {
+    background-color: #E0E1E7;
+    border-radius: 20px;
+    border: transparent;
+	transition: background-color 0.3s ease-in-out;
+}
+
+.chatBoxTop::-webkit-scrollbar-thumb:hover {
+    background-color: #27344B;
+}
+
+.chatBoxTop{
+	height: 100%;
+	overflow-y: scroll;
+	padding-right: 10px;
+}
+
+.chatBoxBottom{
+	margin-top: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}

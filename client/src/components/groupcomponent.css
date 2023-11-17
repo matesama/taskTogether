@@ -4,7 +4,25 @@
 	height: 100%;
 	border-radius: 5px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	overflow-y: scroll;
+	overflow-x: hidden;
+  	scrollbar-width: thin;
+  	scrollbar-color: #E0E1E7 transparent;
   }
+
+  .group-component::-webkit-scrollbar {
+	width: 8px;
+}
+
+.group-component::-webkit-scrollbar-thumb {
+	background-color: #E0E1E7;
+	border-radius: 20px;
+	border: transparent;
+}
+
+.group-component::-webkit-scrollbar-thumb:hover {
+    background-color: #27344B;
+}
 
   .group-component h2 {
 	margin-bottom: 20px;
