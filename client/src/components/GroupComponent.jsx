@@ -4,10 +4,12 @@ import { UserContext } from "../context/UserContext";
 import { GroupContext } from "../context/GroupContext";
 import backButtons from "../assets/backButtons.png"
 
+
 const GroupComponent = ({ }) => {
     const [availableUsers, setAvailableUser] = useState([]);
     const {user} = useContext(UserContext);
     const { handleAddUser, handleRemoveUser, handleSubmit, handleBackButton, setGroupName, setGroupPicture, selectedUsers, allUsers, getAllUsers } = useContext(GroupContext);
+    
 
     useEffect(() => {
       getAllUsers();
@@ -16,6 +18,8 @@ const GroupComponent = ({ }) => {
     useEffect(() => {
         setAvailableUser(allUsers.filter(availableUser => availableUser._id !== user._id && !selectedUsers.includes(availableUser)));
     }, [allUsers, user, selectedUsers]);
+
+
 
       return (
         <div className="group-component">
@@ -28,10 +32,12 @@ const GroupComponent = ({ }) => {
             Group Name:
             <input type="text" onChange={(e) => setGroupName(e.target.value)} />
           </label>
-          <label>
+          {/*<label>
             Group Picture:
             <input type="text" onChange={(e) => setGroupPicture(e.target.value)} />
-          </label>
+      </label>*/}
+          <input type='file' onChange={(e) => setGroupPicture(e.target.files[0])}/>
+          
         {selectedUsers.length > 0 && (
               <>
                 <h3>Selected Users</h3>

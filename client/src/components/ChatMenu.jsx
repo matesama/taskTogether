@@ -55,12 +55,6 @@ const ChatMenu = ({ }) => {
 		}
 	};
 
-	//Mobile View
-	const chatMenuSizeClass = 'max-sm:w-0 max-sm:h-0 chatMenu overscroll-none';
-	const handleMobileChatView = () => {
-		
-		
-	}
 
 	  return (
 		<div className="chatMenu overscroll-none">

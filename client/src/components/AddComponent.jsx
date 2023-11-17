@@ -38,7 +38,7 @@ const AddComponent = () => {
               <li key={conversation._id}>
                 <img
                   className="groupPicture"
-                  src={conversation.groupPicture || 'https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png'}
+                  src={`data:image/jpeg;base64,${conversation.groupPicture}` || 'https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png'}
                   alt="Group Profile"
                 />
                 <span className="groupName">{conversation.groupName}</span>
