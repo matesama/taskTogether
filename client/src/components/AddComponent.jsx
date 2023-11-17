@@ -15,7 +15,7 @@ const AddComponent = () => {
   useEffect(() => {
     getAllUsers();
     getContacts();
-  }, [contacts, allUsers]);
+  }, [/*contacts, allUsers*/]);
 
   useEffect(() => {
     getAllOpenGroupConversations();

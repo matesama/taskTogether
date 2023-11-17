@@ -36,7 +36,8 @@ const GroupComponent = ({ }) => {
             Group Picture:
             <input type="text" onChange={(e) => setGroupPicture(e.target.value)} />
       </label>*/}
-          <input type='file' onChange={(e) => setGroupPicture(e.target.files[0])}/>
+          
+          <input type='file' id="uploadInput" placeholder="Search..." onChange={(e) => setGroupPicture(e.target.files[0])} className=' text-md rounded-md bg-slate-800 text-white'/>
           
         {selectedUsers.length > 0 && (
               <>

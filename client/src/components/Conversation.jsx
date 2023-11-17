@@ -8,7 +8,6 @@ const Conversation = ({ conversation }) => {
 
 	const {user} = useContext(UserContext);
 	const [contact, setContact] = useState(null);
-	const [groupImg, setGroupImg] = useState('');
 
 	useEffect(() => {
 		const contactId = conversation.members.find((m) => m !== user._id);
@@ -17,15 +16,14 @@ const Conversation = ({ conversation }) => {
 			try {
 				const res = await axios(`http://localhost:8000/api/users?userId=${contactId}`);
 				setContact(res.data);
+				
 			} catch(err) {
 				console.log(err);
 			}
 		}
-		getContact();
-		setGroupImg(`data:image/jpeg;base64,${conversation.groupPicture}`);
+		getContact();	
 	}, [user, conversation]);
-
-	
+		
 
   return (
 	<div className="conversation max-sm:w-full">
@@ -33,7 +31,7 @@ const Conversation = ({ conversation }) => {
 			className="conversationImg"
 			src={
 				conversation.groupName
-     			 ? (conversation.groupPicture ? {groupImg} : "https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png")
+     			 ? (conversation.groupPicture ? `data:image/jpeg;base64,${conversation.groupPicture}` : "https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png")
      			 : (contact?.profilePicture ? contact.profilePicture : "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg")
 			}
 			alt=""

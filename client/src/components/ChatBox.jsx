@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 import Message from './Message';
 import "./chatBox.css"
 import { ChatBoxContext } from '../context/ChatBoxContext';
@@ -63,6 +63,7 @@ const ChatBox = ({}) => {
 		};
 	}, [getConversations]);
 
+	const groupImage = `data:image/jpeg;base64,${currentChat.groupPicture}`;
 
 	return (
         <div className="chatBoxWrapper">
@@ -73,7 +74,7 @@ const ChatBox = ({}) => {
   					    className="headerImg"
   					    src={
   					      currentChat.groupName
-  					        ? (currentChat.groupPicture ? currentChat.groupPicture : "https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png")
+  					        ? (currentChat.groupPicture ? `data:image/jpeg;base64,${currentChat.groupPicture}` : "https://user-images.githubusercontent.com/1468166/37978116-46efb0e0-31b3-11e8-8d51-8d7af47d6f1c.png")
   					        : (receiver?.profilePicture ? receiver.profilePicture : "https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg")
   					    }
   					    alt=""
