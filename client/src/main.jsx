@@ -18,15 +18,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     {/* <SocketProvider> */}
       <UserProvider>
         <NavigationProvider>
-          <AddProvider>
-            <ChatMenuProvider>
-              <ChatBoxProvider>
+          <ChatBoxProvider>
+            <AddProvider>
+              <ChatMenuProvider>
                 <GroupProvider>
                   <App />
                 </GroupProvider>
-              </ChatBoxProvider>
-            </ChatMenuProvider>
-          </AddProvider>
+              </ChatMenuProvider>
+            </AddProvider>
+          </ChatBoxProvider>
         </NavigationProvider>
       </UserProvider>
     {/* </SocketProvider> */}

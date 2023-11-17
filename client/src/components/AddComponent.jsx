@@ -8,20 +8,30 @@ import "./addcomponent.css";
 
 const AddComponent = () => {
   const { user } = useContext(UserContext);
-  const { allUsers } = useContext(ChatBoxContext);
-  const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
+  const { getAllUsers, allUsers } = useContext(ChatBoxContext);
+  // const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
+  const { handleAddUser, handleJoinGroup, handleBackButton, getContacts, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations } = useContext(AddContext);
   const {setVisibleMobile} = useContext(NavigationContext);
 
 
 
-  useEffect(() => {
-    getAllUsers();
-    getContacts();
-  }, [/*contacts, allUsers*/]);
+  // useEffect(() => {
+  //   getAllUsers();
+  //   getContacts();
+  // }, []);
 
-  useEffect(() => {
-    getAllOpenGroupConversations();
-  }, []);
+  // useEffect(() => {
+  //   getAllOpenGroupConversations();
+  // }, []);
+
+  // useEffect(() => {
+  //   getAllUsers();
+  //   getContacts();
+  // }, [/*contacts, allUsers*/]);
+
+  // useEffect(() => {
+  //   getAllOpenGroupConversations();
+  // }, []);
 
 
   return (
