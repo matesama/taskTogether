@@ -1,6 +1,6 @@
 .chatMenu{
 	flex: 2.5;
-	overflow-y: scroll;
+	/*overflow-y: scroll;*/
 	overflow-x: hidden;
   	scrollbar-width: thin;
   	scrollbar-color: #E0E1E7 transparent;
