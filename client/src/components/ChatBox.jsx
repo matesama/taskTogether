@@ -79,7 +79,7 @@ const ChatBox = ({}) => {
   					    alt=""
   					  />
   					  <span className="headerName">{currentChat.groupName ? currentChat.groupName : receiver?.username}</span>
-					  
+
   					</div>
   					{currentChat.groupName &&
   					  <span className="chatInfo">
@@ -92,9 +92,9 @@ const ChatBox = ({}) => {
   					  </span>
   					}
 				</div>
-				<div className="chatBoxTop" key={user._id}>
+				<div className="chatBoxTop" key={user._id} >
 				  {messages && messages.map((m) => (
-					<div key={m._id} ref={scrollRef}>
+					<div key={m._id} ref={scrollRef} >
 					  <Message message={m} own={m.sender === user._id} />
 					</div>
 				  ))}

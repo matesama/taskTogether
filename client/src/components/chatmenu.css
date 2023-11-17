@@ -1,0 +1,28 @@
+.chatMenu{
+	flex: 2.5;
+	overflow-y: scroll;
+	overflow-x: hidden;
+  	scrollbar-width: thin;
+  	scrollbar-color: #E0E1E7 transparent;
+}
+
+.chatMenu::-webkit-scrollbar {
+	width: 8px;
+}
+
+.chatMenu::-webkit-scrollbar-thumb {
+	background-color: #E0E1E7;
+	border-radius: 20px;
+	border: transparent;
+}
+
+.chatMenu::-webkit-scrollbar-thumb:hover {
+    background-color: #27344B;
+}
+
+.chatMenuInput{
+	width: 90%;
+	padding:10px 0;
+	border: none;
+	border-bottom: 1px solid grey;
+}

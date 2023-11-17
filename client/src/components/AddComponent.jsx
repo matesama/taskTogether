@@ -4,12 +4,14 @@ import { UserContext } from '../context/UserContext';
 import { NavigationContext } from '../context/NavigationContext';
 import backButtons from '../assets/backButtons.png'
 import { ChatBoxContext } from '../context/ChatBoxContext';
+import "./addcomponent.css";
 
 const AddComponent = () => {
   const { user } = useContext(UserContext);
   const { allUsers } = useContext(ChatBoxContext);
   const { getAllUsers, handleAddUser, handleJoinGroup, handleBackButton, contacts, handleGroupButtonClick, getAllOpenGroupConversations, allOpenGroupConversations, getContacts } = useContext(AddContext);
   const {setVisibleMobile} = useContext(NavigationContext);
+
 
 
   useEffect(() => {
@@ -21,18 +23,6 @@ const AddComponent = () => {
     getAllOpenGroupConversations();
   }, []);
 
-  // useEffect(() => {
-  //   getAllUsers();
-  // }, []);
-
-  // useEffect(() => {
-  //   getContacts();
-  // }, [user._id]);
-
-  // useEffect(() => {
-  //   getAllOpenGroupConversations();
-  // }, []);
-
 
   return (
     <div className="add-component">
@@ -41,7 +31,7 @@ const AddComponent = () => {
       <h2>Add Component</h2>
       <div></div>
       </div>
-
+      <div className="addComponent">
       <button className="addButton" onClick={handleGroupButtonClick}>Create Group</button>
       {allOpenGroupConversations.length > 0 ? (
         <div>
@@ -84,6 +74,7 @@ const AddComponent = () => {
       ) : (
         <p>Unfortunately no users left!</p>
       )}
+      </div>
     </div>
   );
 };
