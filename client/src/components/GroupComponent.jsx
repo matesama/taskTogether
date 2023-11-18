@@ -1,4 +1,4 @@
-import "./GroupComponent.css";
+import "./groupcomponent.css";
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from "../context/UserContext";
 import { GroupContext } from "../context/GroupContext";
