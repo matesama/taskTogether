@@ -70,6 +70,8 @@ io.on('connection', (socket) => {
 	  });
 });
 
+return io;
+
 }
 
 export default initializeSocket;
