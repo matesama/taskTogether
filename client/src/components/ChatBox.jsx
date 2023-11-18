@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useEffect } from 'react';
 import Message from './Message';
-import "./chatBox.css";
+import "./chatbox.css";
 import { ChatBoxContext } from '../context/ChatBoxContext';
 import { UserContext } from '../context/UserContext';
 import { ChatMenuContext } from '../context/ChatMenuContext';
