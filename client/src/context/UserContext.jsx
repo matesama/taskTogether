@@ -37,7 +37,7 @@ const UserProvider = ({ children }) => {
 
     try {
       setLoader(true);
-      const getResponse = await axios.post('http://localhost:8000/api/auth/login', { email, password }, { headers: { 'Content-Type': 'application/json' } });
+      const getResponse = await axios.post('https://tasktogetherserver.onrender.com/api/auth/login', { email, password }, { headers: { 'Content-Type': 'application/json' } });
       const data = getResponse.data;
 
       const token = data.token;
@@ -73,7 +73,7 @@ const UserProvider = ({ children }) => {
       try {
         const storedToken = sessionStorage.getItem('token');
         if (storedToken) {
-          const response = await axios.get('http://localhost:8000/api/auth/user', {
+          const response = await axios.get('https://tasktogetherserver.onrender.com/api/auth/user', {
             headers: {
               'Authorization': `Bearer ${storedToken}`,
               'Content-Type': 'application/json'

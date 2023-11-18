@@ -14,7 +14,7 @@ const Conversation = ({ conversation }) => {
 
 		const getContact = async () => {
 			try {
-				const res = await axios(`http://localhost:8000/api/users?userId=${contactId}`);
+				const res = await axios(`https://tasktogetherserver.onrender.com/api/users?userId=${contactId}`);
 				setContact(res.data);
 				
 			} catch(err) {

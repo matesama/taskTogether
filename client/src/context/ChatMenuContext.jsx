@@ -26,7 +26,7 @@ const ChatMenuProvider = ({ children }) => {
   const getConversations = async () => {
     try {
       setLoader(true);
-      const res = await axios.get("http://localhost:8000/api/conversations/" + user._id);
+      const res = await axios.get("https://tasktogetherserver.onrender.com/api/conversations/" + user._id);
       setConversations(res.data);
     } catch (err){
       console.log(err);

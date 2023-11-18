@@ -39,7 +39,7 @@ const AddProvider = ({ children }) => {
 
   const handleAddUser = async (selectedUser) => {
     try {
-      const conversationResponse = await axios.post('http://localhost:8000/api/conversations', {
+      const conversationResponse = await axios.post('https://tasktogetherserver.onrender.com/api/conversations', {
         members: [user._id, selectedUser._id],
         groupName: '',
         groupPicture: '',
@@ -53,7 +53,7 @@ const AddProvider = ({ children }) => {
 
   const handleJoinGroup = async (groupId) => {
     try {
-      const response = await axios.post(`http://localhost:8000/api/conversations/join/${groupId}`, { userId: user._id });
+      const response = await axios.post(`https://tasktogetherserver.onrender.com/api/conversations/join/${groupId}`, { userId: user._id });
       setAllOpenGroupConversations(prevConversations => prevConversations.filter(conversation => conversation._id !== groupId));
       socket.emit('newConversation');
     } catch (error) {
@@ -72,13 +72,13 @@ const AddProvider = ({ children }) => {
 
   const getContacts = async () => {
       try {
-        const conversationResponse = await axios.get(`http://localhost:8000/api/conversations/${user._id}`);
+        const conversationResponse = await axios.get(`https://tasktogetherserver.onrender.com/api/conversations/${user._id}`);
         const conversations = conversationResponse.data;
         const filteredConversations = conversations.filter(conversation => !conversation.groupName);
         const participantIds = filteredConversations.reduce((ids, conversation) => {
           return [...ids, ...conversation.members];
         }, []);
-        const userResponse = await axios.get('http://localhost:8000/api/users/all');
+        const userResponse = await axios.get('https://tasktogetherserver.onrender.com/api/users/all');
         const allUsers = userResponse.data;
         const filteredContacts = allUsers.filter((userItem) => !participantIds.includes(userItem._id) && userItem._id !== user._id);
         setContacts(filteredContacts);
@@ -89,7 +89,7 @@ const AddProvider = ({ children }) => {
 
   const getAllUsers = async () => {
     try {
-      const userResponse = await axios.get('http://localhost:8000/api/users/all');
+      const userResponse = await axios.get('https://tasktogetherserver.onrender.com/api/users/all');
       setAllUsers(userResponse.data);
     } catch (error) {
       console.error('Failed to fetch users:', error);
@@ -99,7 +99,7 @@ const AddProvider = ({ children }) => {
   const getAllOpenGroupConversations = async () => {
     if (user) {
       try {
-        const userResponse = await axios.get('http://localhost:8000/api/conversations/allGroups');
+        const userResponse = await axios.get('https://tasktogetherserver.onrender.com/api/conversations/allGroups');
         const filteredData = userResponse.data.filter(conversation => !conversation.members.includes(user._id));
         setAllOpenGroupConversations(filteredData);
       } catch (error) {

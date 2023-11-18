@@ -22,7 +22,7 @@ const GroupProvider = ({ children }) => {
 
   const getAllUsers = async () => {
     try {
-      const userResponse = await axios.get('http://localhost:8000/api/users/all');
+      const userResponse = await axios.get('https://tasktogetherserver.onrender.com/api/users/all');
       setAllUsers(userResponse.data);
     } catch (error) {
       console.error('Failed to fetch users:', error);
@@ -65,7 +65,7 @@ const GroupProvider = ({ children }) => {
 
       formData.append('groupName', groupName);
 
-      const conversationResponse = await axios.post('http://localhost:8000/api/conversations', formData, {
+      const conversationResponse = await axios.post('https://tasktogetherserver.onrender.com/api/conversations', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
