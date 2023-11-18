@@ -40,7 +40,7 @@ const ChatBox = ({}) => {
 	}, [currentChat, user]);
 
     useEffect(() => {
-        scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+        scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     }, [messages]);
 
 	useEffect(() => {
@@ -79,7 +79,7 @@ const ChatBox = ({}) => {
   					    alt=""
   					  />
   					  <span className="headerName">{currentChat.groupName ? currentChat.groupName : receiver?.username}</span>
-					  
+
   					</div>
   					{currentChat.groupName &&
   					  <span className="chatInfo">

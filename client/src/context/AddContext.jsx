@@ -45,6 +45,7 @@ const AddProvider = ({ children }) => {
         groupPicture: '',
       });
       socket.emit('newConversation');
+      getContacts();
     } catch (error) {
       console.error('Error adding contact:', error);
     }

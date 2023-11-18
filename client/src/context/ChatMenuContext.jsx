@@ -15,9 +15,7 @@ export const ChatMenuContext = createContext({
 });
 
 const ChatMenuProvider = ({ children }) => {
-  // const [currentChat, setCurrentChat] = useState(null);
-  const {user} = useContext(UserContext);
-  const {socket} = useContext(UserContext);
+  const {user, socket} = useContext(UserContext);
   const [currentChat, setCurrentChat] = useState(JSON.parse(sessionStorage.getItem('currentChat')) || null);
   const [conversations, setConversations] = useState([]);
   const [loader, setLoader] = useState(false);
