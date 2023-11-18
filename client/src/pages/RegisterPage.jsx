@@ -36,7 +36,7 @@ const RegisterPage = () => {
               return;
             }
             //connect to server
-            const getResponse = await axios.post('http://localhost:8000/api/auth/register', { username, email, password }, { headers: { 'Content-Type': 'application/json' } });
+            const getResponse = await axios.post('https://tasktogetherserver.onrender.com/api/auth/register', { username, email, password }, { headers: { 'Content-Type': 'application/json' } });
             console.log(getResponse);
             const data = getResponse.data;
             if (data.error) {
