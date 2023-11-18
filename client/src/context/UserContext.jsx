@@ -18,7 +18,7 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (user && !socket) {
-      const socket = io('ws://localhost:8000');
+      const socket = io('ws:https://tasktogetherserver.onrender.com');
       socket.on('connect', () => {
         setIsConnected(true);
         socket.emit("addUser", user._id);
