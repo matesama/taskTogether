@@ -18,7 +18,7 @@ const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (user && !socket) {
-      const socket = io('ws://localhost:8100');
+      const socket = io('ws://localhost:8000');
       socket.on('connect', () => {
         setIsConnected(true);
         socket.emit("addUser", user._id);
