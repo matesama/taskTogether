@@ -39,11 +39,12 @@ const ChatMenuProvider = ({ children }) => {
 
   const handleChatClick = (chat) => {
     setCurrentChat(chat);
+
     setVisibleMobile(true);
 		navigate(`/chat/${chat._id}`);
 	};
 
-  // console.log(visibleMobile);
+   console.log(currentChat);
 
   useEffect(() => {
     sessionStorage.setItem('currentChat', JSON.stringify(currentChat));
