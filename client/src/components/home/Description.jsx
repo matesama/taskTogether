@@ -4,10 +4,10 @@ const Description = () => {
 
     return(
         <div className="bg-slate-800">
-            <h2 className="text-5xl text-slate-200 py-5">What is our mission?</h2>
+            <h2 className="text-5xl text-slate-200 pt-5">What is our mission?</h2>
             <section className="flex justify-around items-center max-sm:block max-sm:w-full">
                 <div className="flex justify-center">
-                <img className="h-auto lg:max-w-xl md:max-w-sm max-md:max-w-xs rounded-full object-contain flex-shrink-2 " src={description} alt="image description" />
+                <img className="mb-5 ml-2 h-auto lg:max-w-xl md:max-w-sm max-md:max-w-xs rounded-full object-contain flex-shrink-2 " src={description} alt="image description" />
                 </div>
                 <div className=" px-10 text-2xl">
                     <ul className="space-y-4 text-left text-slate-200">
