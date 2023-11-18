@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'hero': `url("../public/img/hero.png")`
+        'hero': `url("../img/hero.png")`
       },
       flex: {
         '5.5': '5.5 5.5 0%'
