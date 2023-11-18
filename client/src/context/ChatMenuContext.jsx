@@ -42,7 +42,7 @@ const ChatMenuProvider = ({ children }) => {
 		navigate(`/chat/${chat._id}`);
 	};
 
-   console.log(currentChat);
+  //  console.log(currentChat);
 
   useEffect(() => {
     sessionStorage.setItem('currentChat', JSON.stringify(currentChat));

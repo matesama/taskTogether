@@ -1,22 +1,22 @@
 .navigation {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-center;
-	padding: 0px;
+	align-items: center;
+	padding: 5px;
 	background-color: #f0f0f0;
   }
 
   .userProfile {
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	align-items: center;
   }
 
   .userProfilePicture {
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
-	margin-bottom: 8px;
+	margin: 8px;
   }
 
   .userName {
@@ -25,12 +25,13 @@
   }
 
   .navButtons {
+	padding-top: 20px;
 	display: flex;
 	flex-direction: column;
   }
 
   .navButton {
-	margin-top: 8px;
+	margin-top: 12px;
 	padding: 8px;
 	background-color: #132137;
 	color: #fff;

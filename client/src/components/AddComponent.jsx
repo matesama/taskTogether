@@ -38,11 +38,9 @@ const AddComponent = () => {
     <div className="add-component">
       <div className='flex  w-full justify-between'>
       <button onClick={handleBackButton}><img src={backButtons} alt="back icon" className='w-6 h-6 ml-3 mb-3 sm:w-0 sm:h-0 sm:mr-0 sm:mb-0'/></button>
-      <h2>Add Component</h2>
       <div></div>
       </div>
-      <div className="addComponent">
-      <button className="addButton" onClick={handleGroupButtonClick}>Create Group</button>
+      <div className="addComponent text-2xl mb-10">
       {allOpenGroupConversations.length > 0 ? (
         <div>
           <h3>Groups</h3>
@@ -62,11 +60,12 @@ const AddComponent = () => {
         </div>
       ) : (
         <p>No Groups available, let's create one!</p>
-      )}
+        )}
+      <button className="createGroupButton" onClick={handleGroupButtonClick}>Create a new Group</button>
 
       {contacts.length > 0 ? (
         <div>
-          <h3 className="text-4xl mb-10">Add A New Contact/Group</h3>
+          <h3 className="text-2xl mb-10">Add A New Contacts</h3>
           <ul>
             {contacts.map((contact) => (
               <li key={contact._id}>

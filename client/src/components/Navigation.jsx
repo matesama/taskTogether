@@ -16,7 +16,7 @@ const Navigation = () => {
       <button onClick={handleHome}>
         <div className="userProfile flex">
           <img
-            className="userProfilePicture self-center"
+            className="userProfilePicture"
             src={user.profilePicture || 'https://i.pinimg.com/474x/ed/da/d1/eddad14d545a4a36f9ac75bef266be30.jpg'}
             alt="User Profile"
           />
