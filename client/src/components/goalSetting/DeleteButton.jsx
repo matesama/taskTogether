@@ -7,6 +7,6 @@ const DeleteButton = ({ goalItems, goalsList, setGoalsList }) => {
         })
     }
 
-    return <button type="button" className="deleteButton underline text-slate-800 hover:text-slate-400" onClick={() => handleDeleteButton(goalItems.id)}><img src={trash} alt="delete button" className="w-5 h-5"/></button>; 
+    return <button type="button" className="deleteButton underline hover:bg-slate-200  " onClick={() => handleDeleteButton(goalItems.id)}><img src={trash} alt="delete button" className="w-5 h-5"/></button>; 
 };
 export default DeleteButton;

@@ -27,7 +27,7 @@ const GoalItem = ({ goalItems, goalsList, setGoalsList, goal}) => {
         <div>
             <li className="mt-8 bg-slate-100 border rounded-md mx-4" key={goalItems.id}  >
                 <DoneTickbox goalItems={goalItems} goalsList={goalsList} setGoalsList={setGoalsList} />
-                <input type='text' value={updateGoal}  key={goalItems.id} onChange={handleInputChange}className={`bg-transparent focus:bg-white hover:bg-white focus: mr-2 ${isEmpty ? 'border-red-500' : ''}`}/>  
+                <input type='text' value={updateGoal}  key={goalItems.id} onChange={handleInputChange}className={`bg-transparent focus:bg-white hover:bg-white focus: mr-2  ${isEmpty ? ' border-2 border-red-500 rounded-md' : ''}`}/>  
                 <DeleteButton goalItems={goalItems} setGoalsList={setGoalsList} />
                 {isEmpty && <p className='text-red-500'>Please enter a Goal</p>}
             </li>
