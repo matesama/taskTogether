@@ -19,7 +19,7 @@ const server = http.createServer(app);
 const io = initializeSocket(server);
 app.use(
     cors({
-      origin: "https://tasktogetherclient.onrender.com",
+      origin: "http://localhost:5173",
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       allowedHeaders: [
         'Content-Type',

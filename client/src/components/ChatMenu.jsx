@@ -49,7 +49,7 @@ const ChatMenu = ({ }) => {
 
 	const getUsername = async (contactId) => {
 		try {
-		  	const res = await axios(`https://tasktogetherserver.onrender.com/api/users?userId=${contactId}`);
+		  	const res = await axios(`http://localhost:8000/api/users?userId=${contactId}`);
 		  	return res.data.username;
 		} catch (err) {
 		  	console.log(err);

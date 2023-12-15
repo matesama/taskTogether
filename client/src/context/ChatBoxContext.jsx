@@ -35,7 +35,7 @@ const ChatBoxProvider = ({ children }) => {
       if (currentChat) {
         const receiverId = currentChat.members.find(member => member !== user._id);
         try {
-          const res = await axios.get(`https://tasktogetherserver.onrender.com/api/users?userId=${receiverId}`);
+          const res = await axios.get(`http://localhost:8000/api/users?userId=${receiverId}`);
           setReceiver(res.data);
         } catch (err) {
           console.log(err);
@@ -48,7 +48,7 @@ const ChatBoxProvider = ({ children }) => {
 		if (currentChat) {
 			try {
 				setLoader(!loader);
-				const res = await axios.get("https://tasktogetherserver.onrender.com/api/messages/" + currentChat?._id);
+				const res = await axios.get("http://localhost:8000/api/messages/" + currentChat?._id);
 				setMessages(res.data);
 			  } catch (err) {
 				console.log(err);
@@ -60,7 +60,7 @@ const ChatBoxProvider = ({ children }) => {
 
 	const getAllUsers = async () => {
 		try {
-		  const userResponse = await axios.get('https://tasktogetherserver.onrender.com/api/users/all');
+		  const userResponse = await axios.get('http://localhost:8000/api/users/all');
 		  setAllUsers(userResponse.data);
 		} catch (error) {
 		  console.error('Failed to fetch users:', error);
@@ -91,7 +91,7 @@ const ChatBoxProvider = ({ children }) => {
 
 		try {
 			setLoader(!loader);
-			const res = await axios.post("https://tasktogetherserver.onrender.com/api/messages", message);
+			const res = await axios.post("http://localhost:8000/api/messages", message);
 			setMessages([...messages, res.data]);
 			setNewMessage("");
 		} catch (err) {

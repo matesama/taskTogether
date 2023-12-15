@@ -8,7 +8,7 @@ import settingsButton from "../assets/settingsButton.svg"
 import logoutButton from "../assets/logoutButton.svg"
 
 const Navigation = () => {
-  const { handleAdd, handleLogout, handleHome } = useContext(NavigationContext);
+  const { handleAdd, handleLogout, handleHome, handleGoalButton } = useContext(NavigationContext);
   const { user } = useContext(UserContext);
 
   return (
@@ -27,7 +27,7 @@ const Navigation = () => {
         <button className="navButton bg-slate-100 text-slate-950 w-12" onClick={handleAdd}>
           <img src={addButton} alt="add Button" className="w-8 h-8"/>
         </button>
-        <button className="navButton bg-slate-100 text-slate-950 w-12"> <img src={goalButton} alt="task Button" className="w-8 h-8"/></button>
+        <button className="navButton bg-slate-100 text-slate-950 w-12" onClick={handleGoalButton}> <img src={goalButton} alt="task Button" className="w-8 h-8"/></button>
         <button className="navButton bg-slate-100 text-slate-950 w-12"> <img src={settingsButton} alt="add Button" className="w-8 h-8"/></button>
         <button className="navButton bg-slate-200 text-slate-950 w-12" onClick={handleLogout}>
         <img src={logoutButton} alt="add Button" className="w-8 h-8"/>

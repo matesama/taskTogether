@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 const initializeSocket = (server) => {
 const io = new Server(server, {
 	cors:{
-		origin: "https://tasktogetherclient.onrender.com",
+		origin: "http://localhost:8000/",
         methods: ['GET', 'POST'],
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,

@@ -13,7 +13,7 @@ const Message = ({message, own}) => {
 
 		const getSender = async () => {
 		  try {
-			const res = await axios(`https://tasktogetherserver.onrender.com/api/users?userId=${message.sender}`);
+			const res = await axios(`http://localhost:8000/api/users?userId=${message.sender}`);
 			setSender(res.data);
 		  } catch (err) {
 			console.log(err);

@@ -19,6 +19,11 @@ const NavigationProvider = ({ children }) => {
     navigate('/add');
   };
 
+  const handleGoalButton = () => {
+    setVisibleMobile(true);
+    navigate('/goal')
+  }
+
   const handleLogout = () => {
     logout();
   };
@@ -28,7 +33,7 @@ const NavigationProvider = ({ children }) => {
   };
 
   return (
-    <NavigationContext.Provider value={{ handleAdd, handleLogout, handleHome, visibleMobile, setVisibleMobile }}>
+    <NavigationContext.Provider value={{ handleAdd, handleLogout, handleHome, visibleMobile, setVisibleMobile, handleGoalButton }}>
       {children}
     </NavigationContext.Provider>
   );
