@@ -7,6 +7,7 @@ import authRouter from './routes/auth.js';
 import userRouter from './routes/users.js';
 import conversationRouter from './routes/conversations.js';
 import messageRouter from './routes/messages.js';
+import goalRouter from './routes/goalRoute.js';
 import initializeSocket from './db/socket.js';
 import http from 'http';
 
@@ -37,6 +38,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/conversations', conversationRouter);
 app.use('/api/messages', messageRouter);
+app.use('/api/goals', goalRouter);
 
 
 

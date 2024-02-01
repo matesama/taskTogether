@@ -1,9 +1,9 @@
 import trash from '../../assets/trash.svg'
 
-const DeleteButton = ({ goalItems, goalsList, setGoalsList }) => {
+const DeleteButton = ({ goalItems, goals, setGoals }) => {
     const handleDeleteButton = (id) => {
-        setGoalsList(goalsList => {
-            return goalsList.filter(goalItems => goalItems.id != id);
+        setGoals(goals => {
+            return goals.filter(goalItems => goalItems.id != id);
         })
     }
 

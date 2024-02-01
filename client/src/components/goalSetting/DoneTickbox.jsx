@@ -1,12 +1,12 @@
-const  DoneTickbox = (goalItems, goalsList, setGoalsList ) => {
+const  DoneTickbox = (goalItems, goals, setGoals ) => {
     const handleCheckbox = () => {
-        const newGoals = goalsList.map(goal => {
+        const newGoals = goals.map(goal => {
             if(goalItems.id === goal.id) {
                 return {...goal, done: !goal.done}
             }
             return goal
         })
-        setGoalsList(newGoals);
+        setGoals(newGoals);
     }
 
     return <input type='checkbox' className='doneTickbox mr-2' onClick={handleCheckbox} />
