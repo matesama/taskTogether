@@ -94,20 +94,20 @@ goalRouter.delete("/:id", async (req, res) => {
     }
 })
 
-goalRouter.put('/:id', async (req, res) => {
+goalRouter.put('/:_id', async (req, res) => {
     try {
-      const { id } = req.params;
+      const { _id } = req.params;
       const { text } = req.body;
   
       // Find the goal by ID
-      const goal = await Goal.findById(id);
+      const goal = await Goal.findById(_id);
   
       if (!goal) {
         return res.status(404).json({ message: 'Goal not found' });
       }
   
       // Update the goal text
-      goal.text = text;
+      goal.goals = text;
   
       // Save the updated goal
       const updatedGoal = await goal.save();

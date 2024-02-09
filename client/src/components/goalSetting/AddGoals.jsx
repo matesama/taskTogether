@@ -14,9 +14,14 @@ const AddGoals = () => {
                 const response = await axios.get('http://localhost:8000/api/goals');
                 const fetchedGoals = response.data;
                 //filter empty goals setting them in a state
-                const nonEmptyGoals = fetchedGoals.filter((goal) => goal.text.trim() !== '');
-                setGoals(nonEmptyGoals);
+                //const nonEmptyGoals = fetchedGoals.filter((goal) => goal.text.trim() !== '');
+                //setGoals(nonEmptyGoals);
+                console.log(fetchedGoals),
+                setGoals(fetchedGoals);
                 console.log(goals);
+                if (fetchedGoals[0].goals.length > 0) {
+                    setNewGoal(fetchedGoals[0].goals);
+                }             
             } catch (error) {
                 console.error('Error fetching goals', error);
             }

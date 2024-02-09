@@ -26,6 +26,7 @@ const GoalItem = ({ goalItems, goals, setGoals}) => {
 
     //onBlur saves goals when input loses focus
     const handleSaveEdit = async () => {
+        
         try {
             // Update the goal on the server
             const response = await axios.put(`http://localhost:8000/api/goals/${goalItems._id}`, {
@@ -35,7 +36,7 @@ const GoalItem = ({ goalItems, goals, setGoals}) => {
       
             // Update the goal in the frontend state
             const updatedGoals = goals.map((goal) =>
-              goal.id === goalItems.id ? { ...goal, text: updateGoal } : goal
+              goal.id === goalItems._id ? { ...goal, text: updateGoal } : goal
             );
             setGoals(updatedGoals);
           } catch (error) {

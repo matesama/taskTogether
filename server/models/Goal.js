@@ -10,6 +10,7 @@ const GoalSchema = new mongoose.Schema (
             type: [{
             type: String,
             trim: true,
+            default: ['Type in a new Goal'],
             }],
             validate: [goalLimit, '{PATH} exceeds the limit of 3'],
         },
